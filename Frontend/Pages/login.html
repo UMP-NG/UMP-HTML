@@ -3,7 +3,98 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="icon" type="image/x-icon" href="../images/logo.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../Styles/login.css" />
+    <title>UMP LOGIN PAGE</title>
   </head>
-  <body></body>
+  <body>
+    <div class="container" id="container">
+      <!-- sign-up section -->
+      <div class="bdy-container sign-up">
+        <div class="form-container">
+          <h1>Create Account</h1>
+          <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-google"></i></a>
+            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+          </div>
+          <p>or use your email for registration</p>
+          <form action="/login" method="POST">
+            <input
+              type="text"
+              placeholder="Username"
+              id="signup-username"
+              name="username"
+              required
+            />
+            <input
+              type="text"
+              placeholder="Email"
+              id="signup-email"
+              name="email"
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              id="signup-password"
+              name="password"
+              required
+            />
+            <button class="btn" type="submit">SIGN UP</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- sign-in section -->
+      <div class="bdy-container sign-in">
+        <div class="form-container">
+          <h1>Sign in</h1>
+          <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-google"></i></a>
+            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+          </div>
+          <p>or use your account</p>
+          <form action="/login" method="POST">
+            <input
+              type="text"
+              placeholder="Username"
+              id="signin-username"
+              name="username"
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              id="signin-password"
+              name="password"
+              required
+            />
+            <p>Forgot your Password?</p>
+            <button class="btn" type="submit">SIGN IN</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Text area -->
+      <div class="text">
+        <div class="content sign-in-text">
+          <h1>Hello, Friend!</h1>
+          <p>Enter your personal details and start your journey with us.</p>
+          <button id="switchtosignup">SIGN UP</button>
+        </div>
+        <div class="content sign-up-text">
+          <h1>Welcome Back!</h1>
+          <p>To keep connected with us please login with your personal info</p>
+          <button id="switchtosignin">SIGN IN</button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="module" src="../functions/login.js"></script>
 </html>

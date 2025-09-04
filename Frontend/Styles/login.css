@@ -1,0 +1,267 @@
+:root {
+  /* Colors */
+  --primary-color: #d97b3d;
+  --primary-color-hover: #c26c35;
+  --secondary-color: #8d4b20;
+  --background-color: #fffaf5;
+  --color-card-bg: #fff6eb;
+  --color-body-bg: #fffaf5;
+  --text-color: #2c2c2c;
+  --muted-color: #6f6f6f;
+  --text-color-card: #fffaf5;
+
+  /* Box Shadows */
+  --box-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --box-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --box-shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.24);
+
+  /* Border Radius */
+  --border-radius-sm: 8px;
+  --border-radius-md: 16px;
+  --border-radius-lg: 24px;
+  --border-radius-xl: 32px;
+  --border-radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: all 0.3s ease-in-out;
+  --transition-medium: all 0.6s ease-in-out;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: var(--background-color);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+/* Main container handles animation */
+.container {
+  position: relative;
+  width: 900px;
+  max-width: 100%;
+  min-height: 500px;
+  background: var(--color-card-bg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-lg);
+  overflow: hidden;
+  display: flex;
+}
+
+/* Both panels take 50% width */
+.bdy-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: var(--transition-medium);
+  background: white;
+  flex-direction: column;
+  padding: 24px;
+}
+
+/* Position Sign-Up off-screen by default */
+.sign-up {
+  left: -100%;
+  opacity: 0;
+}
+
+.sign-in {
+  left: 0;
+  opacity: 1;
+}
+
+/* When container has show-sign-up class, shift panels */
+.container.show-sign-up .sign-in {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.container.show-sign-up .sign-up {
+  transform: translateX(100%);
+  left: 0;
+  opacity: 1;
+}
+
+/* Text Section */
+.text {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background: var(--primary-color);
+  color: var(--text-color-card);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: var(--transition-medium);
+  padding: 24px;
+  text-align: center;
+}
+
+/* Slide text section left when showing sign-up */
+.container.show-sign-up .text {
+  transform: translateX(-100%);
+}
+
+/* Text contents */
+.sign-in-text,
+.sign-up-text {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sign-in-text h1,
+.sign-up-text h1 {
+  font-size: 1.8rem;
+  margin-bottom: 16px;
+}
+
+.sign-in-text p,
+.sign-up-text p {
+  margin-bottom: 16px;
+  color: var(--text-color-card);
+}
+
+/* Show only the correct text */
+.sign-in-text {
+  display: flex;
+}
+
+.container.show-sign-up .sign-in-text {
+  display: none;
+}
+
+.container.show-sign-up .sign-up-text {
+  display: flex;
+}
+
+/* Text area buttons */
+.text button {
+  background: var(--primary-color-hover);
+  color: var(--color-card-bg);
+  border: 1px solid black;
+  padding: 10px 20px;
+  border-radius: var(--border-radius-sm);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  margin-top: 10px;
+}
+
+.text button:hover {
+  background: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+/* Headings, paragraphs, forms */
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+p {
+  margin-bottom: 16px;
+  color: inherit;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  align-items: center;
+}
+
+input {
+  padding: 10px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid #ddd;
+  font-size: 16px;
+  transition: var(--transition-fast);
+  background-color: #f5f5f5;
+  min-width: 70%;
+  width: 370px;
+}
+
+input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(217, 123, 61, 0.3);
+}
+
+.btn {
+  padding: 10px 16px;
+  border-radius: var(--border-radius-sm);
+  background: var(--primary-color);
+  border: 1px solid black;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  width: 50%;
+}
+
+.btn:hover {
+  background: var(--primary-color-hover);
+}
+
+/* Social Icons */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.social-icons a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--border-radius-full);
+  box-shadow: var(--box-shadow-sm);
+  background: var(--primary-color);
+  color: white;
+  transition: transform var(--transition-fast);
+}
+
+.social-icons a:hover {
+  transform: scale(1.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    width: 95%;
+    min-height: auto;
+  }
+
+  .bdy-container,
+  .text {
+    position: relative;
+    width: 100%;
+    transform: none !important;
+    left: 0 !important;
+    opacity: 1 !important;
+  }
+}
