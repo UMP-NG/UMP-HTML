@@ -1,0 +1,154 @@
+:root {
+    --color-primary: #fff;
+    --color-secondary: #222222ff;
+    --color-comp:#2851cbff;
+    --font-primary: sans-serif;
+    --color-headerhover:#7f7f7fff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-image:url('../IMAGES/ump-wallpaper.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+html {
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+header {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: transparent;
+
+}
+
+*,*::before, *::after {
+    box-sizing: border-box;
+}
+
+ .tray {
+    padding: 0 40px;
+    height: 80px;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+ .tray .ump-logo h1 {
+    font-family: var(--font-primary);
+}
+
+ .tray .ump-logo a img{
+    height: 80px;
+
+}
+
+.tray nav.menu {
+    font-size: 18px;
+    font-family: var(--font-primary);
+}
+
+
+.tray nav.menu  a {
+    text-decoration: none;
+}
+
+
+.tray nav.menu .menu-items {
+    padding: 0 20px;
+    color: var(--color-headerhover);
+}
+
+.tray nav.menu .menu-items:hover {
+    color: var(--color-secondary);
+}
+
+.tray .buttons {
+    
+}
+
+.tray .buttons button {
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.tray .buttons .signup {
+    background-color: #fff;
+    color: var(--color-comp);
+    padding: 0 30px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.tray .buttons .login  {
+    padding: 15px 30px;
+    border-radius: 10px;
+    background-color: var(--color-comp);
+    color: var(--color-primary);
+}
+
+/* Beginning of the hero section */
+
+section#hero {
+    margin: 0;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    
+   
+}
+
+section#hero .container {
+    padding: 70px;
+    font-family: var(--font-primary);
+}
+
+
+section#hero .container h1{
+    font-size: 70px;
+    padding: 40px 0;
+    margin: 0;
+
+}
+
+section#hero .container p {
+    padding-bottom: 20px;
+    margin: 0;
+    font-size: 20px;
+    color: var(--color-headerhover);
+}
+
+section#hero .container .Explore-Marketplace {
+   cursor: pointer;
+   font-size: 15px;
+   padding: 20px 35px;
+   margin: 10px 0;
+   border-radius: 10px;
+   border: none;
+   color: var(--color-primary);
+   background-color: var(--color-comp);
+
+}
+
+section#hero .container .List-your-bussiness {
+    cursor: pointer;
+   font-size: 15px;
+   padding: 20px 35px;
+   margin: 10px;
+   border-radius: 10px;
+   border: 2px solid var(--color-comp);
+   background: transparent;
+   color: var(--color-comp);
+
+}
+
+
+

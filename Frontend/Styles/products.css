@@ -1,0 +1,310 @@
+:root {
+    --color-primary: #fff;
+    --color-secondary: #222222ff;
+    --color-comp:#2851cbff;
+    --font-primary: sans-serif;
+    --color-headerhover:#7f7f7fff;
+    --color-items:#f2f4fcff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-image:url('../IMAGES/ump-wallpaper.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+html {
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+header {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: transparent;
+
+}
+
+*,*::before, *::after {
+    box-sizing: border-box;
+}
+
+ .tray {
+    padding: 0 40px;
+    height: 80px;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+ .tray .ump-logo h1 {
+    font-family: var(--font-primary);
+}
+
+ .tray .ump-logo a img{
+    height: 80px;
+
+}
+
+.tray nav.menu {
+    font-size: 18px;
+    font-family: var(--font-primary);
+}
+
+
+.tray nav.menu  a {
+    text-decoration: none;
+}
+
+
+.tray nav.menu .menu-items {
+    padding: 0 20px;
+    color: var(--color-headerhover);
+}
+
+.tray nav.menu .menu-items:hover {
+    color: var(--color-secondary);
+}
+
+.tray .buttons {
+    
+}
+
+.tray .buttons button {
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.tray .buttons .signup {
+     padding: 15px 30px;
+    border-radius: 10px;
+    background-color: var(--color-comp);
+    color: var(--color-primary);
+}
+
+
+
+/* .tray .buttons .login  {
+    padding: 15px 30px;
+    border-radius: 10px;
+    background-color: var(--color-comp);
+    color: var(--color-primary);
+} */
+
+/* Beginning of the hero section */
+
+section#hero {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    
+    
+}
+
+section#hero .container {
+    align-items: center;
+    padding: 70px;
+    font-family: var(--font-primary);
+}
+
+
+section#hero .container h1{
+    font-size: 70px;
+    padding: 40px 0;
+    margin: 0;
+
+}
+
+section#hero .container p {
+    padding-bottom: 20px;
+    margin: 0;
+    font-size: 20px;
+    color: var(--color-headerhover);
+}
+
+section#hero .container .start-shopping {
+   cursor: pointer;
+   font-size: 15px;
+   padding: 20px 35px;
+   margin: 10px 0;
+   border-radius: 10px;
+   border: none;
+   color: var(--color-primary);
+   background-color: var(--color-comp);
+
+}
+
+section#hero .container .List-your-bussiness {
+    cursor: pointer;
+   font-size: 15px;
+   padding: 20px 35px;
+   margin: 10px;
+   border-radius: 10px;
+   border: 2px solid var(--color-comp);
+   background: transparent;
+   color: var(--color-comp);
+
+}
+
+section#services {
+    height: 100vh;
+    padding: 0 50px;
+}
+
+section#services h1 {
+    margin: 0;
+    padding: 0 0 20px 0;
+    font-family: var(--font-primary);
+    font-size: 30px;
+    text-align: center;
+}
+
+section#services .service-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+section#services .service-container h1 {
+
+}
+
+section#services .service-container .service-flex .service-item {
+    height: 300px;
+    width: 250px;
+    border-radius: 15px;
+    background-color: var(--color-items);
+    
+}
+
+section#services .service-container .service-flex .service-flex-text{
+    width: 100%;
+    border-radius: 20px;
+    color: var(--color-comp);
+    margin: 10px 0;
+    border: 2px solid var(--color-items) ;
+    background: transparent;
+}
+
+section#services .service-container .service-flex  .service-flex-text {
+    font-size: 18px;
+}
+
+section#services .service-container .service-flex  .service-flex-text button {
+    cursor: pointer;
+}
+
+/* Loan Section */
+section#services .loan-section {
+    padding: 50px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+section#services div.loan-section .section-1 {
+  font-family: sans-serif;  
+}
+
+section#services div.loan-section .section-1 h2 {
+    font-size: 45px;
+    margin: 0;
+}
+
+
+
+section#services div.loan-section .section-details {
+    display: flex;
+    font-family: var(--font-primary); 
+    align-items: center;  
+}
+
+section#services div.loan-section .section-1 p {
+    font-size: 20px;
+}
+
+section#services div.loan-section .section-1 button {
+    border: none;
+    background-color: var(--color-comp);
+    padding: 20px 50px;
+    font-size: 20px;
+    border-radius: 40px;
+    color: #fff;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+
+
+section#services div.loan-section .section-details h3 {
+    margin: 0;
+    padding: 20px 0;
+    font-size: 30px;
+}
+
+section#services div.loan-section .section-2 {
+    
+}
+
+section#services div.loan-section .section-details i {
+    font-size: 40px;
+    color: var(--color-comp);
+    padding-right: 10px;
+}
+
+
+
+section#services div.loan-section .section-2 .flex-items {
+    display: flex;
+}
+
+section#services div.loan-section .section-2 .object {
+    height: 250px;
+    width: 150px;
+    background-color: var(--color-items);
+    border-radius: 10px;
+    margin: 0 10px;
+}
+
+section#services div.loan-section .section-2 .product-container {
+    display: flex;
+}
+
+section#services div.loan-section .section-2 p {
+    font-family: sans-serif;
+    font-size: 30px;
+    padding: 0 10px;
+}
+
+section#services div.loan-section .section-2 .product-container .products {
+     height: 250px;
+    width: 150px;
+    background-color: var(--color-items);
+    border-radius: 10px;
+    margin: 0 10px;
+}
+
+section#footer {
+    height: 80px;
+}
+
+section#footer .footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+
+
+
+
+
+
+
+
