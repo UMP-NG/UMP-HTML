@@ -14,3 +14,6 @@ function toggleAuthView(showSignUp)
 document.getElementById("switchtosignup").addEventListener("click", () => toggleAuthView(true));
 document.getElementById("switchtosignin").addEventListener("click", () => toggleAuthView(false));
 
+// Mobile toggle links
+document.getElementById("mobileSwitchToSignUp").addEventListener("click", () => toggleAuthView(true));
+document.getElementById("mobileSwitchToSignIn").addEventListener("click", () => toggleAuthView(false));
