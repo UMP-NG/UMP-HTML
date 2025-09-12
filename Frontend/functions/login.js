@@ -1,4 +1,5 @@
-// Function to handle switching between Sign In / Sign Up
+import API from "./js/api.js";
+
 function toggleAuthView(showSignUp)
 {
     const container = document.getElementById("container");
@@ -17,3 +18,42 @@ document.getElementById("switchtosignin").addEventListener("click", () => toggle
 // Mobile toggle links
 document.getElementById("mobileSwitchToSignUp").addEventListener("click", () => toggleAuthView(true));
 document.getElementById("mobileSwitchToSignIn").addEventListener("click", () => toggleAuthView(false));
+
+const form = document.getElementById("signupForm");
+const msg = document.getElementById("msg");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  msg.textContent = "Sending...";
+  const email = form.email.value.trim();
+  const password = form.password.value;
+  
+  try {
+    const res = await API.signup({ email, password });
+    // backend returns otp in dev; in prod you would not show it
+    msg.textContent = "OTP sent. Redirecting to verify...";
+    // store email so verify page can prefill
+    localStorage.setItem("pendingEmail", email);
+    // optional: store OTP in dev for testing
+    console.log("DEV OTP:", res.otp);
+    setTimeout(() => window.location.href = "../pages/auth.html", 800);
+  } catch (err) {
+    msg.textContent = err.body?.message || err.message;
+  }
+});
+
+const form2 = document.getElementById("loginForm");
+const msg2 = document.getElementById("msg-login");
+
+form2.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  msg2.textContent = "Logging in...";
+  try {
+    const res = await API.login({ email: form2.email.value.trim(), password: form2.password.value });
+    localStorage.setItem("token", res.token);
+    msg2.textContent = "Logged in. Redirecting...";
+    setTimeout(() => window.location.href = "../pages/index.html", 600);
+  } catch (err) {
+    msg2.textContent = err.body?.message || err.message;
+  }
+});

@@ -23,7 +23,7 @@
             <a href="#"><i class="fa-brands fa-tiktok"></i></a>
           </div>
           <p>or use your email for registration</p>
-          <form action="/login" method="POST">
+          <form action="/login" method="POST" id="signupForm">
             <input
               type="text"
               placeholder="Username"
@@ -52,6 +52,7 @@
             Already have an account?
             <span id="mobileSwitchToSignIn">Sign In</span>
           </p>
+          <p id="msg"></p>
         </div>
       </div>
 
@@ -80,7 +81,7 @@
               name="password"
               required
             />
-            <p>Forgot your Password?</p>
+            <p> <a href="./forgot.html"> Forgot your Password? </a></p>
             <button class="btn" type="submit">SIGN IN</button>
           </form>
 

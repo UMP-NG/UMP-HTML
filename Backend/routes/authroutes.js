@@ -1,6 +1,11 @@
 import express from "express";
 import { signup, login, getMe } from "../controllers/authController.js";
-import { protect } from "../middleware/authMiddleware.js";
+import { protect, authorize } from "../middleware/authMiddleware.js";
+import {
+  forgotPassword,
+  resetPassword,
+} from "../controllers/authController.js";
+import { verifyOTP } from "../controllers/authController.js";
 
 const router = express.Router();
 
@@ -10,5 +15,24 @@ router.post("/login", login);
 
 // Protected route
 router.get("/me", protect, getMe);
+router.get("/admin", protect, authorize("admin"), (req, res) => {
+  res.json({ message: "Welcome Admin!" });
+});
+
+router.put("/me", protect, async (req, res) => {
+  try {
+    const updates = req.body;
+    const user = await User.findByIdAndUpdate(req.user.id, updates, {
+      new: true,
+    }).select("-password");
+    res.json({ message: "Profile updated", user });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.post("/forgot-password", forgotPassword);
+router.put("/reset-password/:token", resetPassword);
+router.post("/verify-otp", verifyOTP);
 
 export default router;
