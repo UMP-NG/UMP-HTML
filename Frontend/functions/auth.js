@@ -22,7 +22,9 @@ inputs.forEach((input, index) => {
 });
 
 verifyBtn.addEventListener("click", async () => {
-  const otp = Array.from(inputs).map((i) => i.value).join("");
+  const otp = Array.from(inputs)
+    .map((i) => i.value)
+    .join("");
   if (otp.length !== 4) {
     alert("Please enter the full 4-digit code.");
     return;
@@ -31,7 +33,7 @@ verifyBtn.addEventListener("click", async () => {
   const email = localStorage.getItem("pendingEmail"); // from signup step
   if (!email) {
     alert("No email found — please sign up again.");
-    window.location.href = "/signup.html";
+    window.location.href = "../Pages/signup.html";
     return;
   }
 
@@ -42,7 +44,7 @@ verifyBtn.addEventListener("click", async () => {
     await API.verifyOtp({ email, otp });
     alert("✅ Email verified successfully!");
     localStorage.removeItem("pendingEmail");
-    window.location.href = "/login.html"; // redirect to login
+    window.location.href = "../Pages/login.html"; // redirect to login
   } catch (err) {
     alert(err.body?.message || "Invalid or expired OTP.");
   } finally {

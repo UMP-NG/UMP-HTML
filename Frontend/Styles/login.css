@@ -77,23 +77,30 @@ body {
   transform: translateX(-100%);
   left: 0;
   opacity: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .sign-in {
   left: 0;
   opacity: 1;
+  z-index: 2;
 }
 
 /* When container has show-sign-up class, shift panels */
 .container.show-sign-up .sign-in {
   transform: translateX(100%);
   opacity: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .container.show-sign-up .sign-up {
   transform: translateX(100%);
   left: 0;
   opacity: 1;
+  z-index: 5;
+  pointer-events: all;
 }
 
 /* Text Section */

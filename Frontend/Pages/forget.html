@@ -1,28 +1,148 @@
-<!doctype html>
-<html>
-<body>
-  <h1>Forgot Password</h1>
-  <form id="forgot">
-    <input name="email" placeholder="Email" required />
-    <button>Send reset link</button>
-  </form>
-  <p id="msg"></p>
-
-  <script type="module">
-    import API from "./js/api.js";
-    const form = document.getElementById("forgot");
-    const msg = document.getElementById("msg");
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      msg.textContent = "Requesting...";
-      try {
-        const res = await API.forgotPassword({email: form.email.value.trim()});
-        msg.textContent = "Reset link generated. Check email.";
-        console.log("DEV resetUrl:", res.resetUrl);
-      } catch (err) {
-        msg.textContent = err.body?.message || err.message;
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forgot Password</title>
+    <style>
+      :root {
+        --primary-color: #d97b3d;
+        --primary-hover: #c26c35;
+        --text-color: #2c2c2c;
+        --bg-color: #fffaf5;
+        --card-bg: #fff6eb;
+        --shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        --radius: 16px;
       }
-    });
-  </script>
-</body>
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: var(--bg-color);
+        color: var(--text-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        background: var(--card-bg);
+        box-shadow: var(--shadow);
+        border-radius: var(--radius);
+        padding: 32px;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+        animation: fadeIn 0.4s ease;
+      }
+
+      h1 {
+        margin-bottom: 16px;
+        font-size: 1.8rem;
+        font-weight: 600;
+      }
+
+      p.description {
+        margin-bottom: 24px;
+        font-size: 0.95rem;
+        color: #666;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      input {
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        font-size: 1rem;
+        background-color: #fff;
+        transition: 0.3s;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(217, 123, 61, 0.2);
+      }
+
+      button {
+        background: var(--primary-color);
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 12px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+
+      button:hover {
+        background: var(--primary-hover);
+        transform: scale(1.02);
+      }
+
+      #msg {
+        margin-top: 12px;
+        font-size: 0.9rem;
+        color: var(--primary-color);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Forgot Password</h1>
+      <p class="description">
+        Enter your email address to receive a password reset link.
+      </p>
+
+      <form id="forgot">
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+        />
+        <button type="submit">Send Reset Link</button>
+      </form>
+
+      <p id="msg"></p>
+    </div>
+
+    <script type="module">
+      import API from "../functions/api.js";
+      const form = document.getElementById("forgot");
+      const msg = document.getElementById("msg");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        msg.textContent = "Requesting...";
+        try {
+          const res = await API.forgotPassword({
+            email: form.email.value.trim(),
+          });
+          msg.textContent = "✅ Reset link generated. Check your email.";
+          console.log("DEV resetUrl:", res.resetUrl);
+        } catch (err) {
+          msg.textContent = "❌ " + (err.body?.message || err.message);
+        }
+      });
+    </script>
+  </body>
 </html>
