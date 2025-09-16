@@ -56,6 +56,7 @@ form2.addEventListener("submit", async (e) => {
   e.preventDefault();
   msg2.textContent = "Logging in...";
   try {
+    console.log("📩 Incoming login request body:", req.body);
     const res = await API.login({
       email: form2.email.value.trim(),
       password: form2.password.value,
