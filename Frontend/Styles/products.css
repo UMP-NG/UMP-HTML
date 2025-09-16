@@ -71,9 +71,10 @@ header {
     color: var(--color-secondary);
 }
 
-.tray .buttons {
-    
+.tray button#mobile {
+    display: none;
 }
+
 
 .tray .buttons button {
     border: none;
@@ -109,7 +110,7 @@ section#hero {
 
 section#hero .container {
     align-items: center;
-    padding: 70px;
+    padding: 0 70px;
     font-family: var(--font-primary);
 }
 
@@ -331,8 +332,115 @@ section#footer-beta .footer-items a {
     color: #000000;
 }
 
+@media (max-width: 767.98px) {
+    .tray .ump-logo a img {
+    height: 60px;
+    
+    }
+
+    section#hero {
+        display: block;
+        text-align: left;
+    }
+
+    section#hero .container h1{
+        font-size: 30px;
+        padding: 20px 0;
+
+    }
+
+    section#hero .container p {
+        font-size: 16px;
+        padding-bottom: 50px;
+    }
+
+    .tray {
+    padding: 0 10px;
+   }
+
+    .tray nav.menu .menu-items {
+     display: none;
+    }
+
+    .tray .buttons {
+        display: none;
+    }
+
+    section#hero .container {
+        padding: 20px;
+        
+    }
+
+    section#hero .container h1{
+        font-size: 35px;
+        padding: 20px 0;
+    }
+
+    section#hero .container p {
+        font-size: 16px;
+        padding-bottom: 50px;
+    }
+
+    button.start-shopping {
+       
+        font-size: 12px;
+        width: 100%;
+        padding: 20px 20px;
+        margin: 5px;
+        cursor: pointer;
+    }
+    
+    header#tray .b-contain button {
+        cursor: pointer;
+        display: block;
+        background-color: #000000;
+        border: none;
+        margin: 5px 0;
+        width: 29px;
+        border-radius: 10px;
+        height: 4px
+        
+    }
+
+    section#services .service-flex {
+        display: none;
+        transition: 0.5s;
+    }
+
+    section#mobile-services {
+        height: 300px;
+        width: 100%;
+        border-radius: 15px;
+        background-color: var(--color-items);
+        
+       
+    }
+
+    .loan-section  .section-1 {
+        display: none;
+    }
+
+    .loan-section  .section-2 {
+        display: none;
+    }
 
 
+    section#footer {
+        display: none;
+    }
+
+    section#footer-beta {
+        display: none;
+    }
+
+    .arrow-buttons {
+        padding: 20px 0;
+        text-align: center;
+    }
+
+    
+    
+}
 
 
 

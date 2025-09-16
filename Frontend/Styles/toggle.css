@@ -1,0 +1,35 @@
+:root {
+    --color-primary: #fff;
+    --color-secondary: #222222ff;
+    --color-comp:#2851cbff;
+    --font-primary: sans-serif;
+    --color-headerhover:#7f7f7fff;
+    --color-items:#f2f4fcff;
+}
+
+
+
+body {
+ 
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tlinks {
+    font-family: sans-serif;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    
+}
+
+.tlinks a {
+    padding: 25px 0;
+    font-size: 25px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: var(--color-secondary);
+}
