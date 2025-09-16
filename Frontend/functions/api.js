@@ -1,5 +1,5 @@
 // js/api.js
-const API_BASE = "https://ump-html-1.onrender.com/api/auth/login";
+const API_BASE = "https://ump-html-1.onrender.com/api/auth";
 
 async function apiFetch(path, options = {}) {
   const headers = options.headers || {};
