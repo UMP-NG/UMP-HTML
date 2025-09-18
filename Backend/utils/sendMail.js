@@ -48,7 +48,7 @@ const sendMail = async (to, subject, otp) => {
           ${otp}
         </h4>
         <p>
-          This code will expire in 19 minutes. If you didn't request this, you can ignore this email.
+          This code will expire in 10 minutes. If you didn't request this, you can ignore this email.
         </p>
       </div>
     `;
