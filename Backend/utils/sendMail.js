@@ -42,13 +42,12 @@ const sendMail = async (to, subject, otp) => {
 
     // Your tested OTP email design
     const htmlContent = `
-      <div style="max-width: 480px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
-        <h2 style="text-align: center; color: #333; margin-bottom: 10px;">Your OTP Code</h2>
-        <p style="text-align: center; font-size: 18px; color: #555;">Use the following code to verify your account:</p>
-        <div style="text-align: center; font-size: 28px; font-weight: bold; background: #f4f4f4; padding: 12px; border-radius: 6px; letter-spacing: 4px; margin: 10px 0;">
+      <h2>Your OTP Code</h2>
+        <p>Use the following code to verify your account:</p>
+        <h4>
           ${otp}
-        </div>
-        <p style="font-size: 14px; text-align: center; color: #888;">
+        </h4>
+        <p>
           This code will expire in 19 minutes. If you didn't request this, you can ignore this email.
         </p>
       </div>
