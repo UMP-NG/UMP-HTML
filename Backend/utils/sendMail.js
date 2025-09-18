@@ -41,24 +41,24 @@ const sendMail = async (to, subject, otp) => {
     await transporter.verify();
 
     // Your tested OTP email design
-    const htmlContent = `
-      <h2>Your OTP Code</h2>
-        <p>Use the following code to verify your account:</p>
-        <h4>
-          ${otp}
-        </h4>
-        <p>
-          This code will expire in 10 minutes. If you didn't request this, you can ignore this email.
-        </p>
-      </div>
-    `;
+    // const htmlContent = `
+    //   <h2>Your OTP Code</h2>
+    //     <p>Use the following code to verify your account:</p>
+    //     <h4>
+    //       ${otp}
+    //     </h4>
+    //     <p>
+    //       This code will expire in 10 minutes. If you didn't request this, you can ignore this email.
+    //     </p>
+    //   </div>
+    // `;
 
     const info = await transporter.sendMail({
       from: `"UMP App" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       text: `Your OTP code is: ${otp}`,
-      html: htmlContent,
+      html: none,
     });
 
     console.log(`✅ Gmail email sent to ${to}: ${info.messageId}`);
