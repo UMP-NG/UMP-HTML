@@ -260,6 +260,14 @@ input:focus {
   display: none;
 }
 
+.forgot {
+  text-align: right;
+  width: 100%;
+  max-width: 320px;
+  font-size: 0.9rem;
+  color: red;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   html {
