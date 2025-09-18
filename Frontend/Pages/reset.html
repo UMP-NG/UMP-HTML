@@ -148,7 +148,7 @@
             password: document.getElementById("pass").value,
           });
           msg.textContent = "✅ Password reset successful. Redirecting...";
-          setTimeout(() => (window.location.href = "/login.html"), 1200);
+          setTimeout(() => (window.location.href = "./Pages/login.html"), 1200);
         } catch (err) {
           msg.textContent = "❌ " + (err.body?.message || err.message);
         }
