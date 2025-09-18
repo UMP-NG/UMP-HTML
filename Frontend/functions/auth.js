@@ -44,7 +44,7 @@ verifyBtn.addEventListener("click", async () => {
     await API.verifyOtp({ email, otp });
     alert("✅ Email verified successfully!");
     localStorage.removeItem("pendingEmail");
-    window.location.href = "../Pages/login.html"; // redirect to login
+    window.location.href = "..Pages/login.html"; // redirect to login
   } catch (err) {
     alert(err.body?.message || "Invalid or expired OTP.");
   } finally {
