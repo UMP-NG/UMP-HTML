@@ -55,11 +55,14 @@ const msg2 = document.getElementById("msg-login");
 form2.addEventListener("submit", async (e) => {
   e.preventDefault();
   msg2.textContent = "Logging in...";
+
   try {
     const res = await API.login({
-      email: form2.email.value.trim(),
-      password: form2.password.value,
+      // 👇 Use the actual input names/IDs
+      email: document.getElementById("signin-username").value.trim(),
+      password: document.getElementById("signin-password").value,
     });
+
     localStorage.setItem("token", res.token);
     msg2.textContent = "Logged in. Redirecting...";
     setTimeout(() => (window.location.href = "../Pages/index.html"), 600);

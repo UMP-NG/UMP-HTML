@@ -10,11 +10,11 @@
 body {
     margin: 0;
     padding: 0;
-    background-image:url('../IMAGES/ump-wallpaper.jpg');
+    background-image:url('../images/LP.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    height: 100vh;
+    height: 90vh;
 }
 html {
     margin: 0;
@@ -71,9 +71,10 @@ header {
     color: var(--color-secondary);
 }
 
-.tray .buttons {
-    
+.tray button#mobile {
+    display: none;
 }
+
 
 .tray .buttons button {
     border: none;
@@ -109,7 +110,7 @@ section#hero {
 
 section#hero .container {
     align-items: center;
-    padding: 70px;
+    padding: 0 70px;
     font-family: var(--font-primary);
 }
 
@@ -205,6 +206,7 @@ section#services .loan-section {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    
 }
 
 section#services div.loan-section .section-1 {
@@ -290,15 +292,155 @@ section#services div.loan-section .section-2 .product-container .products {
 }
 
 section#footer {
-    height: 80px;
+    height: 90px;
+    margin: 0;
+    padding: 0 50px;
+    padding-top: 300px;
 }
 
 section#footer .footer-content {
+    background-color: var(--color-items);
+    padding: 30px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    font-size: 30px;
+    font-family: sans-serif;
 }
 
+section#footer-beta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 150px;
+    font-size: 20px;
+    margin: 0 40px;
+    font-family: sans-serif;
+}
+
+section#footer-beta .footer-items {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+
+}
+
+section#footer-beta .footer-items a {
+    text-decoration: none;
+    padding: 0 20px;
+    color: #000000;
+}
+
+@media (max-width: 767.98px) {
+    .tray .ump-logo a img {
+    height: 60px;
+    
+    }
+
+    section#hero {
+        display: block;
+        text-align: left;
+    }
+
+    section#hero .container h1{
+        font-size: 30px;
+        padding: 20px 0;
+
+    }
+
+    section#hero .container p {
+        font-size: 16px;
+        padding-bottom: 50px;
+    }
+
+    .tray {
+    padding: 0 10px;
+   }
+
+    .tray nav.menu .menu-items {
+     display: none;
+    }
+
+    .tray .buttons {
+        display: none;
+    }
+
+    section#hero .container {
+        padding: 20px;
+        
+    }
+
+    section#hero .container h1{
+        font-size: 35px;
+        padding: 20px 0;
+    }
+
+    section#hero .container p {
+        font-size: 16px;
+        padding-bottom: 50px;
+    }
+
+    button.start-shopping {
+       
+        font-size: 12px;
+        width: 100%;
+        padding: 20px 20px;
+        margin: 5px;
+        cursor: pointer;
+    }
+    
+    header#tray .b-contain button {
+        cursor: pointer;
+        display: block;
+        background-color: #000000;
+        border: none;
+        margin: 5px 0;
+        width: 29px;
+        border-radius: 10px;
+        height: 4px
+        
+    }
+
+    section#services .service-flex {
+        display: none;
+        transition: 0.5s;
+    }
+
+    section#mobile-services {
+        height: 300px;
+        width: 100%;
+        border-radius: 15px;
+        background-color: var(--color-items);
+        
+       
+    }
+
+    .loan-section  .section-1 {
+        display: none;
+    }
+
+    .loan-section  .section-2 {
+        display: none;
+    }
+
+
+    section#footer {
+        display: none;
+    }
+
+    section#footer-beta {
+        display: none;
+    }
+
+    .arrow-buttons {
+        padding: 20px 0;
+        text-align: center;
+    }
+
+    
+    
+}
 
 
 

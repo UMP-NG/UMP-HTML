@@ -9,7 +9,7 @@
 body {
     margin: 0;
     padding: 0;
-    background-image:url('../IMAGES/ump-wallpaper.jpg');
+    background-image:url('../images/LP.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -148,6 +148,84 @@ section#hero .container .List-your-bussiness {
    background: transparent;
    color: var(--color-comp);
 
+}
+
+ header#tray .b-contain button {
+    display: none;
+ }
+
+
+
+/* Mobile approach CSS */
+@media (max-width: 767.98px) {
+
+    section#hero {
+        display: block;
+        text-align: left;
+    }
+  .tray .ump-logo a img {
+    height: 60px;
+    
+    }
+
+   .tray {
+    padding: 0 10px;
+   }
+
+    .tray nav.menu {
+     display: none;
+    }
+
+    .tray .buttons {
+        display: none;
+    }
+
+    section#hero .container {
+        padding: 20px;
+        
+    }
+
+    section#hero .container h1{
+        font-size: 35px;
+        padding: 20px 0;
+    }
+
+    section#hero .container p {
+        font-size: 16px;
+        padding-bottom: 50px;
+    }
+
+    section#hero .container .List-your-bussiness {
+        
+        font-size: 12px;
+        width: 100%;
+        padding: 20px 20px;
+        margin: 5px;
+    }
+
+    section#hero .container .Explore-Marketplace {
+       
+        font-size: 12px;
+        width: 100%;
+        padding: 20px 20px;
+        margin: 5px;
+        
+    }
+
+    header#tray .b-contain button {
+        display: block;
+        background-color: #000000;
+        border: none;
+        margin: 5px 0;
+        width: 29px;
+        border-radius: 10px;
+        height: 4px
+        
+    }
+
+
+
+     
 }
 
 

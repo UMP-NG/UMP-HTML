@@ -13,14 +13,26 @@ connectDB();
 const app = express();
 
 // ✅ Middlewares must come FIRST
+const allowedOrigins = [
+  "http://127.0.0.1:5500", 
+  "http://localhost:5500",
+  "https://ump-ng.github.io"
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
 app.use(express.json());
-app.use(
-  cors({
-    origin: "http://127.0.0.1:5500", // Allow requests from frontend
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+
 app.use(helmet());
 
 // ✅ Now register routes AFTER CORS
