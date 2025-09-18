@@ -202,9 +202,7 @@ export const forgotPassword = async (req, res) => {
 
     await user.save({ validateBeforeSave: false });
 
-    const resetUrl = `${req.protocol}://${req.get(
-      "host"
-    )}/api/auth/reset-password/${resetToken}`;
+    const resetUrl = `https://ump-ng.github.io/UMP-HTML/Pages/reset.html?token=${resetToken}`;
 
     try {
       await sendMail(email, "Password Reset", `Reset link: ${resetUrl}`);
