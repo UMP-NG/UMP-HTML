@@ -1,0 +1,166 @@
+// === HEADER NAV TOGGLE ===
+// DOM elements
+let searchForm = document.querySelector(".search-form");
+let search = document.querySelector("#search-btn");
+
+let profilePopup = document.querySelector(".profile-popup");
+let loginBtn = document.querySelector("#login-btn");
+
+let Links = document.querySelector(".nav_links");
+let Menu = document.querySelector("#mobile_menu");
+
+// Search button
+search.addEventListener("click", function () {
+  searchForm.classList.toggle("active");
+  Links.classList.remove("active");
+  profilePopup.classList.remove("active");
+});
+
+// Login button
+loginBtn.addEventListener("click", function () {
+  profilePopup.classList.toggle("active");
+  searchForm.classList.remove("active");
+  Links.classList.remove("active");
+});
+
+// Mobile menu
+Menu.addEventListener("click", function () {
+  Links.classList.toggle("active");
+  profilePopup.classList.remove("active");
+  searchForm.classList.remove("active");
+});
+
+// Close all on scroll
+window.onscroll = () => {
+  Links.classList.remove("active");
+  profilePopup.classList.remove("active");
+  searchForm.classList.remove("active");
+};
+
+
+let totalSlides = document.querySelectorAll(".product-slider .swiper-slide").length;
+
+let swiper = new Swiper(".product-slider", {
+  slidesPerView: 3,         // always 1 slide visible at a time
+  spaceBetween: 20,
+  loop: true,               // enables cloning for infinite loop
+  loopedSlides: totalSlides, // ensure all slides are looped
+  autoplay: {
+    delay: 5000,
+    disableOnInteraction: false,
+  },
+  pagination: {
+    el: ".swiper-pagination",
+    clickable: true,
+  },
+  navigation: {
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev",
+  },
+});
+
+const cat_cards = document.querySelectorAll(".category-card");
+
+function revealCards() {
+  const trigger = window.innerHeight * 0.9;
+  cat_cards.forEach((card) => {
+    const top = card.getBoundingClientRect().top;
+    if (top < trigger) {
+      card.classList.add("show");
+    }
+  });
+}
+
+window.addEventListener("scroll", revealCards);
+window.addEventListener("load", revealCards);
+
+// Reveal on scroll effect
+const vibeCards = document.querySelectorAll(".vibe-card");
+
+function revealVibes() {
+  const trigger = window.innerHeight * 0.9;
+  vibeCards.forEach((card) => {
+    const top = card.getBoundingClientRect().top;
+    if (top < trigger) {
+      card.classList.add("show");
+    }
+  });
+}
+
+window.addEventListener("scroll", revealVibes);
+window.addEventListener("load", revealVibes);
+
+const images = [
+  "../images/fash-trend.jpg",
+  "../images/cozy-hostel.jpg",
+  "../images/tech-life.jpg",
+  "../images/study-essen.jpg",
+  "../images/electronics.jpg",
+  "../images/arts.jpg",
+  "../images/books.jpg",
+  "../images/fashion.jpg",
+];
+
+const cards = document.querySelectorAll(".campus-card img");
+const lightboxImg = document.getElementById("lightboxImg");
+
+// Auto rotate images
+function rotateImage(card) {
+  let randomImage = images[Math.floor(Math.random() * images.length)];
+  card.classList.add("fade-out");
+  setTimeout(() => {
+    card.src = randomImage;
+    card.classList.remove("fade-out");
+  }, 1000);
+}
+
+setInterval(() => {
+  let card = cards[Math.floor(Math.random() * cards.length)];
+  rotateImage(card);
+}, 3000);
+
+// Lightbox functionality
+cards.forEach((card) => {
+  card.parentElement.addEventListener("click", (e) => {
+    lightboxImg.src = card.src;
+  });
+});
+
+const features = document.querySelectorAll(".feature");
+
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add("visible");
+        }, index * 200); // stagger effect
+      }
+    });
+  },
+  { threshold: 0.2 }
+);
+
+features.forEach((f) => observer.observe(f));
+
+const footer = document.getElementById("pageFooter");
+const yearSpan = document.getElementById("year");
+
+// Set dynamic year
+yearSpan.textContent = new Date().getFullYear();
+
+// Footer reveal on scroll (re-trigger each time it enters viewport)
+const footerObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        footer.classList.add("visible");
+      } else {
+        footer.classList.remove("visible");
+      }
+    });
+  },
+  { threshold: 0.2 }
+);
+
+footerObserver.observe(footer);
