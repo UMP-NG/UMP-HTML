@@ -160,7 +160,11 @@ const footerObserver = new IntersectionObserver(
       }
     });
   },
-  { threshold: 0.2 }
+  { threshold: 0.05 }
 );
 
 footerObserver.observe(footer);
+
+if (footer.getBoundingClientRect().top < window.innerHeight) {
+  footer.classList.add("visible");
+}

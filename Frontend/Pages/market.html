@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UMP - Marketplace</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../Styles/market.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="main-header">
+        <a class="logo" href="/">
+            <img src="../images/ump-logo.jpeg" alt="UMP Logo">
+        </a>
+        <nav class="nav_links">
+            <a href="./index.html" class="nav-link">Home</a>
+            <a href="#" class="nav-link">Become a Seller</a>
+            <a href="./market.html" class="nav-link">Marketplace</a>
+            <a href="#" class="nav-link">Hostel Hub</a>
+        </nav>
+
+        <div class="navbar_icons">
+            <div class="fas fa-bars" id="mobile_menu"></div>
+            <div class="fas fa-search" id="search-btn"></div>
+            <div class="fas fa-shopping-cart" id="cart-btn"></div>
+            <div class="fas fa-user" id="login-btn"></div>
+        </div>
+
+        <form action="" class="search-form">
+            <input type="search" id="searchInput" placeholder="Search here..." />
+            <label for="searchInput" class="fas fa-search"></label>
+        </form>
+
+        <!-- Profile Popup -->
+        <div class="profile-popup">
+            <div class="profile-settings">
+                <a href=""><i class="fas fa-cog"></i></a>
+            </div>
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Avatar" />
+                </div>
+                <div class="profile-info">
+                    <h3 id="profileName">Matthew Oseni</h3>
+                    <span class="profile-email">230401234@live.unilag.edu.ng</span>
+                    <span class="profile-status">✔ Logged in</span>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <button class="profile-btn" id="signInBtn">Sign In</button>
+                <button class="profile-btn logout" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="filter-sort-bar">
+        <select id="sortSelect">
+            <option value="default">Sort By</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+        </select>
+        <button class="filter-btn" id="filterToggle">Filter</button>
+    </div>
+
+    <!-- Filter Panel -->
+    <div class="filter-panel" id="filterPanel">
+        <span class="close-btn" id="closeFilter"><i class="fas fa-times"></i></span>
+        <h3>Filter Options</h3>
+
+        <div class="filter-section">
+            <button>Category <i class="fas fa-chevron-down"></i></button>
+            <div class="options">
+                <label><input type="checkbox" name="category" value="Electronics"> Electronics</label>
+                <label><input type="checkbox" name="category" value="Fashion"> Fashion</label>
+                <label><input type="checkbox" name="category" value="Books"> Books</label>
+                <label><input type="checkbox" name="category" value="Food"> Food</label>
+                <label><input type="checkbox" name="category" value="Phones"> Phones</label>
+                <label><input type="checkbox" name="category" value="Others"> Others</label>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <button>Price Range <i class="fas fa-chevron-down"></i></button>
+            <div class="options">
+                <label><input type="checkbox" name="price" value="under-50"> Under $50</label>
+                <label><input type="checkbox" name="price" value="50-100"> $50 - $100</label>
+                <label><input type="checkbox" name="price" value="100-200"> $100 - $200</label>
+                <label><input type="checkbox" name="price" value="above-200"> Above $200</label>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <button>Condition <i class="fas fa-chevron-down"></i></button>
+            <div class="options">
+                <label><input type="checkbox" name="condition" value="new"> New</label>
+                <label><input type="checkbox" name="condition" value="used"> Used</label>
+                <label><input type="checkbox" name="condition" value="refurbished"> Refurbished</label>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="mainContent">
+        <!-- Discovery Bar -->
+        <div class="discovery-bar">
+            <div class="tag">
+                <a href=""><i class="fas fa-graduation-cap"></i>
+                    <span>Graduation Sales</span></a>
+            </div>
+            <div class="tag">
+                <a href=""><i class="fas fa-paint-brush"></i>
+                    <span>Art Dept. Faves</span></a>
+            </div>
+            <div class="tag">
+                <a href=""><i class="fas fa-laptop"></i>
+                    <span>Tech Deals</span></a>
+            </div>
+            <div class="tag">
+                <a href=""><i class="fas fa-book"></i>
+                    <span>Book Picks</span></a>
+            </div>
+            <div class="tag">
+                <a href=""><i class="fas fa-tshirt"></i>
+                    <span>Campus Fashion</span></a>
+            </div>
+        </div>
+
+        <!-- Trending Now Carousel -->
+        <section class="trending-carousel">
+            <h2 class="carousel-title">🔥 Trending Now</h2>
+            <div class="carousel-wrapper">
+                <div class="carousel-track">
+                    <div class="carousel-card">
+                        <div class="img-container">
+                            <img src="../images/earbuds.jpg" alt="Product 1" />
+                        </div>
+                        <h4>Wireless Earbuds</h4>
+                        <span>$29.99</span>
+                        <p>Best seller of the week</p>
+                        <button class="carousel-btn">Check It Out</button>
+                    </div>
+                    <div class="carousel-card">
+                        <div class="img-container">
+                            <img src="../images/Smart Backpack.jpg" alt="Product 3" />
+                        </div>
+                        <h4>Smart Backpack</h4>
+                        <span>$59.99</span>
+                        <p>Hot trending item</p>
+                        <button class="carousel-btn">Check It Out</button>
+                    </div>
+                    <div class="carousel-card">
+                        <div class="img-container">
+                            <img src="../images/hoodie.jpg" alt="Product 3" />
+                        </div>
+                        <h4>Classic Hoodie</h4>
+                        <span>$39.99</span>
+                        <p>Best seller of the week</p>
+                        <button class="carousel-btn">Check It Out</button>
+                    </div>
+                    <div class="carousel-card">
+                        <div class="img-container">
+                            <img src="../images/books.jpg" alt="Product 4" />
+                        </div>
+                        <h4>Notebook Bundle</h4>
+                        <span>$12.99</span>
+                        <p>Hot trending item</p>
+                        <button class="carousel-btn">Check It Out</button>
+                    </div>
+                    <div class="carousel-card">
+                        <div class="img-container">
+                            <img src="../images/fitness tracker.jpg" alt="Product 5" />
+                        </div>
+                        <h4>Fitness Tracker</h4>
+                        <span>$45.00</span>
+                        <p>Highly rated pick</p>
+                        <button class="carousel-btn">Check It Out</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Product Grid -->
+        <section class="product-grid">
+            <div class="product-card" data-product-id="2">
+                <a href="product.html" class="product-link">
+                    <div class="product-image">
+                        <img src="../images/earbuds.jpg" alt="Product 2">
+                        <div class="product-actions">
+                            <button class="quick-view" data-product-id="2"><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Airpods</h3>
+                        <p>$35</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-card" data-product-id="1">
+                <a href="product.html" class="product-link">
+                    <div class="product-image">
+                        <img src="../images/headphones.jpg" alt="Product 1">
+                        <div class="product-actions">
+                            <button class="quick-view" data-product-id="1"><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Wireless Headphones</h3>
+                        <p>$50</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-card" data-product-id="3">
+                <a href="product.html" class="product-link">
+                    <div class="product-image">
+                        <img src="../images/smartwatch.jpg" alt="Product 3">
+                        <div class="product-actions">
+                            <button class="quick-view" data-product-id="3"><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="product-info">
+                        <h3>Smartwatch</h3>
+                        <p>$99</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-card" data-product-id="4">
+                <a href="product.html" class="product-link">
+                    <div class="product-image">
+                        <img src="../images/lapbag.jpeg" alt="Product 4">
+                        <div class="product-actions">
+                            <button class="quick-view" data-product-id="4"><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                </a>
+                <div class="product-info">
+                    <h3>Laptop Bag</h3>
+                    <p>$5</p>
+                </div>
+            </div>
+
+            <div class="product-card" data-product-id="5">
+                <a href="product.html" class="product-link">
+                    <div class="product-image">
+                        <img src="../images/Apple-iPhone-15-Pro-Max.jpg" alt="iPhone 15">
+                        <div class="product-actions">
+                            <button class="quick-view" data-product-id="5"><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>iPhone 15</h3>
+                        <p>$799</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-card" data-product-id="6">
+                <a href="product.html" class="product-link">
+                    <div class="product-image">
+                        <img src="../images/iphone 16.jpg" alt="iPhone 16">
+                        <div class="product-actions">
+                            <button class="quick-view" data-product-id="6"><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>iPhone 16</h3>
+                        <p>$899</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-card" data-product-id="7">
+                <a href="product.html" class="product-link">
+                    <div class="product-image">
+                        <img src="../images/iphone 17.jpeg" alt="iPhone 17">
+                        <div class="product-actions">
+                            <button class="quick-view" data-product-id="7"><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>iPhone 17</h3>
+                        <p>$999</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-card" data-product-id="8">
+                <a href="product.html" class="product-link">
+                    <div class="product-image">
+                        <img src="../images/s25ultra.png" alt="Samsung Galaxy S25 Ultra">
+                        <div class="product-actions">
+                            <button class="quick-view" data-product-id="8"><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Samsung Galaxy S25 Ultra</h3>
+                        <p>$850</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-card" data-product-id="9">
+                <a href="product.html" class="product-link">
+                    <div class="product-image">
+                        <img src="../images/earbuds.jpg" alt="Wireless Earbuds">
+                        <div class="product-actions">
+                            <button class="quick-view" data-product-id=""><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Wireless Earbuds</h3>
+                        <p>$29.99</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-card" data-product-id="10">
+                <a href="product.html" class="product-link">
+                    <div class="product-image">
+                        <img src="../images/Smart Backpack.jpg" alt="Smart Backpack">
+                        <div class="product-actions">
+                            <button class="quick-view" data-product-id="10"><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Smart Backpack</h3>
+                        <p>$59.99</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-card" data-product-id="11">
+                <a href="product.html" class="product-link">
+                    <div class="product-image">
+                        <img src="../images/hoodie.jpg" alt="Classic Hoodie">
+                        <div class="product-actions">
+                            <button class="quick-view" data-product-id="11"><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Classic Hoodie</h3>
+                        <p>$39.99</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-card" data-product-id="12">
+                <a href="product.html" class="product-link">
+                    <div class="product-image">
+                        <img src="../images/books.jpg" alt="Notebook Bundle">
+                        <div class="product-actions">
+                            <button class="quick-view" data-product-id="12"><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Notebook Bundle</h3>
+                        <p>$12.99</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-card" data-product-id="13">
+                <a href="product.html" class="product-link">
+                    <div class="product-image">
+                        <img src="../images/fitness tracker.jpg" alt="Fitness Tracker">
+                        <div class="product-actions">
+                            <button class="quick-view" data-product-id="13"><i class="fas fa-eye"></i></button>
+                            <button><i class="fas fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Fitness Tracker</h3>
+                        <p>$45.00</p>
+                    </div>
+                </a>
+            </div>
+
+
+        </section>
+
+        <!-- Quick View Modal -->
+        <div class="modal" id="quickViewModal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeModal">&times;</span>
+
+                <div class="modal-body">
+                    <div class="modal-image">
+                        <img id="modalProductImage" src="" alt="Product">
+                    </div>
+                    <div class="modal-details">
+                        <h2 id="modalProductName">Product Name</h2>
+                        <p class="modal-price" id="modalProductPrice">$0.00</p>
+                        <p class="modal-desc" id="modalProductDesc">Product description goes here...</p>
+
+                        <p><strong>Seller:</strong> <span id="modalSellerName">Seller Name</span></p>
+                        <p><strong>Store:</strong> <span id="modalStoreName">Store Name</span></p>
+                        <p><strong>Category:</strong> <span id="modalCategory">Category</span></p>
+
+                        <button class="message-btn">Message Seller</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Results Container -->
+    <div id="searchResults"></div>
+
+    <footer id="pageFooter">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>UMP</h2>
+                <p>University Marketplace — connecting students, products, and creativity.</p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Marketplace</a></li>
+                    <li><a href="#">Creators</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Report Issue</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Connect</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; <span id="year"></span> UMP. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script type="module" src="../functions/market.js"></script>
+    <script type="module" src="../functions/index.js"></script>
+</body>
+
+</html>
