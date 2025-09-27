@@ -1,63 +1,181 @@
-// === HEADER NAV TOGGLE ===
-// DOM elements
-let searchForm = document.querySelector(".search-form");
-let search = document.querySelector("#search-btn");
+document.addEventListener("DOMContentLoaded", () => {
+  let searchForm = document.querySelector(".search-form");
+  let search = document.querySelector("#search-btn");
 
-let profilePopup = document.querySelector(".profile-popup");
-let loginBtn = document.querySelector("#login-btn");
+  let profilePopup = document.querySelector(".profile-popup");
+  let loginBtn = document.querySelector("#login-btn");
 
-let Links = document.querySelector(".nav_links");
-let Menu = document.querySelector("#mobile_menu");
+  let Links = document.querySelector(".nav_links");
+  let Menu = document.querySelector("#mobile_menu");
 
-// Search button
-search.addEventListener("click", function () {
-  searchForm.classList.toggle("active");
-  Links.classList.remove("active");
-  profilePopup.classList.remove("active");
+  if (search) {
+    search.addEventListener("click", function () {
+      searchForm.classList.toggle("active");
+      Links.classList.remove("active");
+      profilePopup.classList.remove("active");
+    });
+  }
+
+  if (loginBtn) {
+    loginBtn.addEventListener("click", function () {
+      profilePopup.classList.toggle("active");
+      searchForm.classList.remove("active");
+      Links.classList.remove("active");
+    });
+  }
+
+  if (Menu) {
+    Menu.addEventListener("click", function () {
+      Links.classList.toggle("active");
+      profilePopup.classList.remove("active");
+      searchForm.classList.remove("active");
+    });
+  }
+
+  window.onscroll = () => {
+    Links.classList.remove("active");
+    profilePopup.classList.remove("active");
+    searchForm.classList.remove("active");
+  };
 });
 
-// Login button
-loginBtn.addEventListener("click", function () {
-  profilePopup.classList.toggle("active");
-  searchForm.classList.remove("active");
-  Links.classList.remove("active");
+document.addEventListener("DOMContentLoaded", () => {
+  const track = document.querySelector(".slider-track");
+  const slides = document.querySelectorAll(".slide");
+  const dotsContainer = document.querySelector(".slider-dots");
+
+  // Clone first and last slides
+ if (slides.length > 0) {
+  const firstClone = slides[0].cloneNode(true);
+  const lastClone = slides[slides.length - 1].cloneNode(true);
+  track.appendChild(firstClone);
+  track.insertBefore(lastClone, slides[0]);
+}
+
+  // Update slides list after cloning
+  const allSlides = document.querySelectorAll(".slide");
+  let currentIndex = 1; // Start at the first real slide
+  let slideInterval;
+
+  // Get proper slide width including gap
+  function getSlideFullWidth() {
+    const slide = allSlides[0];
+    const style = window.getComputedStyle(slide);
+    const margin =
+      parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+    return slide.getBoundingClientRect().width + margin;
+  }
+
+  // Create dots
+  allSlides.forEach((_, i) => {
+    if (i === 0 || i === allSlides.length - 1) return; // skip clones
+    const dot = document.createElement("button");
+    if (i === 1) dot.classList.add("active");
+    dotsContainer.appendChild(dot);
+    dot.addEventListener("click", () => goToSlide(i));
+  });
+
+  const dots = document.querySelectorAll(".slider-dots button");
+
+  function updateSlider() {
+    const slideWidth = getSlideFullWidth();
+    track.style.transition = "transform 0.6s ease-in-out";
+    track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+
+    // Update dots
+    dots.forEach((dot) => dot.classList.remove("active"));
+    if (currentIndex === 0) {
+      dots[dots.length - 1].classList.add("active");
+    } else if (currentIndex === allSlides.length - 1) {
+      dots[0].classList.add("active");
+    } else {
+      dots[currentIndex - 1].classList.add("active");
+    }
+  }
+
+  function goToSlide(index) {
+    currentIndex = index;
+    updateSlider();
+    resetAutoSlide();
+  }
+
+  function nextSlide() {
+    currentIndex++;
+    updateSlider();
+  }
+
+  // Loop seamlessly when reaching clones
+  track.addEventListener("transitionend", () => {
+    const slideWidth = getSlideFullWidth();
+    if (allSlides[currentIndex] === firstClone) {
+      track.style.transition = "none";
+      currentIndex = 1;
+      track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+    }
+    if (allSlides[currentIndex] === lastClone) {
+      track.style.transition = "none";
+      currentIndex = allSlides.length - 2;
+      track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+    }
+  });
+
+  // Auto slide
+  function startAutoSlide() {
+    slideInterval = setInterval(nextSlide, 4000);
+  }
+  function resetAutoSlide() {
+    clearInterval(slideInterval);
+    startAutoSlide();
+  }
+
+  // --- Swipe functionality ---
+  let startX = 0;
+  let isDragging = false;
+
+  track.addEventListener("touchstart", startDrag);
+  track.addEventListener("mousedown", startDrag);
+
+  track.addEventListener("touchmove", dragMove);
+  track.addEventListener("mousemove", dragMove);
+
+  track.addEventListener("touchend", endDrag);
+  track.addEventListener("mouseup", endDrag);
+  track.addEventListener("mouseleave", endDrag);
+
+  function startDrag(e) {
+    isDragging = true;
+    startX = e.type.includes("mouse") ? e.pageX : e.touches[0].pageX;
+    clearInterval(slideInterval);
+  }
+
+  function dragMove(e) {
+    if (!isDragging) return;
+    let currentX = e.type.includes("mouse") ? e.pageX : e.touches[0].pageX;
+    let diff = startX - currentX;
+
+    if (diff > 50) {
+      nextSlide();
+      isDragging = false;
+    } else if (diff < -50) {
+      currentIndex--;
+      updateSlider();
+      isDragging = false;
+    }
+  }
+
+  function endDrag() {
+    if (isDragging) {
+      isDragging = false;
+      resetAutoSlide();
+    }
+  }
+
+  // Init
+  const initialWidth = getSlideFullWidth();
+  track.style.transform = `translateX(-${currentIndex * initialWidth}px)`;
+  startAutoSlide();
 });
 
-// Mobile menu
-Menu.addEventListener("click", function () {
-  Links.classList.toggle("active");
-  profilePopup.classList.remove("active");
-  searchForm.classList.remove("active");
-});
-
-// Close all on scroll
-window.onscroll = () => {
-  Links.classList.remove("active");
-  profilePopup.classList.remove("active");
-  searchForm.classList.remove("active");
-};
-
-
-let totalSlides = document.querySelectorAll(".product-slider .swiper-slide").length;
-
-let swiper = new Swiper(".product-slider", {
-  slidesPerView: 3,         // always 1 slide visible at a time
-  spaceBetween: 20,
-  loop: true,               // enables cloning for infinite loop
-  loopedSlides: totalSlides, // ensure all slides are looped
-  autoplay: {
-    delay: 5000,
-    disableOnInteraction: false,
-  },
-  pagination: {
-    el: ".swiper-pagination",
-    clickable: true,
-  },
-  navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
-  },
-});
 
 const cat_cards = document.querySelectorAll(".category-card");
 
@@ -115,8 +233,9 @@ function rotateImage(card) {
 }
 
 setInterval(() => {
+  if (cards.length === 0) return; // no campus-card images
   let card = cards[Math.floor(Math.random() * cards.length)];
-  rotateImage(card);
+  if (card) rotateImage(card);
 }, 3000);
 
 // Lightbox functionality

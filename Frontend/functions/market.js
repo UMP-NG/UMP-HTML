@@ -74,6 +74,7 @@ const productObserver = new IntersectionObserver(
 
 productCards.forEach((card) => productObserver.observe(card));
 
+
 const footer = document.getElementById("pageFooter");
 const yearSpan = document.getElementById("year");
 
@@ -265,8 +266,6 @@ function renderProducts(products) {
       <div class="no-results">
         <h2>Sorry, no results found</h2>
         <p>We couldn’t find any matches for your search.</p>
-        <button id="clearFiltersBtn">Clear Filters</button>
-        <button id="searchAllBtn">Search the Entire UMP Site</button>
       </div>
     `;
     console.log("Displayed no results message");
@@ -289,7 +288,7 @@ function renderProducts(products) {
             </div>
           </a>
           <div class="search-actions">
-            <button class="quick-view"" data-product-id="${product.id}">
+            <button class="quick-view" data-product-id="${product.id}">
               <i class="fas fa-eye"></i>
             </button>
             <button>
@@ -302,17 +301,105 @@ function renderProducts(products) {
         .join("")}
     </section>
   `;
-  // Debug: check if searchResults is visible
-  const sr = document.getElementById("searchResults");
-  console.log("SearchResults display:", window.getComputedStyle(sr).display);
-  console.log(
-    "SearchResults visibility:",
-    window.getComputedStyle(sr).visibility
-  );
-  console.log("SearchResults opacity:", window.getComputedStyle(sr).opacity);
-
-  console.log("Rendered product grid with", products.length, "items");
 }
+
+// Handle quick view click (use the dynamic modal builder)
+document.addEventListener("click", (e) => {
+  if (e.target.closest(".quick-view")) {
+    e.preventDefault();
+
+    const btn = e.target.closest(".quick-view");
+    const id = btn.getAttribute("data-product-id");
+    console.log("[Quick View Clicked] Button:", btn, "Product ID:", id);
+
+    const product = allProducts.find((p) => p.id == id);
+    console.log("[Product Lookup] Result:", product);
+
+    if (product) {
+      openSearchModal(product); // ✅ always use the dynamic modal function
+    } else {
+      console.warn("[WARNING] No product found for ID:", id);
+    }
+  }
+});
+
+function openSearchModal(product) {
+  // Remove any existing modal (prevents duplicates)
+  const oldModal = document.getElementById("quickViewModal");
+  if (oldModal) oldModal.remove();
+
+  // Build modal HTML
+  const modal = document.createElement("div");
+  modal.className = "modal";
+  modal.id = "quickViewModal";
+  modal.innerHTML = `
+    <div class="modal-content">
+      <span class="close-modal" id="closeModal">&times;</span>
+      <div class="modal-body">
+        <div class="modal-image">
+          <img id="modalProductImage" src="" alt="Product">
+        </div>
+        <div class="modal-details">
+          <h2 id="modalProductName">Product Name</h2>
+          <p class="modal-price" id="modalProductPrice">$0.00</p>
+          <p class="modal-desc" id="modalProductDesc">Product description goes here...</p>
+          <p><strong>Seller:</strong> <span id="modalSellerName">Seller Name</span></p>
+          <p><strong>Store:</strong> <span id="modalStoreName">Store Name</span></p>
+          <p><strong>Category:</strong> <span id="modalCategory">Category</span></p>
+          <button class="message-btn">Message Seller</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Append modal to body
+  document.body.appendChild(modal);
+
+  // Populate product details
+  document.getElementById("modalProductImage").src = product.image || "";
+  document.getElementById("modalProductImage").alt = product.name || "Product";
+  document.getElementById("modalProductName").textContent = product.name || "Unnamed Product";
+  document.getElementById("modalProductPrice").textContent = product.price || "$0.00";
+  document.getElementById("modalProductDesc").textContent = product.desc || "No description available";
+  document.getElementById("modalSellerName").textContent = product.seller || "Unknown";
+  document.getElementById("modalStoreName").textContent = product.store || "N/A";
+  document.getElementById("modalCategory").textContent = product.category || "N/A";
+
+  // Show modal
+  modal.style.display = "flex";
+
+  // Close button
+  document.getElementById("closeModal").addEventListener("click", () => {
+    modal.remove();
+  });
+
+  // Close when clicking outside
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) modal.remove();
+  });
+
+  // Message Seller button
+  modal.querySelector(".message-btn").addEventListener("click", () => {
+    console.log(`[Message] Seller contacted for: ${product.name}`);
+    // You could add logic to open a chat box or redirect to messaging page
+  });
+}
+
+
+document.addEventListener("click", (e) => {
+  if (e.target.closest(".fa-cart-plus")) {
+    e.preventDefault();
+    const btn = e.target.closest(".fa-cart-plus");
+    const productCard = btn.closest(".search-card");
+    const id = productCard.getAttribute("data-product-id");
+    const product = allProducts.find((p) => p.id == id);
+
+    if (product) {
+      addToCart(product); // your existing cart logic
+    }
+  }
+});
+
 
 // Centralized search function
 function runSearch() {
@@ -434,14 +521,14 @@ const products = {
     condition: "new",
   },
   8: {
-    name: "Laptop Bag",
-    price: "$5",
-    desc: "Durable laptop bag with multiple compartments.",
-    image: "../images/lapbag.jpeg",
-    seller: "Emma Brown",
-    store: "Bag World",
-    category: "Others",
-    condition: "refurbished",
+    name: "Samsung Galaxy S25 Ultra",
+    price: "$850",
+    desc: "A Brand new Samsung flagship with cutting-edge features and sleek design with pen support.",
+    image: "../images/s25ultra.png",
+    seller: "MobileWorld",
+    store: "Samsung Outlet",
+    category: "Phones",
+    condition: "New",
   },
   9: {
     name: "Wireless Earbuds",
@@ -513,7 +600,7 @@ document.querySelectorAll(".quick-view").forEach((btn) => {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
     const id = btn.getAttribute("data-product-id");
-    const product = products[id];
+    const product = allProducts.find((p) => p.id == id);
 
     if (product) {
       modalProductName.textContent = product.name;
@@ -539,6 +626,14 @@ window.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.style.display = "none";
   }
+});
+
+document.querySelectorAll(".add-to-cart").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const productId = btn.dataset.productId;
+    addToCart(productId);
+  });
 });
 
 const sortSelect = document.getElementById("sortSelect");
