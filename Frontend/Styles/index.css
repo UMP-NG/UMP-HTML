@@ -139,7 +139,7 @@ body {
     /* hidden by default */
     background: var(--color-primary);
     color: var(--color-secondary);
-    width: 260px;
+    width: auto;
     padding: 1.5rem;
     margin-top: 1rem;
     border-radius: 12px;

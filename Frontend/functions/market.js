@@ -74,7 +74,6 @@ const productObserver = new IntersectionObserver(
 
 productCards.forEach((card) => productObserver.observe(card));
 
-
 const footer = document.getElementById("pageFooter");
 const yearSpan = document.getElementById("year");
 
@@ -98,11 +97,11 @@ const footerObserver = new IntersectionObserver(
 footerObserver.observe(footer);
 
 // Mock products
-const allProducts = [
+export const allProducts = [
   {
     id: 1,
     name: "iPhone 15",
-    price: "$799",
+    price: "₦1198500",
     desc: "Apple iPhone 12 - sleek design",
     image: "../images/Apple-iPhone-15-Pro-Max.jpg",
     seller: "TechHub",
@@ -113,7 +112,7 @@ const allProducts = [
   {
     id: 2,
     name: "iPhone 16",
-    price: "$899",
+    price: "₦1398500",
     desc: "Apple iPhone 13 - latest performance",
     image: "../images/iphone 16.jpg",
     seller: "TechHub",
@@ -124,7 +123,7 @@ const allProducts = [
   {
     id: 3,
     name: "iPhone 17",
-    price: "$999",
+    price: "₦1498500",
     desc: "Apple iPhone 14 - new camera tech",
     image: "../images/iphone 17.jpeg",
     seller: "TechHub",
@@ -135,7 +134,7 @@ const allProducts = [
   {
     id: 4,
     name: "Samsung Galaxy S25 Ultra",
-    price: "$850",
+    price: "₦1275000",
     desc: "Latest Samsung flagship",
     image: "../images/s25ultra.png",
     seller: "MobileWorld",
@@ -146,7 +145,7 @@ const allProducts = [
   {
     id: 5,
     name: "Wireless Headphones",
-    price: "$120",
+    price: "₦15000",
     desc: "Noise-cancelling headphones",
     image: "../images/headphones.jpg",
     seller: "John Doe",
@@ -157,7 +156,7 @@ const allProducts = [
   {
     id: 6,
     name: "Airpods",
-    price: "$35",
+    price: "₦9500",
     desc: "Comfortable true wireless earbuds with clear sound.",
     image: "../images/earbuds.jpg",
     seller: "Jane Smith",
@@ -168,7 +167,7 @@ const allProducts = [
   {
     id: 7,
     name: "Smartwatch",
-    price: "$99",
+    price: "₦40000",
     desc: "Track your fitness and stay connected on the go.",
     image: "../images/smartwatch.jpg",
     seller: "Mike Johnson",
@@ -179,7 +178,7 @@ const allProducts = [
   {
     id: 8,
     name: "Laptop Bag",
-    price: "$5",
+    price: "₦3000",
     desc: "Durable laptop bag with multiple compartments.",
     image: "../images/lapbag.jpeg",
     seller: "Emma Brown",
@@ -190,7 +189,7 @@ const allProducts = [
   {
     id: 9,
     name: "Wireless Earbuds",
-    price: "$29.99",
+    price: "₦12000",
     desc: "Best seller of the week",
     image: "../images/earbuds.jpg",
     seller: "ElectroShop",
@@ -201,7 +200,7 @@ const allProducts = [
   {
     id: 10,
     name: "Smart Backpack",
-    price: "$59.99",
+    price: "₦25000",
     desc: "Hot trending item",
     image: "../images/Smart Backpack.jpg",
     seller: "UrbanGear",
@@ -212,7 +211,7 @@ const allProducts = [
   {
     id: 11,
     name: "Classic Hoodie",
-    price: "$39.99",
+    price: "₦5000",
     desc: "Best seller of the week",
     image: "../images/hoodie.jpg",
     seller: "StyleHub",
@@ -223,7 +222,7 @@ const allProducts = [
   {
     id: 12,
     name: "Notebook Bundle",
-    price: "$12.99",
+    price: "₦4000",
     desc: "Hot trending item",
     image: "../images/books.jpg",
     seller: "BookWorld",
@@ -234,7 +233,7 @@ const allProducts = [
   {
     id: 13,
     name: "Fitness Tracker",
-    price: "$45.00",
+    price: "₦15000",
     desc: "Highly rated pick",
     image: "../images/fitness tracker.jpg",
     seller: "FitLife",
@@ -358,12 +357,18 @@ function openSearchModal(product) {
   // Populate product details
   document.getElementById("modalProductImage").src = product.image || "";
   document.getElementById("modalProductImage").alt = product.name || "Product";
-  document.getElementById("modalProductName").textContent = product.name || "Unnamed Product";
-  document.getElementById("modalProductPrice").textContent = product.price || "$0.00";
-  document.getElementById("modalProductDesc").textContent = product.desc || "No description available";
-  document.getElementById("modalSellerName").textContent = product.seller || "Unknown";
-  document.getElementById("modalStoreName").textContent = product.store || "N/A";
-  document.getElementById("modalCategory").textContent = product.category || "N/A";
+  document.getElementById("modalProductName").textContent =
+    product.name || "Unnamed Product";
+  document.getElementById("modalProductPrice").textContent =
+    product.price || "$0.00";
+  document.getElementById("modalProductDesc").textContent =
+    product.desc || "No description available";
+  document.getElementById("modalSellerName").textContent =
+    product.seller || "Unknown";
+  document.getElementById("modalStoreName").textContent =
+    product.store || "N/A";
+  document.getElementById("modalCategory").textContent =
+    product.category || "N/A";
 
   // Show modal
   modal.style.display = "flex";
@@ -385,21 +390,18 @@ function openSearchModal(product) {
   });
 }
 
-
 document.addEventListener("click", (e) => {
-  if (e.target.closest(".fa-cart-plus")) {
-    e.preventDefault();
-    const btn = e.target.closest(".fa-cart-plus");
-    const productCard = btn.closest(".search-card");
-    const id = productCard.getAttribute("data-product-id");
-    const product = allProducts.find((p) => p.id == id);
+  const btn = e.target.closest(".add-to-cart");
+  if (!btn) return; // safety
 
-    if (product) {
-      addToCart(product); // your existing cart logic
-    }
+  e.preventDefault();
+  const id = btn.getAttribute("data-product-id");
+  const product = allProducts.find((p) => p.id == id);
+
+  if (product) {
+    addToCart(id); // use new function
   }
 });
-
 
 // Centralized search function
 function runSearch() {
@@ -628,14 +630,6 @@ window.addEventListener("click", (e) => {
   }
 });
 
-document.querySelectorAll(".add-to-cart").forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const productId = btn.dataset.productId;
-    addToCart(productId);
-  });
-});
-
 const sortSelect = document.getElementById("sortSelect");
 const trendingCarousel = document.querySelector(".trending-carousel");
 
@@ -740,4 +734,47 @@ function applyFilters() {
 
   // Render filtered results
   renderProducts(filteredProducts);
+}
+
+// ==========================
+// CART LOGIC (localStorage)
+// ==========================
+function getCart() {
+  return JSON.parse(localStorage.getItem("cart")) || [];
+}
+
+function saveCart(cart) {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+// Add product to cart
+function addToCart(productId) {
+  const cart = getCart();
+  const product = allProducts.find((p) => p.id == productId);
+
+  if (!product) {
+    console.warn("Product not found for ID:", productId);
+    return;
+  }
+
+  // Check if already in cart
+  const existing = cart.find((item) => item.id == productId);
+  if (existing) {
+    existing.quantity += 1; // increment
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+
+  saveCart(cart);
+  console.log("Cart updated:", cart);
+
+  // Optional: show a toast/alert
+  alert(`${product.name} added to cart!`);
+}
+
+// Remove product from cart
+function removeFromCart(productId) {
+  let cart = getCart().filter((item) => item.id != productId);
+  saveCart(cart);
+  console.log("Item removed. Updated cart:", cart);
 }
