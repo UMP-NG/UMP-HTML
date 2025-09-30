@@ -1,202 +1,392 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UMP  -Products</title>
-    <link rel="stylesheet" href="../Styles/products.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UMP - Marketplace</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../Styles/products.css" />
+    <link rel="stylesheet" href="../Styles/market.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
+
 <body>
-        <!-- HEADER: where the logo and menu_items should rest. -->
-        <header id="tray" class="tray">
-            <!-- UMP LOGO -->
-            <div id="ump-logo" class="ump-logo">
-              <a id="image-link" href="#">
-                 <img src="../images/ump-logo.jpeg" alt="#" srcset="image not found">
-                </a> 
+    <!-- HEADER -->
+    <header class="main-header">
+        <a class="logo" href="/">
+            <img src="../images/ump-logo.jpeg" alt="UMP Logo">
+        </a>
+        <nav class="nav_links">
+            <a href="./index.html" class="nav-link">Home</a>
+            <a href="#" class="nav-link">Become a Seller</a>
+            <a href="./market.html" class="nav-link">Marketplace</a>
+            <a href="#" class="nav-link">Hostel Hub</a>
+        </nav>
+
+        <div class="navbar_icons">
+            <div class="fas fa-bars" id="mobile_menu"></div>
+            <div class="fas fa-search" id="search-btn"></div>
+            <div class="fas fa-shopping-cart" id="cart-btn"></div>
+            <div class="fas fa-user" id="login-btn"></div>
+        </div>
+
+        <form action="" class="search-form">
+            <input type="search" id="searchInput" placeholder="Search here..." />
+            <label for="searchInput" class="fas fa-search"></label>
+        </form>
+
+        <!-- Profile Popup -->
+        <div class="profile-popup">
+            <div class="profile-settings">
+                <a href=""><i class="fas fa-cog"></i></a>
             </div>
-            <!-- MENU-ITEMS: where the menu items should rest. -->
-             <nav id="menu" class="menu">
-                <a href="" class="menu-items">Products</a>
-                <a href="" class="menu-items">Services</a>
-                <a href="" class="menu-items">Hostels</a>
-                <a href="" class="menu-items">Flipfund</a>
-             </nav>
-             <!-- SIGNUP AND SIGNIN BUTTONS -->
-             <div id="buttons" class="buttons">
-                <button class="signup">Sign Up</button>
-             </div>
-
-             <!-- block buttons for moblie approach -->
-             <a href="../Pages/toggle.html"> <div class="b-contain">
-                <button id="mobile"></button>
-                <button id="mobile"></button>
-                <button id="mobile"></button>
-            </div>
-            </a>
-            <!-- End of HEADER: where the logo and menu_items should rest. -->
-        </header>
-
-        <!-- HERO CONTENT: where the main content should rest. -->
-        <section id="hero" class="hero">
-           <div id="container" class="container">
-            <h1>Empowering<br> Campus 
-            Entrepreneurs. <br>
-            One Click at a <br>Time.</h1>
-            <p>Lorem ipsum dolor sit amet consectetur,<br>
-                 adipisicing elit. Voluptas, at.
-            Consectetur, adipisicing <br>elit. Voluptas, at.    
-            </p>
-            <button class="start-shopping">Start Shopping</button>
-
-            <!-- Only belongs in the Index -->
-            <!-- <button class="List-your-bussiness">List Your Bussiness</button> -->
-           </div>
-            </div>
-        </section>
-
-        <!-- Services Section -->
-         <section class="services" id="services">
-            <h1 class="services-text">Services</h1>
-            <!-- services-flex container -->
-             <div class="service-container">
-                <!-- #1 -->
-                <div class="service-flex">
-                 <a href="#"><div class="service-item"></div></a>
-                 <button id="service-flex-text" class="service-flex-text">
-                    <p>View Products</p>
-                 </button>
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Avatar" />
                 </div>
-
-                <!-- #2 -->
-                <div class="service-flex">
-                 <a href="#"><div class="service-item"></div></a>
-                 <button id="service-flex-text" class="service-flex-text">
-                    <p>View Products</p>
-                 </button>
+                <div class="profile-info">
+                    <h3 id="profileName">Matthew Oseni</h3>
+                    <span class="profile-email">230401234@live.unilag.edu.ng</span>
+                    <span class="profile-status">✔ Logged in</span>
                 </div>
-
-                <!-- #3 -->
-                <div class="service-flex">
-                 <a href="#"><div class="service-item"></div></a>
-                 <button id="service-flex-text" class="service-flex-text">
-                    <p>View Products</p>
-                 </button>
-                </div>
-
-                <!-- #4 -->
-                <div class="service-flex">
-                 <a href="#"><div class="service-item"></div></a>
-                 <button id="service-flex-text" class="service-flex-text">
-                    <p>View Products</p>
-                 </button>
-                </div>
-
-                <!-- #4 -->
-                <div class="service-flex">
-                 <a href="#"><div class="service-item"></div></a>
-                 <button id="service-flex-text" class="service-flex-text">
-                    <p>View Products</p>
-                 </button>
-                </div>
-             </div>
-
-             <section id="mobile-services">
-                <div class="service-flex">
-                 <a href="#"><div class="service-item"></div></a>
-                 <button id="service-flex-text" class="service-flex-text">
-                    <p>View Products</p>
-                 </button>
-                </div>
-
-            </section>
-
-            <div class="arrow-buttons">
-                <i class="bi bi-arrow-left-circle"></i>
-                <i class="bi bi-arrow-right-circle"></i>
             </div>
 
-             
-
-
-                <!-- Loan section -->
-                 <div class="loan-section">
-                    <div class="section-1">
-                        <h2>Need Funds to Start Your <br> Hurstle</h2>
-                        <p>Lorem ipsum dolor sit amet. <br>
-                        Lorem ipsum dolor sit amet.</p>
-
-                        <!-- section-details #1 -->
-                         <div class="section-details">
-                            <i class="bi bi-currency-dollar"></i>
-                            <h3>2000+ loans completed</h3>
-                        </div>
-                        <!-- section-details #1 -->
-                         <div class="section-details">
-                            <i class="bi bi-currency-dollar"></i>
-                                <h3>2000+ loans completed</h3>
-                        </div>
-                        <!-- section-details #1 -->
-                         <div class="section-details">
-                            <i class="bi bi-currency-dollar"></i>
-                                <h3>2000+ loans completed</h3>
-                        </div>
-
-                        <button class="get-funded">Get Funded</button>
-                    </div>
-
-
-                        <!-- some images and products -->
-                    <div class="section-2">
-                        <div class="flex-items">
-                            <div class="object"></div>
-                            <div class="object"></div>
-                            <div class="object"></div>
-                            <div class="object"></div>
-                        </div>
-
-                        <!-- View Products -->
-                        <p>Trending Products.</p>
-                        <div class="product-container">
-                            <div class="products"></div>
-                            <div class="products"></div>
-                            <div class="products"></div>
-                            <div class="products"></div>
-
-                        </div>
-                    </div>
-                 </div>
-         </section>
-
-         <!-- footer -->
-         <section id="footer">
-            <div class="footer-content">
-            <div class="content">
-                <p>Verified Sellers</p>
-            </div>
-            <div class="content">
-                <p>Secure Payments</p>
-            </div>
-            <div class="content">
-                <p>Fast Deliveries</p>
+            <div class="profile-actions">
+                <button class="profile-btn" id="signInBtn">Sign In</button>
+                <button class="profile-btn logout" id="logoutBtn">Logout</button>
             </div>
         </div>
-         </section>
+    </header>
 
-         <section id="footer-beta">
-            <div class="footer-items">
-            <a href="">About</a>
-            <a href="">Contact</a>
-            <a href="">FAQs</a>
-            <a href="">Become a Seller</a>
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+        <a href="./index.html">Home</a> <span>→</span>
+        <a href="./market.html">Marketplace</a> <span>→</span>
+        <span id="breadcrumb-name">Product Name</span>
+    </div>
+
+
+    <!-- PDP Main Section -->
+    <section class="pdp-container">
+        <!-- Left: Gallery -->
+        <div class="gallery">
+            <div class="main-image">
+                <img id="product-img" src="" alt="Product" />
+            </div>
+            <div class="thumbnails" id="product-thumbnails"></div>
+        </div>
+
+        <!-- Right: Info -->
+        <div class="product-info">
+            <h1 id="product-name"></h1>
+            <p class="price" id="product-price"></p>
+            <p class="seller">Sold by: <a href="#" id="product-seller"></a></p>
+            <p class="rating" id="product-rating"></p>
+            <p class="availability" id="product-condition"></p>
+
+            <div class="options">
+                <div class="swatches" id="product-swatches"></div>
+                <p>Color: <span id="selected-color-label">Random</span></p>
             </div>
 
-            <div class="rights">
-                <p>2025 UMP All Rights Reserved.</p>
+            <div class="cta-buttons">
+                <button class="btn-primary" onclick="addToCart(this)">Add to Cart</button>
+                <button class="btn-secondary">Add To Wishlist</button>
             </div>
-         </section>
-         
-   
+        </div>
+    </section>
+
+
+    <!-- Product Details Section -->
+    <section class="product-details">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="desc">Description</button>
+            <button class="tab-btn" data-tab="specs">Specifications</button>
+            <button class="tab-btn" data-tab="reviews">Reviews</button>
+            <button class="tab-btn" data-tab="seller">Seller Story</button>
+        </div>
+
+        <div class="tab-content-wrapper">
+            <!-- Description Tab -->
+            <div class="tab-content active" id="desc">
+                <h2>Product Description</h2>
+                <p id="product-desc"></p>
+            </div>
+
+            <!-- Specs Tab -->
+            <div class="tab-content" id="specs">
+                <h2>Specifications</h2>
+                <table id="product-specs"></table>
+            </div>
+
+            <!-- Reviews Tab -->
+            <div class="tab-content" id="reviews">
+                <h2>Customer Reviews</h2>
+                <div id="reviews-list"></div>
+                <!-- Review form stays static -->
+            </div>
+
+            <!-- Seller Story Tab -->
+            <div class="tab-content" id="seller">
+                <h2>Meet the Seller</h2>
+                <div class="seller-story">
+                    <img id="seller-photo" src="../images/guy.png" alt="Seller Photo" />
+                    <div class="seller-info">
+                        <div class="seller-header">
+                            <h3 id="seller-name"></h3>
+                            <button class="follow-btn">+ Follow</button>
+                        </div>
+                        <p class="followers" id="seller-followers"></p>
+                        <p id="seller-story"></p>
+                        <button class="message-btn">Message Seller</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- More Products from the Seller -->
+    <section class="rel-products">
+        <h2 class="rel-title">More Products from the Seller</h2>
+        <div class="rel-carousel-container">
+            <div class="rel-carousel-track auto-scroll">
+                <div class="rel-product-card">
+                    <img src="../images/fashion.jpg" alt="Product 1">
+                    <h3 class="rel-card-title">Stylish Backpack</h3>
+                    <p class="rel-card-price">₦15,000</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/fash-trend.jpg" alt="Product 2">
+                    <h3 class="rel-card-title">Leather Shoes</h3>
+                    <p class="rel-card-price">₦85,000</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/lapbag.jpeg" alt="Product 3">
+                    <h3 class="rel-card-title">Designer Laptop Bag</h3>
+                    <p class="rel-card-price">₦150,000</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/cozy-hostel.jpg" alt="Product 4">
+                    <h3 class="rel-card-title">Comfy Hostel Blanket</h3>
+                    <p class="rel-card-price">₦25,000</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/fashion.jpg" alt="Product 1">
+                    <h3 class="rel-card-title">Stylish Backpack</h3>
+                    <p class="rel-card-price">₦25,500</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/fash-trend.jpg" alt="Product 2">
+                    <h3 class="rel-card-title">Leather Shoes</h3>
+                    <p class="rel-card-price">₦15,000</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/lapbag.jpeg" alt="Product 3">
+                    <h3 class="rel-card-title">Designer Laptop Bag</h3>
+                    <p class="rel-card-price">₦6,500</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/cozy-hostel.jpg" alt="Product 4">
+                    <h3 class="rel-card-title">Comfy Hostel Blanket</h3>
+                    <p class="rel-card-price">₦4,500</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/fashion.jpg" alt="Product 5">
+                    <h3 class="rel-card-title">Classic Wristwatch</h3>
+                    <p class="rel-card-price">₦23,500</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Similar Products -->
+    <section class="rel-products">
+        <h2 class="rel-title">Similar Products</h2>
+        <div class="rel-carousel-container">
+            <div class="rel-carousel-track auto-scroll">
+                <div class="rel-product-card">
+                    <img src="../images/fashion.jpg" alt="Similar 1">
+                    <h3 class="rel-card-title">Classic Wristwatch</h3>
+                    <p class="rel-card-price">₦4,500,000</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/fash-trend.jpg" alt="Similar 2">
+                    <h3 class="rel-card-title">Trendy Handbag</h3>
+                    <p class="rel-card-price">₦45,000</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/lapbag.jpeg" alt="Similar 3">
+                    <h3 class="rel-card-title">School Backpack</h3>
+                    <p class="rel-card-price">₦35,000</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/cozy-hostel.jpg" alt="Similar 4">
+                    <h3 class="rel-card-title">Warm Bed Sheets</h3>
+                    <p class="rel-card-price">₦18,000</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/fashion.jpg" alt="Product 1">
+                    <h3 class="rel-card-title">Stylish Backpack</h3>
+                    <p class="rel-card-price">₦25,500</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/fash-trend.jpg" alt="Product 2">
+                    <h3 class="rel-card-title">Leather Shoes</h3>
+                    <p class="rel-card-price">₦15,000</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/lapbag.jpeg" alt="Product 3">
+                    <h3 class="rel-card-title">Designer Laptop Bag</h3>
+                    <p class="rel-card-price">₦6,500</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/cozy-hostel.jpg" alt="Product 4">
+                    <h3 class="rel-card-title">Comfy Hostel Blanket</h3>
+                    <p class="rel-card-price">₦4,500</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/fashion.jpg" alt="Product 5">
+                    <h3 class="rel-card-title">Classic Wristwatch</h3>
+                    <p class="rel-card-price">₦23,500</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    <section class="rel-products">
+        <h2 class="rel-title">You Might Also Like</h2>
+        <div class="rel-carousel-container">
+            <div class="rel-carousel-track auto-scroll">
+                <!-- Product Card -->
+                <div class="rel-product-card">
+                    <img src="../images/fashion.jpg" alt="Product 1">
+                    <h3 class="rel-card-title">Stylish Backpack</h3>
+                    <p class="rel-card-price">₦25,000</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/fash-trend.jpg" alt="Product 2">
+                    <h3 class="rel-card-title">Leather Shoes</h3>
+                    <p class="rel-card-price">₦9,800</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/lapbag.jpeg" alt="Product 3">
+                    <h3 class="rel-card-title">Designer Laptop Bag</h3>
+                    <p class="rel-card-price">₦4,000</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/cozy-hostel.jpg" alt="Product 4">
+                    <h3 class="rel-card-title">Comfy Hostel Blanket</h3>
+                    <p class="rel-card-price">₦3,500</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/fashion.jpg" alt="Product 5">
+                    <h3 class="rel-card-title">Classic Wristwatch</h3>
+                    <p class="rel-card-price">₦13,500</p>
+                </div>
+                <div class="rel-product-card">
+                    <img src="../images/fashion.jpg" alt="Product 1">
+                    <h3 class="rel-card-title">Stylish Backpack</h3>
+                    <p class="rel-card-price">₦15,000</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/fash-trend.jpg" alt="Product 2">
+                    <h3 class="rel-card-title">Leather Shoes</h3>
+                    <p class="rel-card-price">₦12,000</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/lapbag.jpeg" alt="Product 3">
+                    <h3 class="rel-card-title">Designer Laptop Bag</h3>
+                    <p class="rel-card-price">₦4,500</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/cozy-hostel.jpg" alt="Product 4">
+                    <h3 class="rel-card-title">Comfy Hostel Blanket</h3>
+                    <p class="rel-card-price">₦6,500</p>
+                </div>
+
+                <div class="rel-product-card">
+                    <img src="../images/fashion.jpg" alt="Product 5">
+                    <h3 class="rel-card-title">Classic Wristwatch</h3>
+                    <p class="rel-card-price">₦35,000</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer id="pageFooter">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>UMP</h2>
+                <p>University Marketplace — connecting students, products, and creativity.</p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Marketplace</a></li>
+                    <li><a href="#">Creators</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Report Issue</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Connect</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; <span id="year"></span> UMP. All rights reserved.
+        </div>
+    </footer>
+
+    <script type="module" src="../functions/product.js"></script>
+    <script type="module" src="../functions/index.js"></script>
 </body>
+
 </html>

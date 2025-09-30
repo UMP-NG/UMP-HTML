@@ -39,12 +39,40 @@ function showStep(step) {
 
 function nextStep() {
   const totalSteps = document.querySelectorAll(".step").length;
+
   if (currentStep < totalSteps) {
     currentStep++;
     showStep(currentStep);
   } else {
-    // Optional: handle form submission on finish
-    alert("Form completed!");
+    // ✅ Instead of finishing immediately, check payment method
+    const paymentChoice = document.querySelector(
+      'input[name="payment"]:checked'
+    );
+    if (!paymentChoice) {
+      alert("Please select a payment method.");
+      return;
+    }
+
+    // hide progressive sections
+    document
+      .querySelectorAll(
+        ".forgot-something, .btn-container, .step-content, .progress-container, .progress-label"
+      )
+      .forEach((sec) => (sec.style.display = "none"));
+
+    // hide both forms first
+    document.getElementById("cardForm").classList.add("hidden");
+    document.getElementById("transferForm").classList.add("hidden");
+
+    // show the selected form
+    if (paymentChoice.value === "card") {
+      document.getElementById("cardForm").classList.remove("hidden");
+    } else if (paymentChoice.value === "transfer") {
+      document.getElementById("transferForm").classList.remove("hidden");
+    }
+
+    // optional: disable the next/finish button so user uses form
+    document.getElementById("nextBtn").style.display = "none";
   }
 }
 
@@ -54,6 +82,25 @@ function prevStep() {
     showStep(currentStep);
   }
 }
+
+function goBackToCheckout() {
+  // hide forms
+  document.getElementById("cardForm").classList.add("hidden");
+  document.getElementById("transferForm").classList.add("hidden");
+
+  // restore checkout sections
+  document
+    .querySelectorAll(
+      ".forgot-something, .btn-container, .step-content, .progress-container, .progress-label"
+    )
+    .forEach((sec) => (sec.style.display = ""));
+
+  // bring back the navigation buttons
+  document.getElementById("nextBtn").style.display = "inline-block";
+  document.getElementById("prevBtn").style.display = "inline-block";
+}
+
+window.goBackToCheckout = goBackToCheckout;
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
@@ -202,11 +249,15 @@ function renderCart() {
   cart.forEach((item) => {
     const row = document.createElement("div");
     row.className = "cart-item";
+
+    // Use first image in array if available
+    const imgSrc = item.images?.[0] || "../images/placeholder.png";
+
     row.innerHTML = `
-      <img src="${item.image}" alt="${item.name}" class="cart-item-img" />
+      <img src="${imgSrc}" alt="${item.name}" class="cart-item-img" />
       <div class="cart-item-details">
         <h3 class="product-name">${item.name}</h3>
-        <a href="#" class="seller-name">${item.seller}</a>
+        <a href="#" class="seller-name">${item.seller?.store || "Unknown Store"}</a>
         <p class="product-attr">Condition: ${item.condition}</p>
         <div class="cart-item-actions">
           <div class="quantity-control">
@@ -219,12 +270,13 @@ function renderCart() {
         </div>
       </div>
     `;
+
     container.appendChild(row);
   });
 
-  // ✅ render summary after items
   renderSummary(cart);
 }
+
 
 function renderSummary(cart) {
   const existing = document.querySelector(".cart-summary");
@@ -240,14 +292,109 @@ function renderSummary(cart) {
 
   summary.innerHTML = `
     <h2>Summary</h2>
-    <p>Subtotal: <strong>₦${subtotal.toFixed(2)}</strong></p>
-    <button class="btn checkout-btn" id="nextBtn">Next</button>
+    <p>Subtotal: <strong>₦${subtotal.toLocaleString("en-NG", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}</strong></p>
   `;
 
   document.querySelector(".cart-layout")?.appendChild(summary);
-
-  const checkoutBtn = summary.querySelector(".checkout-btn");
-  checkoutBtn.addEventListener("click", () => {
-    nextStep();
-  });
 }
+
+// ---------------------------
+// DELIVERY OPTIONS
+// ---------------------------
+function updateDelivery() {
+  const cart = loadCart();
+  let subtotal = cart.reduce((sum, item) => {
+    const price = parseFloat(item.price.replace(/[^\d.]/g, ""));
+    return sum + price * item.quantity;
+  }, 0);
+
+  // Get selected delivery
+  const deliveryOption = document.querySelector(
+    'input[name="delivery"]:checked'
+  );
+  if (!deliveryOption) return subtotal; // no delivery selected yet
+
+  const deliveryFee = parseFloat(deliveryOption.value);
+  return subtotal + deliveryFee;
+}
+
+function renderSummaryWithDelivery() {
+  const container = document.querySelector(".cart-summary");
+  if (!container) return;
+
+  const cart = loadCart();
+  let subtotal = cart.reduce((sum, item) => {
+    const price = parseFloat(item.price.replace(/[^\d.]/g, ""));
+    return sum + price * item.quantity;
+  }, 0);
+
+  const deliveryOption = document.querySelector(
+    'input[name="delivery"]:checked'
+  );
+  const deliveryFee = deliveryOption ? parseFloat(deliveryOption.value) : 0;
+
+  container.innerHTML = `
+    <h2>Summary</h2>
+    <p>Subtotal: <strong>₦${subtotal.toLocaleString("en-NG")}</strong></p>
+    <p>Delivery: <strong>₦${deliveryFee.toLocaleString("en-NG")}</strong></p>
+    <p>Total: <strong>₦${(subtotal + deliveryFee).toLocaleString(
+      "en-NG"
+    )}</strong></p>
+  `;
+}
+
+// Re-render summary when delivery option changes
+document.querySelectorAll('input[name="delivery"]').forEach((el) => {
+  el.addEventListener("change", renderSummaryWithDelivery);
+});
+
+// ✅ Update nextStep validation to require delivery
+const originalNextStep = nextStep;
+nextStep = function () {
+  if (currentStep === 1) {
+    // step with delivery
+    const selectedDelivery = document.querySelector(
+      'input[name="delivery"]:checked'
+    );
+    if (!selectedDelivery) {
+      alert("Please select a delivery option to proceed.");
+      return;
+    }
+  }
+  originalNextStep();
+};
+
+// Call renderSummaryWithDelivery initially to include delivery fee if selected
+document.addEventListener("DOMContentLoaded", renderSummaryWithDelivery);
+
+document.addEventListener("DOMContentLoaded", () => {
+  const cardNumber = document.getElementById("cardNumber");
+  const expiryDate = document.getElementById("expiryDate");
+  const cvv = document.getElementById("cvv");
+
+  // Format Card Number (1234 5678 9012 3456)
+  cardNumber.addEventListener("input", (e) => {
+    let value = e.target.value.replace(/\D/g, ""); // remove non-digits
+    value = value.substring(0, 16); // max 16 digits
+    e.target.value = value.replace(/(\d{4})(?=\d)/g, "$1 "); // add spaces
+  });
+
+  // Format Expiry Date (MM/YY)
+  expiryDate.addEventListener("input", (e) => {
+    let value = e.target.value.replace(/\D/g, ""); // remove non-digits
+    if (value.length >= 3) {
+      value = value.substring(0, 4);
+      e.target.value = value.replace(/(\d{2})(\d{1,2})/, "$1/$2");
+    } else {
+      e.target.value = value;
+    }
+  });
+
+  // CVV only allows 3 digits
+  cvv.addEventListener("input", (e) => {
+    e.target.value = e.target.value.replace(/\D/g, "").substring(0, 3);
+  });
+});

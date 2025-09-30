@@ -83,6 +83,16 @@
             <!-- Right column: summary -->
             <div class="cart-summary"></div>
         </div>
+        <div class="delivery-options">
+            <label>
+                <input type="radio" name="delivery" value="700" />
+                <span>Pick Up (₦700)</span>
+            </label>
+            <label>
+                <input type="radio" name="delivery" value="1200" />
+                <span>Delivered to You (₦1200)</span>
+            </label>
+        </div>
     </div>
 
     <!-- STEP 2: INFORMATION -->
@@ -95,11 +105,15 @@
                     <input type="text" id="fullName" required>
                 </label>
                 <label>
-                    Email:
+                    School/Personal Email:
                     <input type="email" id="email" required>
                 </label>
                 <label>
-                    Address:
+                    Address/Hostel:
+                    <input type="text" id="address" required>
+                </label>
+                <label>
+                    Note On Delivery:
                     <input type="text" id="address" required>
                 </label>
                 <label>
@@ -114,11 +128,54 @@
     <div class="step-content" data-step="3">
         <div class="payment-section">
             <h2>Payment Method</h2>
-            <p>Select your preferred payment option:</p>
-            <label><input type="radio" name="payment" value="card" required> Credit/Debit Card</label><br>
-            <label><input type="radio" name="payment" value="transfer"> Bank Transfer</label><br>
-            <label><input type="radio" name="payment" value="delivery"> Pay on Delivery</label>
+            <p>Select your preferred payment option (Escrow protected):</p>
+
+            <label>
+                <input type="radio" name="payment" value="card" required>
+                Credit/Debit Card (Escrow Secured)
+            </label><br>
+
+            <label>
+                <input type="radio" name="payment" value="transfer">
+                Bank Transfer (Escrow Secured)
+            </label>
         </div>
+    </div>
+
+    <!-- Escrow Card Form -->
+    <div id="cardForm" class="payment-form hidden">
+        <h3>Card Payment</h3>
+        <p>Your payment will be securely held in escrow until you confirm delivery.</p>
+        <form id="cardPaymentForm">
+            <label for="cardNumber">Card Number</label>
+            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required><br>
+
+            <label for="expiryDate">Expiry Date</label>
+            <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" required><br>
+
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" placeholder="123" maxlength="3" required><br>
+
+            <button type="submit" class="btn">Pay with Card</button>
+        </form>
+
+        <div class="back-link" onclick="goBackToCheckout()">← Back to Checkout</div>
+    </div>
+
+
+    <!-- Escrow Bank Transfer Form -->
+    <div id="transferForm" class="payment-form hidden">
+        <h3>Bank Transfer</h3>
+        <p>Transfer the exact amount to the escrow account. Once confirmed, the seller will ship your order.</p>
+        <p><strong>Bank Name:</strong> Example Bank</p>
+        <p><strong>Account Number:</strong> 1234567890</p>
+        <p><strong>Account Name:</strong> UMP Escrow Services</p>
+        <form>
+            <label>Upload Proof of Payment</label>
+            <input type="file" required><br>
+            <button type="submit" class="btn">Confirm Transfer</button>
+        </form>
+        <div class="back-link" onclick="goBackToCheckout()">← Back to Checkout</div>
     </div>
 
     <div class="btn-container">

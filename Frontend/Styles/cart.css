@@ -514,6 +514,90 @@ body {
     font-size: 1.6rem;
 }
 
+.hidden {
+    display: none;
+}
+
+.payment-form {
+    background-color: var(--primary);
+    padding: 2rem;
+    margin-top: 2rem;
+    border-radius: 1.2rem;
+    box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.08);
+    max-width: 50rem;
+    margin-inline: auto;
+    margin-top: 6rem;
+}
+
+.payment-form h3 {
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
+    color: var(--color-secondary);
+    text-align: center;
+}
+
+.payment-form p {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.payment-form label {
+    display: block;
+    font-size: 1.4rem;
+    margin: 1rem 0 0.5rem;
+    color: var(--color-secondary);
+}
+
+.payment-form input[type="text"],
+.payment-form input[type="file"] {
+    width: 100%;
+    padding: 1rem 1.4rem;
+    border: 0.1rem solid var(--progress-bg);
+    border-radius: 0.8rem;
+    font-size: 1.5rem;
+    background-color: var(--primary-alt);
+    color: var(--text);
+}
+
+.payment-form input[type="text"]:focus,
+.payment-form input[type="file"]:focus {
+    border-color: var(--progress-active);
+    outline: none;
+    box-shadow: 0 0 0.4rem rgba(40, 81, 203, 0.4);
+}
+
+.payment-form .btn {
+    margin: 2rem auto 0;
+    display: block;
+    padding: 1.2rem 2.4rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    background-color: var(--progress-active);
+    color: var(--primary);
+    border-radius: 0.8rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.payment-form .btn:hover {
+    background-color: var(--progress-completed);
+}
+
+.back-link {
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  color: var(--progress-active);
+  cursor: pointer;
+  text-align: left;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+
 /* ---------------- Responsive ---------------- */
 @media screen and (max-width: 768px) {
 
