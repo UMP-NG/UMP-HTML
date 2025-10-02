@@ -1,0 +1,231 @@
+:root {
+    --color-primary: #fff;
+    --color-secondary: #222222ff;
+    --color-comp: #2851cbff;
+    --font-primary: 'Poppins', sans-serif;
+    --color-headerhover: #7f7f7fff;
+    --text: #333;
+    --primary: #ffffff;
+    --secondary: #222222;
+    --primary-alt: #f7f7f7;
+    --primary-soft: #fafafa;
+}
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    text-transform: capitalize;
+    transition: all .2s linear;
+    font-family: var(--font-primary);
+}
+
+html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
+    font-size: 62.5%;
+}
+
+body {
+    background: whitesmoke;
+    overflow-x: hidden;
+}
+
+/* Hero Section */
+.hero {
+    height: 90vh;
+    width: 100%;
+    background: url("../images/banner.jpg") center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-top: 7rem;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content {
+    color: var(--color-primary);
+    text-align: center;
+    max-width: 80rem;
+    padding: 2rem;
+}
+
+.hero-content h1 {
+    font-size: 4.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+}
+
+.hero-content p {
+    font-size: 1.8rem;
+    margin-bottom: 3rem;
+    font-weight: 300;
+}
+
+.hero-content .btn {
+    display: inline-block;
+    padding: 1.2rem 3rem;
+    background: var(--color-comp);
+    color: var(--primary);
+    font-size: 1.6rem;
+    border-radius: 5rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.hero-content .btn:hover {
+    background: #173a99;
+}
+
+/* Role Selector */
+.role-selector {
+    padding: 5rem 2rem;
+    text-align: center;
+    background: var(--primary-alt);
+}
+
+.tab-bar {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.tab {
+    font-size: 1.6rem;
+    padding: 1rem 2rem;
+    border-radius: 5rem;
+    border: 1px solid var(--color-comp);
+    background: transparent;
+    color: var(--secondary);
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.tab:hover {
+    background: var(--primary-soft);
+}
+
+.tab.active {
+    background: #0f9d58;
+    /* emerald green */
+    color: var(--primary);
+    border-color: #0f9d58;
+}
+
+.tab-content {
+    max-width: 70rem;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.tab-pane {
+    display: none;
+    animation: fadeSlide 0.5s ease forwards;
+}
+
+.tab-pane h2 {
+    font-size: 2.5rem;
+    padding-bottom: .6rem;
+    margin-bottom: 0;
+}
+
+.tab-pane p {
+    font-size: 1.7rem;
+    padding-bottom: 2rem;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Application Forms */
+.application-forms {
+    max-width: 70rem;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.form-pane {
+    display: none;
+    background: var(--primary);
+    padding: 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.08);
+    animation: fadeSlide 0.5s ease forwards;
+}
+
+.form-pane.active {
+    display: block;
+}
+
+.form-pane h2 {
+    font-size: 2.4rem;
+    margin-bottom: 2rem;
+    color: var(--secondary);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 0.6rem;
+    font-size: 1.4rem;
+}
+
+.toggle-inputs {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+    font-size: 1.4rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 1.2rem 3rem;
+    background: #0f9d58;
+    color: var(--primary);
+    font-size: 1.6rem;
+    border-radius: 5rem;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 1rem;
+}
+
+.btn:hover {
+    background: #0c7a45;
+}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UMP - Marketplace</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../Styles/store.css" />
+    <link rel="stylesheet" href="../Styles/index.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="main-header">
+        <a class="logo" href="/">
+            <img src="../images/ump-logo.jpeg" alt="UMP Logo">
+        </a>
+        <nav class="nav_links">
+            <a href="./index.html" class="nav-link">Home</a>
+            <a href="./market.html" class="nav-link">Marketplace</a>
+            <a href="./store.html" class="nav-link">Store</a>
+            <a href="./provider.html" class="nav-link">Become a Provider</a>
+            <a href="#" class="nav-link">Hostel Hub</a>
+        </nav>
+
+        <div class="navbar_icons">
+            <div class="fas fa-bars" id="mobile_menu"></div>
+            <div class="fas fa-search" id="search-btn"></div>
+            <div class="fas fa-shopping-cart" id="cart-btn"></div>
+            <div class="fas fa-user" id="login-btn"></div>
+        </div>
+
+        <form action="" class="search-form">
+            <input type="search" id="searchInput" placeholder="Search here..." />
+            <label for="searchInput" class="fas fa-search"></label>
+        </form>
+
+        <!-- Profile Popup -->
+        <div class="profile-popup">
+            <div class="profile-settings">
+                <a href=""><i class="fas fa-cog"></i></a>
+            </div>
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Avatar" />
+                </div>
+                <div class="profile-info">
+                    <h3 id="profileName">Matthew Oseni</h3>
+                    <span class="profile-email">230401234@live.unilag.edu.ng</span>
+                    <span class="profile-status">✔ Logged in</span>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <button class="profile-btn" id="signInBtn">Sign In</button>
+                <button class="profile-btn logout" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="store-container">
+        <button id="Toggle" class="filter-toggle">☰ Filters</button>
+        <aside class="filter-panel" id="Panel">
+            <button id="closePanel" class="close-panel">✖</button>
+            <h3>Filter by Category</h3>
+            <ul class="filter-list">
+                <li><button class="filter-btn" data-category="all">All</button></li>
+                <li><button class="filter-btn" data-category="electronics">Electronics</button></li>
+                <li><button class="filter-btn" data-category="fashion">Fashion</button></li>
+                <li><button class="filter-btn" data-category="books">Books</button></li>
+                <li><button class="filter-btn" data-category="accessories">Accessories</button></li>
+            </ul>
+        </aside>
+
+        <div class="store-directory">
+            <section class="store-grid" id="storeGrid"></section>
+        </div>
+    </main>
+
+    <div id="searchResults" class="store-search-grid"></div>
+
+    <footer id="pageFooter">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>UMP</h2>
+                <p>University Marketplace — connecting students, products, and creativity.</p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Marketplace</a></li>
+                    <li><a href="#">Creators</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Report Issue</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Connect</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; <span id="year"></span> UMP. All rights reserved.
+        </div>
+    </footer>
+
+    <script type="module" src="../functions/store.js"></script>
+    <script type="module" src="../functions/market.js"></script>
+    <script type="module" src="../functions/index.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UMP - Marketplace</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../Styles/provider.css" />
+    <link rel="stylesheet" href="../Styles/index.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+
+<>
+    <!-- HEADER -->
+    <header class="main-header">
+        <a class="logo" href="/">
+            <img src="../images/ump-logo.jpeg" alt="UMP Logo">
+        </a>
+        <nav class="nav_links">
+            <a href="./index.html" class="nav-link">Home</a>
+            <a href="./market.html" class="nav-link">Marketplace</a>
+            <a href="./store.html" class="nav-link">Store</a>
+            <a href="./provider.html" class="nav-link">Become a Provider</a>
+            <a href="#" class="nav-link">Hostel Hub</a>
+        </nav>
+
+        <div class="navbar_icons">
+            <div class="fas fa-bars" id="mobile_menu"></div>
+            <div class="fas fa-search" id="search-btn"></div>
+            <div class="fas fa-shopping-cart" id="cart-btn"></div>
+            <div class="fas fa-user" id="login-btn"></div>
+        </div>
+
+        <form action="" class="search-form">
+            <input type="search" id="searchInput" placeholder="Search here..." />
+            <label for="searchInput" class="fas fa-search"></label>
+        </form>
+
+        <!-- Profile Popup -->
+        <div class="profile-popup">
+            <div class="profile-settings">
+                <a href=""><i class="fas fa-cog"></i></a>
+            </div>
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Avatar" />
+                </div>
+                <div class="profile-info">
+                    <h3 id="profileName">Matthew Oseni</h3>
+                    <span class="profile-email">230401234@live.unilag.edu.ng</span>
+                    <span class="profile-status">✔ Logged in</span>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <button class="profile-btn" id="signInBtn">Sign In</button>
+                <button class="profile-btn logout" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h1>Turn Your Talent into Triumph.</h1>
+                <p>Join the UMP Partner Community: Your Path to Selling, Service, and Dispatch.</p>
+                <a href="#partner" class="btn">Become a Partner</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="role-selector">
+        <!-- Tab Bar -->
+        <div class="tab-bar">
+            <button class="tab active" data-tab="seller">Become a Seller</button>
+            <button class="tab" data-tab="service">Service Provider</button>
+            <button class="tab" data-tab="dispatcher">Campus Dispatcher</button>
+        </div>
+
+        <!-- Dynamic Content -->
+        <div class="tab-content">
+            <!-- Seller -->
+            <div class="tab-pane active" id="seller">
+                <h2>Become a Seller</h2>
+                <p>Start selling your products to the UMP community and grow your brand.</p>
+
+                <form class="form-pane active" id="form-seller">
+                    <h2>Launch Your Store</h2>
+                    <div class="form-group">
+                        <input type="text" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Student ID / Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Proposed Store Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Product Category Focus" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Brief Pitch / Mission Statement" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="btn">Submit Seller Application</button>
+                </form>
+            </div>
+
+            <!-- Service -->
+            <div class="tab-pane" id="service">
+                <h2>Service Provider</h2>
+                <p>Offer your services to students and partners with ease.</p>
+
+                <form class="form-pane" id="form-service">
+                    <h2>Offer Your Expertise</h2>
+                    <div class="form-group">
+                        <input type="text" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Student ID / Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Service Specialty (Tutoring, Design, etc.)" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="url" placeholder="Certification / Portfolio Link (Optional)">
+                    </div>
+                    <div class="form-group">
+                        <label>Availability:</label>
+                        <div class="toggle-inputs">
+                            <label><input type="checkbox"> Morning</label>
+                            <label><input type="checkbox"> Afternoon</label>
+                            <label><input type="checkbox"> Evening</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Submit Provider Application</button>
+                </form>
+            </div>
+
+            <!-- Dispatcher -->
+            <div class="tab-pane" id="dispatcher">
+                <h2>Campus Dispatcher</h2>
+                <p>Join as a dispatcher and help deliver goods quickly on campus.</p>
+
+                <form class="form-pane" id="form-dispatcher">
+                    <h2>Join the Dispatch Team</h2>
+                    <div class="form-group">
+                        <input type="text" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Student ID / Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Transportation Method (Bike, Car, etc.)" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Campus Zones Covered" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Weekly Availability:</label>
+                        <textarea placeholder="Enter your available days/times (e.g., Mon-Fri 2pm-6pm)"
+                            rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn">Submit Dispatcher Application</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer id="pageFooter">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>UMP</h2>
+                <p>University Marketplace — connecting students, products, and creativity.</p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Marketplace</a></li>
+                    <li><a href="#">Creators</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Report Issue</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Connect</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; <span id="year"></span> UMP. All rights reserved.
+        </div>
+    </footer>
+
+    <script type="module" src="../functions/provider.js"></script>
+    <script type="module" src="../functions/index.js"></script>
+    </body>
+
+</html>

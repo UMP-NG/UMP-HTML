@@ -597,6 +597,44 @@ body {
   text-decoration: underline;
 }
 
+.delivery-options {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--primary-soft); /* match cart styling */
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 1.4rem;
+}
+
+.delivery-options label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--progress-bg);
+    border-radius: 0.8rem;
+    transition: all 0.3s;
+}
+
+.delivery-options input[type="radio"] {
+    accent-color: var(--primary); /* makes radio button colored */
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.delivery-options label:hover {
+    background: var(--progress-bg);
+}
+
+.delivery-options input[type="radio"]:checked + span,
+.delivery-options input[type="radio"]:checked {
+    border-color: var(--primary);
+    background: var(--color-comp);
+}
+
 
 /* ---------------- Responsive ---------------- */
 @media screen and (max-width: 768px) {
