@@ -217,12 +217,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Check if this page has a seller grid (store listing)
   const grid = document.getElementById("storeGrid");
+  console.log("storeGrid element found:", grid);
   if (grid) {
+    console.log("Rendering sellers:", sellers);
     displaySellers(sellers, grid);
   }
 
   // Check if this page has a seller profile (seller.html)
   const container = document.getElementById("sellerProfile");
+  console.log("sellerProfile element found:", container);
+
   if (container) {
     const params = new URLSearchParams(window.location.search);
     const sellerId = parseInt(params.get("id"));
@@ -241,6 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Functions
 function displaySellers(list, grid) {
+  console.log("displaySellers called with list:", list);
   grid.innerHTML = list
     .map(
       (s) => `
@@ -253,6 +258,14 @@ function displaySellers(list, grid) {
     )
     .join("");
 }
+
+grid.addEventListener("click", (e) => {
+  const link = e.target.closest("a.store-card");
+  if (link) {
+    e.preventDefault(); // temporarily stop navigation so we can see logs
+    console.log("✅ Store card clicked:", link.href);
+  }
+});
 
 function renderSellerProfile(seller, container) {
   container.innerHTML = `
@@ -281,7 +294,7 @@ function renderSellerProfile(seller, container) {
           .map(
             (p) => `
             <div class="seller-card" data-product-id="${p.id}">
-              <a href="products.html?id=${p.id}" class="product-link">
+              <a href="./product.html?id=${p.id}" class="product-link">
                 <div class="seller-product-card">
                   <img src="${p.image}" alt="${p.name}">
                     <div class="seller-product-action">
@@ -301,6 +314,8 @@ function renderSellerProfile(seller, container) {
       </div>
     </section>
   `;
+
+  console.log("Rendered seller links:", grid.querySelectorAll("a"));
 }
 
 // === Store search (updated class names to match your CSS) ===

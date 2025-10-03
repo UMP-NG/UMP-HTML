@@ -204,6 +204,7 @@ body {
 /* Stats Section */
 .seller-stats {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     margin-top: 1rem;
     gap: 3rem;
@@ -446,6 +447,44 @@ body {
 
     .filter-panel.active {
         transform: translateX(0);
+    }
+}
+
+@media (min-width: 768px) {
+    .store-banner {
+        width: 100vw;
+        height: 32rem;
+        padding: auto 0;
+    }
+
+    .seller-info {
+        margin-top: -18rem;
+        padding: 2rem 3rem;
+        width: auto;
+        max-width: 420px;
+    }
+
+    .seller-avatar {
+        width: 12rem;
+        height: 12rem;
+    }
+
+    .seller-name {
+        font-size: 2.4rem;
+    }
+
+    .seller-bio {
+        font-size: 1.5rem;
+    }
+
+    .seller-stats {
+        gap: 3rem;
+        font-size: 1.6rem;
+    }
+
+    .seller-stats div {
+        flex: unset;
+        /* back to natural size */
     }
 }
 
