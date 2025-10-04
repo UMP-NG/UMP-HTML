@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UMP - Marketplace</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../Styles/index.css" />
+    <link rel="stylesheet" href="../Styles/analytics.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="main-header">
+        <a class="logo" href="/">
+            <img src="../images/ump-logo.jpeg" alt="UMP Logo">
+        </a>
+
+        <div class="profile">
+            <img src="../images/guy.png" alt="Seller Avatar">
+            <span>John Doe</span>
+        </div>
+        <button id="sidebarToggle" class="sidebar-toggle">
+            &#9776; <!-- Hamburger icon -->
+        </button>
+
+    </header>
+
+    <div class="sidebar">
+        <h2>UMP Seller</h2>
+        <a href="#" data-target="home" class="active">Dashboard Home</a>
+        <a href="#" data-target="orders">Orders</a>
+        <a href="#" data-target="products">Products</a>
+        <a href="#" data-target="messages">Messages</a>
+        <a href="#" data-target="payouts">Payouts</a>
+        <a href="#" data-target="settings">Settings</a>
+        <a href="./index.html">Return To UMP</a>
+    </div>
+
+    <!-- Main Area -->
+    <div class="main">
+        <div id="home" class="content active">
+            <!-- Action Bar -->
+            <div class="action-bar">
+                <div class="alert">
+                    <span class="badge new-order">1 New Order!</span> <a href="#orders">(View Now)</a>
+                </div>
+                <div class="alert">
+                    <span class="badge low-stock">3 Products Low Stock</span> <a href="#products">(Restock)</a>
+                </div>
+                <div class="alert">
+                    <span class="badge payout">₦500,000 Payout Ready</span> <a href="#payouts">(Withdraw)</a>
+                </div>
+            </div>
+            <h1>Dashboard Home</h1>
+            <p>Welcome to your seller dashboard overview.</p>
+
+            <!-- Overview Metrics -->
+            <section class="overview-metrics">
+                <div class="metric-card">
+                    <h3>Total Revenue</h3>
+                    <p class="metric-value">$12,450</p>
+                </div>
+
+                <div class="metric-card">
+                    <h3>Orders (Last 7 Days)</h3>
+                    <p class="metric-value">128 <span class="trend up">▲ 5%</span></p>
+                </div>
+
+                <div class="metric-card">
+                    <h3>Product Views</h3>
+                    <p class="metric-value">3,245 <span class="trend up">+12%</span></p>
+                </div>
+
+                <div class="metric-card">
+                    <h3>Inventory Value</h3>
+                    <p class="metric-value">$8,600</p>
+                </div>
+            </section>
+
+            <!-- Order Management Module -->
+            <section class="orders-module">
+                <h2>Recent Orders</h2>
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Buyer</th>
+                            <th>Items</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#10234</td>
+                            <td>Student123</td>
+                            <td>2 Items</td>
+                            <td><span class="badge new">New</span></td>
+                            <td><button class="btn-view">View Details</button></td>
+                        </tr>
+                        <tr>
+                            <td>#10233</td>
+                            <td>Student567</td>
+                            <td>1 Item</td>
+                            <td><span class="badge processing">Processing</span></td>
+                            <td><button class="btn-view">View Details</button></td>
+                        </tr>
+                        <tr>
+                            <td>#10232</td>
+                            <td>Student999</td>
+                            <td>3 Items</td>
+                            <td><span class="badge shipped">Shipped</span></td>
+                            <td><button class="btn-view">View Details</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Product Performance Module -->
+            <section class="product-performance">
+                <h2>Product Performance</h2>
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Stock</th>
+                            <th>Performance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="product-info">
+                                <img src="../images/earbuds.jpg" alt="Product 1">
+                                <span>Wireless Earbuds</span>
+                            </td>
+                            <td><span class="stock low">5 left</span></td>
+                            <td>
+                                <button class="chart-toggle">
+                                    <i class="fas fa-chart-line"></i>
+                                </button>
+                                <div class="chart-panel">
+                                    <!-- Inline sales trend chart -->
+                                    <canvas id="chart1"></canvas>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="product-info">
+                                <img src="../images/hoodie.jpg" alt="Product 2">
+                                <span>Hoodie</span>
+                            </td>
+                            <td><span class="stock normal">120 in stock</span></td>
+                            <td>
+                                <button class="chart-toggle">
+                                    <i class="fas fa-chart-line"></i>
+                                </button>
+                                <div class="chart-panel">
+                                    <canvas id="chart2"></canvas>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="product-info">
+                                <img src="../images/iphone 17.jpeg" alt="Product 3">
+                                <span>Iphone 17</span>
+                            </td>
+                            <td><span class="stock critical">0 left</span></td>
+                            <td>
+                                <button class="chart-toggle">
+                                    <i class="fas fa-chart-line"></i>
+                                </button>
+                                <div class="chart-panel">
+                                    <canvas id="chart3"></canvas>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Earnings & Payouts Module -->
+            <section class="payouts-module">
+                <h2>Earnings & Payouts</h2>
+                <div class="payouts-content">
+                    <!-- Available Balance -->
+                    <div class="available-balance">
+                        <p>Available for Payout</p>
+                        <h1 class="highlight">₦245,000</h1>
+                        <button class="cta-btn">Request Payout</button>
+                    </div>
+
+                    <!-- Payout History -->
+                    <div class="payout-history">
+                        <h3>Recent Payout History</h3>
+                        <ul>
+                            <li><span>₦120,000</span> - Sept 18, 2025</li>
+                            <li><span>₦75,000</span> - Aug 30, 2025</li>
+                            <li><span>₦100,000</span> - Aug 10, 2025</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <div id="orders" class="content">
+            <!-- New Order Alert Banner -->
+            <div class="order-alert" id="orderAlert">
+                <span>3 New Orders Awaiting Action</span>
+                <button id="viewOrdersBtn">View Orders</button>
+                <span class="close-alert" id="closeAlert">×</span>
+            </div>
+
+            <h1>Orders</h1>
+            <p>View and manage all your customer orders here.</p>
+
+            <section class="orders-controls">
+                <!-- Search Bar -->
+                <div class="orders-search">
+                    <input type="text" id="orderSearch" placeholder="Search by Order ID or Buyer Name..." />
+                    <label for="search-box" class="fas fa-search"></label>
+                </div>
+
+                <!-- Filters -->
+                <div class="orders-filters">
+                    <button class="filter-btn active" data-status="all">All Orders (12)</button>
+                    <button class="filter-btn new" data-status="new">New (3)</button>
+                    <button class="filter-btn transit" data-status="transit">In Transit (2)</button>
+                    <button class="filter-btn completed" data-status="completed">Completed (5)</button>
+                    <button class="filter-btn canceled" data-status="canceled">Canceled (2)</button>
+                </div>
+
+                <!-- Sort Dropdown -->
+                <div class="orders-sort">
+                    <label for="sortOrders">Sort By:</label>
+                    <select id="sortOrders">
+                        <option value="date-desc">Date: Newest</option>
+                        <option value="date-asc">Date: Oldest</option>
+                        <option value="value-desc">Value: Highest</option>
+                        <option value="value-asc">Value: Lowest</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- Orders Table -->
+            <section id="ordersModule" class="orders-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Buyer</th>
+                            <th>Items</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Value</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <!-- Dynamic rows go here -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Order Details Panel (below the table) -->
+            <div class="order-details-panel" id="orderDetailsPanel" aria-hidden="true">
+                <div class="order-details-header">
+                    <h2 id="panelOrderId">Order Summary</h2>
+                    <button type="button" class="close-panel" id="closePanel">&times;</button>
+                </div>
+
+                <div class="order-details-content" id="orderDetails">
+                    <!-- Buyer Info -->
+                    <section class="buyer-info">
+                        <h3>Buyer Details</h3>
+                        <p><strong>Name:</strong> <span id="panelBuyer">—</span></p>
+                        <p><strong>Address:</strong> <span id="panelAddress">—</span></p>
+                        <p><strong>Contact:</strong> <span id="panelContact">—</span></p>
+                    </section>
+
+                    <!-- Itemized List -->
+                    <section class="order-items">
+                        <h3>Items</h3>
+                        <div id="panelItems">—</div>
+                    </section>
+
+                    <!-- Costs -->
+                    <section class="order-costs">
+                        <p><strong>Subtotal:</strong> <span id="panelSubtotal">—</span></p>
+                        <p><strong>Shipping:</strong> <span id="panelShipping">—</span></p>
+                        <p><strong>Tax:</strong> <span id="panelTax">—</span></p>
+                        <p class="total"><strong>Total:</strong> <span id="panelTotal">—</span></p>
+                    </section>
+
+                    <!-- Order History -->
+                    <section class="order-history">
+                        <h3>Order History</h3>
+                        <ul id="panelHistory">
+                            <li>—</li>
+                        </ul>
+                    </section>
+
+                    <!-- Action Buttons -->
+                    <div class="order-actions">
+                        <button type="button" class="btn primary">Print Label</button>
+                        <button type="button" class="btn secondary">Contact Buyer</button>
+                        <button type="button" class="btn update">Update Status</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="products" class="content">
+            <!-- Page top bar: title + CTA -->
+            <div class="page-topbar">
+                <div>
+                    <h1 class="page-title">Products</h1>
+                    <p>Manage your product listings and inventory.</p>
+                </div>
+
+                <div class="page-actions">
+                    <button id="addProductBtn" class="primary-cta" aria-label="Add new product">+ Add New
+                        Product</button>
+                </div>
+            </div>
+
+            <!-- Inventory alerts banner (hidden by default) -->
+            <div id="inventoryBanner" class="inventory-banner" role="status" aria-live="polite" aria-atomic="true"
+                data-visible="false">
+
+                <div class="banner-left">
+                    <span class="banner-icon" aria-hidden="true">⚠️</span>
+                    <span class="banner-text">You have alerts</span>
+                </div>
+
+                <div class="banner-actions">
+                    <button id="viewAlertsBtn" class="banner-link">View Alerts</button>
+                    <button id="dismissBannerBtn" class="banner-close" aria-label="Dismiss alerts">&times;</button>
+                </div>
+            </div>
+
+            <!-- Add Product Modal -->
+            <!-- Add Product Modal -->
+            <div id="addProductModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="addProductTitle">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="addProductTitle">Add New Product</h2>
+                        <button class="modal-close" id="closeModalBtn" aria-label="Close">&times;</button>
+                    </div>
+
+                    <form id="addProductForm">
+                        <!-- Basic info -->
+                        <label>Product Name</label>
+                        <input type="text" name="name" placeholder="Enter product name" required />
+
+                        <label>Price</label>
+                        <input type="text" name="price" placeholder="₦15,000" required />
+
+                        <label>Description</label>
+                        <textarea name="desc" placeholder="Enter short description"></textarea>
+
+                        <!-- Multiple images -->
+                        <label>Product Images (select multiple)</label>
+                        <input type="file" name="images" id="imageInput" accept="image/*" multiple />
+
+                        <!-- Condition -->
+                        <label>Condition</label>
+                        <select name="condition" required>
+                            <option value="New">New</option>
+                            <option value="Used">Used</option>
+                            <option value="Refurbished">Refurbished</option>
+                        </select>
+
+                        <!-- Category -->
+                        <label>Category</label>
+                        <input type="text" name="category" placeholder="e.g. Electronics" />
+
+                        <!-- Dynamic Specs -->
+                        <fieldset>
+                            <legend>Specifications</legend>
+                            <div id="specsContainer"></div>
+                            <button type="button" id="addSpecBtn">+ Add Spec</button>
+                        </fieldset>
+
+                        <div class="modal-actions">
+                            <button type="submit" class="primary-cta">Save Product</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 🔎 Search & Filters Section -->
+            <div class="search-filters">
+                <!-- Search Bar -->
+                <div class="search-bar">
+                    <input type="text" placeholder="Search by Product Name or SKU..." id="productSearch" />
+                    <button class="search-btn">Search</button>
+                </div>
+
+                <!-- Status Filters -->
+                <div class="status-filters">
+                    <button class="filter-tab active">All Products</button>
+                    <button class="filter-tab">Active</button>
+                    <button class="filter-tab">Drafts</button>
+                    <button class="filter-tab warning">Low Stock</button>
+                    <button class="filter-tab">Archived</button>
+                </div>
+
+                <!-- Sort Dropdown -->
+                <div class="sort-by">
+                    <label for="sortOptions">Sort By:</label>
+                    <select id="sortOptions">
+                        <option value="stock">Stock Level</option>
+                        <option value="sales">Sales Volume</option>
+                        <option value="date">Date Added</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 📊 Product Management Table -->
+            <div class="product-table-wrapper">
+                <table class="product-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Status</th>
+                            <th>Stock</th>
+                            <th>Views</th>
+                            <th>Sales</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                        <!-- JS will insert rows here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Quick Edit Panel -->
+            <div id="quickEditPanel" class="quick-edit-panel">
+                <div class="panel-header">
+                    <h3>Quick Edit</h3>
+                    <button id="closePanel" type="button">&times;</button>
+                </div>
+
+                <form id="quickEditForm">
+                    <div class="form-group">
+                        <label for="editStock">Stock Level</label>
+                        <input type="number" id="editStock" name="stock" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editPrice">Price</label>
+                        <input type="text" id="editPrice" name="price" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editStatus">Status</label>
+                        <select id="editStatus" name="status">
+                            <option value="Active">Active</option>
+                            <option value="Paused">Paused</option>
+                            <option value="Draft">Draft</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="save-btn">Save Changes</button>
+                </form>
+            </div>
+
+
+        </div>
+
+        <!-- Main content -->
+        <div id="messages" class="content">
+            <h1>Messages</h1>
+
+            <div class="messages-layout">
+                <!-- Left Panel: Conversation List -->
+                <div class="conversation-list">
+                    <!-- Search Bar -->
+                    <div class="conversation-search">
+                        <input type="text" id="searchConversations" placeholder="Search by name or message..." />
+                    </div>
+                    <!-- JS renders conversations here -->
+                </div>
+
+                <!-- Right Panel: Active Chat -->
+                <div class="chat-panel">
+                    <!-- Order / Product Context (optional) -->
+                    <div class="chat-context" style="display:none;">
+                        <img src="" alt="Product" class="context-thumb" />
+                        <span class="context-name"></span>
+                        <span class="context-id"></span>
+                    </div>
+
+                    <!-- Chat Header -->
+                    <div class="chat-header">
+                        <h3>Select a conversation</h3>
+                    </div>
+
+                    <!-- Chat messages -->
+                    <div class="chat-messages">
+                        <!-- JS renders messages here -->
+                    </div>
+
+                    <!-- Message Input -->
+                    <div class="chat-input">
+                        <input type="text" id="newMessageInput" placeholder="Type your message..." />
+                        <button class="send-btn" id="sendMessageBtn">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="payouts" class="content">
+            <h1>Payouts</h1>
+
+            <!-- Earnings Card -->
+            <div class="earnings-card">
+                <div class="earnings-main">
+                    <span class="label">Available for Payout</span>
+                    <span class="amount" id="availablePayout">₦542,500</span>
+                </div>
+
+                <!-- Request Payout CTA -->
+                <button id="requestPayoutBtn" class="payout-btn">Request Payout Now</button>
+
+                <!-- Payout Method Display -->
+                <div class="payout-method">
+                    <p>Bank Account: **** 4567</p>
+                    <a href="#" id="editPayoutMethod"><span>🔒</span> Edit Payout Method</a>
+                </div>
+
+                <!-- Payout Policy Summary -->
+                <div class="payout-summary">
+                    <p>Minimum Payout: ₦100.00</p>
+                    <p>Processing Time: 1-2 Business Days</p>
+                </div>
+            </div>
+
+            <!-- Transaction History -->
+            <div class="payout-history">
+                <h2>Recent Payouts & Pending Earnings</h2>
+
+                <div class="history-controls">
+                    <input type="text" id="transactionSearch" placeholder="Search by reference or type..." />
+                    <select id="filterStatus">
+                        <option value="all">All Statuses</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Failed">Failed</option>
+                    </select>
+                    <button id="exportSheetBtn">Export to Sheets</button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Reference ID</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionTableBody">
+                        <!-- JS will populate -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+        <div id="settings" class="content">
+            <h1>Settings</h1>
+
+            <div class="accordion">
+
+                <!-- Account & Security -->
+                <div class="accordion-item active">
+                    <div class="accordion-header">Account & Security</div>
+                    <div class="accordion-content">
+                        <!-- Password Change -->
+                        <div class="section">
+                            <h3>Change Password</h3>
+                            <input type="password" placeholder="Old Password" />
+                            <input type="password" placeholder="New Password" />
+                            <button class="save-btn">Save Password</button>
+                        </div>
+
+                        <!-- 2FA -->
+                        <div class="section">
+                            <h3>Two-Factor Authentication (2FA)</h3>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="toggle2FA">
+                                <span class="slider"></span>
+                            </label>
+                            <div id="twoFASetup" class="hidden">
+                                <p>Follow the guide to set up 2FA with your preferred app.</p>
+                            </div>
+                        </div>
+
+                        <!-- Email Address -->
+                        <div class="section">
+                            <h3>Email Address</h3>
+                            <p id="currentEmail">user@example.com <a href="#" id="editEmailLink">Edit</a></p>
+                            <input type="email" id="editEmailInput" class="hidden" placeholder="Enter new email" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Store Profile & Branding -->
+                <div class="accordion-item">
+                    <div class="accordion-header">Store Profile & Branding</div>
+                    <div class="accordion-content">
+                        <input type="text" placeholder="Store Name" />
+                        <div class="upload-area">
+                            <p>Upload Logo / Cover Banner</p>
+                            <input type="file" />
+                        </div>
+                        <textarea placeholder="Store Bio"></textarea>
+                        <input type="text" placeholder="Instagram Link" />
+                        <input type="text" placeholder="TikTok Link" />
+                        <button class="save-btn">Save Profile</button>
+                    </div>
+                </div>
+
+                <!-- Notification Preferences -->
+                <div class="accordion-item">
+                    <div class="accordion-header">Notification Preferences</div>
+                    <div class="accordion-content">
+                        <div class="notif-item">
+                            <span>New Order Placed</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="notif-item">
+                            <span>New Message Received</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="notif-item">
+                            <span>Payout Initiated</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="notif-item">
+                            <span>Low Inventory Alert</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Policies & Fulfillment -->
+                <div class="accordion-item">
+                    <div class="accordion-header">Policies & Fulfillment</div>
+                    <div class="accordion-content">
+                        <textarea placeholder="Return Policy"></textarea>
+                        <div class="pickup-options">
+                            <label><input type="checkbox"> Zone A Pickup</label>
+                            <label><input type="checkbox"> Zone B Pickup</label>
+                        </div>
+                        <input type="text" placeholder="Shipping Rates" />
+                        <button class="save-btn">Save Policies</button>
+                    </div>
+                </div>
+
+                <!-- Danger Zone -->
+                <div class="accordion-item">
+                    <div class="accordion-header danger">Danger Zone</div>
+                    <div class="accordion-content">
+                        <button class="danger-btn" id="deactivateAccountBtn">Deactivate Account</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <footer id="pageFooter">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>UMP</h2>
+                <p>University Marketplace — connecting students, products, and creativity.</p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Marketplace</a></li>
+                    <li><a href="#">Creators</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Report Issue</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Connect</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; <span id="year"></span> UMP. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script type="module" src="../functions/analytics.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+
+</html>
