@@ -662,6 +662,7 @@ const searchInput = document.getElementById("searchConversations");
 const newMessageInput = document.getElementById("newMessageInput");
 const sendBtn = document.getElementById("sendMessageBtn");
 const sidebarMessageLink = document.querySelector('a[data-target="messages"]');
+const backBtn = document.getElementById("backToConversations");
 
 let activeConversationId = null;
 
@@ -725,6 +726,32 @@ function renderConversationList(filter = "") {
     conversationListEl.appendChild(convEl);
   });
 }
+
+// On conversation click (mobile)
+conversationListEl.addEventListener("click", (e) => {
+  const convEl = e.target.closest(".conversation");
+  if (!convEl) return;
+
+  renderChat(convEl.dataset.id);
+
+  // Highlight active
+  conversationListEl
+    .querySelectorAll(".conversation")
+    .forEach((c) => c.classList.remove("active"));
+  convEl.classList.add("active");
+
+  // Mobile slide
+  if (window.innerWidth <= 768) {
+    conversationListEl.classList.add("hidden");
+    chatPanelEl.classList.add("active");
+  }
+});
+
+// Back button click (mobile)
+backBtn.addEventListener("click", () => {
+  conversationListEl.classList.remove("hidden");
+  chatPanelEl.classList.remove("active");
+});
 
 // Render active chat
 function renderChat(conversationId) {

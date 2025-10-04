@@ -229,3 +229,29 @@ body {
 .btn:hover {
     background: #0c7a45;
 }
+
+.move {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0;
+  font-size: 1.6rem;
+  color: #333;
+}
+
+.move p {
+  margin: 0;
+}
+
+.move a {
+  text-decoration: none;
+  color: #4CAF50;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.move a:hover {
+  color: #388E3C;
+  text-decoration: underline;
+}
