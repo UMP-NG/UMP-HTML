@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UMP - Marketplace</title>
+    <title>UMP - Homepage</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="../Styles/store.css" />
     <link rel="stylesheet" href="../Styles/index.css" />
+    <link rel="stylesheet" href="../Styles/hostel.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 
 <body>
@@ -37,8 +36,8 @@
         </div>
 
         <form action="" class="search-form">
-            <input type="search" id="searchInput" placeholder="Search here..." />
-            <label for="searchInput" class="fas fa-search"></label>
+            <input type="search" id="search-box" placeholder="Search here..." />
+            <label for="search-box" class="fas fa-search"></label>
         </form>
 
         <!-- Profile Popup -->
@@ -64,7 +63,68 @@
         </div>
     </header>
 
-    <main id="sellerProfile"></main>
+    <section class="listing-controls redesigned">
+        <div class="controls-header">
+            <h2>Available Accommodations</h2>
+            <div class="view-toggle">
+                <button class="toggle-btn active" data-view="list">
+                    <i class="fa-solid fa-list"></i> List
+                </button>
+                <button class="toggle-btn" data-view="grid">
+                    <i class="fa-solid fa-table-cells"></i> Grid
+                </button>
+            </div>
+        </div>
+
+        <div class="filters-card">
+            <div class="filter-item">
+                <label for="location">Location</label>
+                <select id="location">
+                    <option value="">All Areas</option>
+                    <option value="main-campus">Main Campus</option>
+                    <option value="yaba">Yaba</option>
+                    <option value="bariga">Bariga</option>
+                </select>
+            </div>
+
+            <div class="filter-item">
+                <label>Price Range</label>
+                <div class="price-slider">
+                    <input type="range" min="10000" max="300000" value="50000" id="minPrice">
+                    <input type="range" min="10000" max="300000" value="200000" id="maxPrice">
+                    <p>₦<span id="minValue">50,000</span> - ₦<span id="maxValue">200,000</span></p>
+                </div>
+            </div>
+
+            <div class="filter-item">
+                <label>Bedrooms</label>
+                <div class="bed-options">
+                    <button class="bed-btn" data-bed="1">1+</button>
+                    <button class="bed-btn" data-bed="2">2+</button>
+                    <button class="bed-btn" data-bed="3">3+</button>
+                </div>
+            </div>
+
+            <div class="filter-item">
+                <label for="amenities">Amenities</label>
+                <select id="amenities">
+                    <option value="">All</option>
+                    <option value="wifi">Wi-Fi</option>
+                    <option value="parking">Parking</option>
+                    <option value="laundry">Laundry</option>
+                    <option value="pet">Pet Friendly</option>
+                </select>
+            </div>
+        </div>
+
+
+    </section>
+
+    <section class="listing-grid-section">
+        <div class="listing-grid"></div>
+    </section>
+
+    
 
     <footer id="pageFooter">
         <div class="footer-container">
@@ -108,8 +168,9 @@
         </div>
     </footer>
 
-    <script type="module" src="../functions/store.js"></script>
+    <!-- JS -->
     <script type="module" src="../functions/index.js"></script>
+    <script type="module" src="../functions/hostel.js"></script>
 </body>
 
 </html>

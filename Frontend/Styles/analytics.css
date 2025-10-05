@@ -2236,7 +2236,6 @@ input:checked+.slider:before {
         transform: translateX(0);
     }
 
-    /* Show back button on mobile chat */
     .chat-header .back-btn {
         display: inline-block;
     }

@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UMP - Marketplace</title>
+    <title>UMP - Homepage</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="../Styles/store.css" />
     <link rel="stylesheet" href="../Styles/index.css" />
+    <link rel="stylesheet" href="../Styles/services.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 
 <body>
@@ -37,8 +36,8 @@
         </div>
 
         <form action="" class="search-form">
-            <input type="search" id="searchInput" placeholder="Search here..." />
-            <label for="searchInput" class="fas fa-search"></label>
+            <input type="search" id="search-box" placeholder="Search here..." />
+            <label for="search-box" class="fas fa-search"></label>
         </form>
 
         <!-- Profile Popup -->
@@ -64,7 +63,54 @@
         </div>
     </header>
 
-    <main id="sellerProfile"></main>
+    <section class="filter-bar">
+        <div class="filter-item">
+            <label for="category">Category</label>
+            <select id="category">
+                <option value="">All Categories</option>
+                <option value="tutoring">Academic Tutoring</option>
+                <option value="design">Graphic Design</option>
+                <option value="fitness">Fitness Coaching</option>
+                <option value="music">Music Lessons</option>
+            </select>
+        </div>
+
+        <div class="filter-item price-filter">
+            <label for="priceRange">Rate / Price</label>
+            <div class="price-range-wrapper">
+                <input type="range" id="priceRange" min="0" max="100" step="5" />
+                <span id="priceValue">$0 - $100/hr</span>
+            </div>
+        </div>
+
+        <div class="filter-item">
+            <label for="rating">Rating</label>
+            <select id="rating">
+                <option value="">All Ratings</option>
+                <option value="4.5">4.5★ & Up</option>
+                <option value="4">4★ & Up</option>
+                <option value="3.5">3.5★ & Up</option>
+            </select>
+        </div>
+
+        <div class="filter-item availability">
+            <label>Availability</label>
+            <div class="availability-options">
+                <label><input type="checkbox" value="mornings" /> Mornings</label>
+                <label><input type="checkbox" value="afternoons" /> Afternoons</label>
+                <label><input type="checkbox" value="evenings" /> Evenings</label>
+                <label><input type="checkbox" value="weekdays" /> Weekdays</label>
+                <label><input type="checkbox" value="weekends" /> Weekends</label>
+            </div>
+        </div>
+    </section>
+
+    <section class="service-listing">
+        <div class="service-grid" id="serviceGrid">
+            <!-- Cards will be injected dynamically using JS -->
+        </div>
+    </section>
+
 
     <footer id="pageFooter">
         <div class="footer-container">
@@ -108,7 +154,8 @@
         </div>
     </footer>
 
-    <script type="module" src="../functions/store.js"></script>
+    <!-- JS -->
+    <script type="module" src="../functions/services.js"></script>
     <script type="module" src="../functions/index.js"></script>
 </body>
 

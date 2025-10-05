@@ -1,0 +1,397 @@
+:root {
+    --color-primary: #fff;
+    --color-secondary: #222222ff;
+    --color-comp: #2851cbff;
+    --font-primary: sans-serif;
+    --color-headerhover: #7f7f7fff;
+}
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    text-transform: capitalize;
+    transition: all .2s linear;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
+    font-size: 62.5%;
+}
+
+.property-header {
+    padding: 4rem 6%;
+    background: var(--color-primary);
+    border-bottom: 1px solid #eee;
+    margin-top: 9rem;
+}
+
+.breadcrumbs {
+    font-size: 1.4rem;
+    color: #777;
+    margin-bottom: 1.2rem;
+}
+
+.breadcrumbs a {
+    color: var(--color-comp);
+    text-decoration: none;
+}
+
+.breadcrumbs span {
+    margin: 0 0.6rem;
+}
+
+.property-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.property-title h1 {
+    font-size: 3rem;
+    color: var(--color-secondary);
+    font-weight: 600;
+}
+
+.badge.verified {
+    background: #e6f2ff;
+    color: #1a73e8;
+    font-size: 1.3rem;
+    font-weight: 500;
+    border-radius: 1rem;
+    padding: 0.4rem 1.2rem;
+    margin-left: 1rem;
+    display: inline-block;
+}
+
+.property-price {
+    text-align: right;
+}
+
+.property-price h2 {
+    color: var(--color-comp);
+    font-size: 2.4rem;
+    font-weight: 700;
+}
+
+.property-price p {
+    color: #777;
+    font-size: 1.4rem;
+}
+
+.property-showcase {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    padding: 5rem 6%;
+    background: var(--color-primary);
+}
+
+.gallery-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.main-image img {
+    width: 100%;
+    height: 40rem;
+    object-fit: cover;
+    border-radius: 1.2rem;
+}
+
+.thumbnail-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.thumbnail-row img {
+    width: 23%;
+    height: 10rem;
+    object-fit: cover;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.thumbnail-row img:hover {
+    opacity: 1;
+}
+
+.extra-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.extra-links a {
+    color: var(--color-comp);
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-decoration: underline;
+}
+
+.info-column {
+    position: sticky;
+    top: 8rem;
+    align-self: start;
+    background: #f9f9f9;
+    border-radius: 1.2rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.key-stats h3,
+.amenities h3 {
+    font-size: 1.8rem;
+    color: var(--color-secondary);
+    margin-bottom: 1rem;
+}
+
+.key-stats ul {
+    list-style: none;
+    font-size: 1.5rem;
+    color: #555;
+}
+
+.key-stats li {
+    margin-bottom: 0.8rem;
+}
+
+.amenity-icons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+}
+
+.amenity {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.5rem;
+    color: #444;
+}
+
+.amenity i {
+    color: var(--color-comp);
+    font-size: 1.8rem;
+}
+
+.contact-cta {
+    margin-top: 1.5rem;
+}
+
+.cta-btn {
+    width: 100%;
+    background: var(--color-comp);
+    color: #fff;
+    padding: 1.4rem;
+    border-radius: 0.8rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.cta-btn:hover {
+    background: #1e3ea8;
+}
+
+/* ---------- Tabs Section ---------- */
+.property-details {
+    padding: 5rem 6%;
+    background: #fff;
+}
+
+.tab-controls {
+    display: flex;
+    gap: 2rem;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    background: none;
+    font-size: 1.6rem;
+    font-weight: 500;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    color: #666;
+}
+
+.tab-btn.active {
+    border-color: var(--color-comp);
+    color: var(--color-comp);
+}
+
+.tab-content {
+    position: relative;
+}
+
+.tab-pane {
+    display: none;
+    animation: slideIn 0.4s ease;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(15px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Content Styles */
+.tab-pane h3 {
+    font-size: 2rem;
+    color: var(--color-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.tab-pane p {
+    font-size: 1.5rem;
+    color: #444;
+    line-height: 1.6;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 30rem;
+    border: 0;
+    border-radius: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.poi-list {
+    list-style: none;
+    font-size: 1.5rem;
+    color: #555;
+}
+
+.poi-list li {
+    margin-bottom: 0.6rem;
+}
+
+.amenities-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+}
+
+.amenities-categories h4 {
+    color: var(--color-secondary);
+    margin-bottom: 0.8rem;
+}
+
+.amenities-categories ul {
+    list-style: none;
+    font-size: 1.5rem;
+    color: #444;
+}
+
+.review {
+    margin-bottom: 2rem;
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 1rem;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.4rem;
+    color: #333;
+    margin-bottom: 0.8rem;
+}
+
+.stars {
+    color: gold;
+}
+
+/* ---------- Related Listings ---------- */
+.related-listings {
+    padding: 5rem 6%;
+    background: #f7f8fa;
+}
+
+.related-listings h2 {
+    font-size: 2.2rem;
+    color: var(--color-secondary);
+    margin-bottom: 2rem;
+}
+
+.carousel {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.listing-card {
+    flex: 0 0 25%;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    min-width: 22rem;
+}
+
+.listing-card img {
+    width: 100%;
+    height: 16rem;
+    object-fit: cover;
+}
+
+.listing-card h4 {
+    font-size: 1.6rem;
+    color: var(--color-secondary);
+    padding: 1rem 1.5rem 0.5rem;
+}
+
+.listing-card p {
+    font-size: 1.4rem;
+    color: var(--color-comp);
+    padding: 0 1.5rem 1rem;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .property-showcase {
+        grid-template-columns: 1fr;
+    }
+
+    .info-column {
+        position: static;
+    }
+
+    .amenities-categories {
+        flex-direction: column;
+    }
+
+    .listing-card {
+        flex: 0 0 70%;
+    }
+}

@@ -1,0 +1,325 @@
+:root {
+    --color-primary: #ffffff;
+    --color-secondary: #1e293b;
+    --color-accent: #0077ff;
+    --color-light: #f9fafb;
+    --color-border: #e2e8f0;
+    --font-primary: 'Poppins', sans-serif;
+}
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-primary);
+}
+
+body {
+    background: #f5f7fb;
+    color: var(--color-secondary);
+    font-size: 1.6rem;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 10rem auto;
+    padding: 2rem 1.5rem;
+}
+
+/* ====== LAYOUT ====== */
+.service-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2.5rem;
+}
+
+.service-info h1 {
+    font-size: 2.2rem;
+    color: var(--color-secondary);
+}
+
+/* ====== HEADER ====== */
+.service-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.verified-badge {
+    background: var(--color-accent);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
+    font-size: 1.2rem;
+}
+
+/* ====== PROVIDER ====== */
+.provider-bio {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    background: var(--color-light);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+}
+
+.provider-photo {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.provider-bio h3 {
+    font-size: 1.8rem;
+}
+
+.provider-major {
+    font-size: 1.3rem;
+    color: #666;
+    margin-bottom: 0.6rem;
+}
+
+/* ====== CONTENT SECTIONS ====== */
+.service-description,
+.certifications,
+.portfolio,
+.reviews-summary {
+    background: var(--color-primary);
+    padding: 1.5rem 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+}
+
+.service-description h2,
+.certifications h2,
+.portfolio h2,
+.reviews-summary h2 {
+    color: var(--color-secondary);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+/* ====== CERTIFICATIONS ====== */
+.certifications ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.certifications li {
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ====== PORTFOLIO ====== */
+.portfolio-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.portfolio-gallery img {
+    width: calc(50% - 0.5rem);
+    border-radius: 0.8rem;
+    object-fit: cover;
+}
+
+/* ====== REVIEWS ====== */
+.rating-overview h3 {
+    font-size: 1.8rem;
+    color: #fbbf24;
+}
+
+/* ====== BOOKING PANEL ====== */
+.booking-panel {
+    background: var(--color-primary);
+    border: 1px solid var(--color-border);
+    padding: 2rem;
+    border-radius: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 100px;
+}
+
+.price-box {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.main-rate {
+    font-size: 2rem;
+    color: var(--color-accent);
+    font-weight: 700;
+}
+
+.main-rate span {
+    font-weight: 400;
+    color: #555;
+}
+
+.schedule label {
+    font-size: 1.4rem;
+    display: block;
+    margin-bottom: 0.6rem;
+}
+
+.schedule input[type="date"] {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 0.6rem;
+    border: 1px solid var(--color-border);
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.time-slots {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+}
+
+.time-btn {
+    padding: 0.8rem;
+    border: 1px solid #0077ff50;
+    background: white;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1.4rem;
+}
+
+.time-btn:hover {
+    background: var(--color-accent);
+    color: white;
+}
+
+/* ====== BUTTONS ====== */
+.cta-btn,
+.secondary-btn {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.6rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cta-btn {
+    background: var(--color-accent);
+    color: #fff;
+    margin-top: 1rem;
+}
+
+.cta-btn:hover {
+    background: #005ecc;
+}
+
+.secondary-btn {
+    background: transparent;
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    margin-top: 0.8rem;
+}
+
+.secondary-btn:hover {
+    background: var(--color-accent);
+    color: #fff;
+}
+
+/* ====== TABS ====== */
+.details-tabs {
+    margin-top: 3rem;
+}
+
+.tab-controls {
+    display: flex;
+    gap: 1rem;
+    border-bottom: 2px solid #eee;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    color: #555;
+    font-size: 1.5rem;
+}
+
+.tab-btn.active {
+    color: var(--color-accent);
+    border-bottom: 2px solid var(--color-accent);
+}
+
+.tab-content {
+    background: var(--color-primary);
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+.review {
+    margin-bottom: 1.5rem;
+    border-left: 3px solid var(--color-accent);
+    padding-left: 1rem;
+    color: #333;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 900px) {
+    .service-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-panel {
+        position: relative;
+        top: 0;
+    }
+
+    .portfolio-gallery img {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .provider-bio {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .provider-photo {
+        width: 70px;
+        height: 70px;
+    }
+
+    .tab-controls {
+        flex-wrap: wrap;
+    }
+
+    .tab-btn {
+        padding: 0.8rem 1rem;
+        font-size: 1.3rem;
+    }
+}

@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UMP - Marketplace</title>
+    <title>UMP - Homepage</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="../Styles/store.css" />
     <link rel="stylesheet" href="../Styles/index.css" />
+    <link rel="stylesheet" href="../Styles/servicesdp.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 
 <body>
@@ -37,8 +36,8 @@
         </div>
 
         <form action="" class="search-form">
-            <input type="search" id="searchInput" placeholder="Search here..." />
-            <label for="searchInput" class="fas fa-search"></label>
+            <input type="search" id="search-box" placeholder="Search here..." />
+            <label for="search-box" class="fas fa-search"></label>
         </form>
 
         <!-- Profile Popup -->
@@ -64,7 +63,7 @@
         </div>
     </header>
 
-    <main id="sellerProfile"></main>
+     <div id="app"></div>
 
     <footer id="pageFooter">
         <div class="footer-container">
@@ -108,7 +107,8 @@
         </div>
     </footer>
 
-    <script type="module" src="../functions/store.js"></script>
+    <!-- JS -->
+    <script type="module" src="../functions/servicesdp.js"></script>
     <script type="module" src="../functions/index.js"></script>
 </body>
 
