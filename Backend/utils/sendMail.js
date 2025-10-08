@@ -1,68 +1,51 @@
-import nodemailer from "nodemailer";
+import SibApiV3Sdk from "sib-api-v3-sdk";
 
 const sendMail = async (to, subject, content, type = "otp") => {
   try {
-    console.log("📡 Connecting to Brevo SMTP...");
+    console.log("📡 Sending email via Brevo API...");
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp-relay.brevo.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER, // techtideenterprise0@gmail.com
-        pass: process.env.EMAIL_PASS, // your Brevo API key
-      },
-    });
+    // Configure Brevo API
+    const defaultClient = SibApiV3Sdk.ApiClient.instance;
+    const apiKey = defaultClient.authentications["api-key"];
+    apiKey.apiKey = process.env.EMAIL_PASS; // your Brevo API key
 
-    await transporter.verify();
-    console.log("✅ Brevo SMTP verified successfully.");
+    const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
-    // === Email Templates ===
+    // === Email template ===
     let htmlContent = "";
-
     if (type === "otp") {
       htmlContent = `
-      <html><body>
-        <div style="max-width:480px;margin:auto;font-family:Arial;border:1px solid #ddd;border-radius:8px;padding:20px;">
-          <h2 style="text-align:center;color:#333;">Your OTP Code</h2>
-          <p style="text-align:center;font-size:18px;color:#555;">Use the following code to verify your account:</p>
-          <div style="text-align:center;font-size:28px;font-weight:bold;background:#f4f4f4;padding:12px;border-radius:6px;letter-spacing:4px;margin:10px 0;">
+        <div style="font-family:Arial;padding:20px;">
+          <h2>Your OTP Code</h2>
+          <p>Use this code to verify your account:</p>
+          <div style="font-size:22px;font-weight:bold;background:#f4f4f4;padding:10px;border-radius:6px;text-align:center;">
             ${content}
           </div>
-          <p style="font-size:14px;text-align:center;color:#888;">This code will expire in 19 minutes.</p>
-        </div>
-      </body></html>`;
+          <p style="font-size:14px;color:#888;">Expires in 19 minutes.</p>
+        </div>`;
     } else if (type === "reset") {
       htmlContent = `
-      <html><body>
-        <div style="max-width:480px;margin:auto;font-family:Arial;border:1px solid #ddd;border-radius:8px;padding:20px;">
-          <h2 style="text-align:center;color:#333;">Password Reset</h2>
-          <p style="font-size:16px;text-align:center;color:#555;">
-            Click the button below to reset your password:
-          </p>
-          <p style="text-align:center;margin:20px 0;">
-            <a href="${content}" style="background:#007bff;color:#fff;padding:12px 20px;border-radius:6px;text-decoration:none;">Reset Password</a>
-          </p>
-          <p style="font-size:14px;text-align:center;color:#888;">If you didn’t request this, you can ignore this email.</p>
-        </div>
-      </body></html>`;
+        <div style="font-family:Arial;padding:20px;">
+          <h2>Password Reset</h2>
+          <p>Click below to reset your password:</p>
+          <a href="${content}" style="background:#007bff;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;">Reset Password</a>
+          <p style="font-size:14px;color:#888;">If you didn’t request this, you can ignore this email.</p>
+        </div>`;
     }
 
-    const info = await transporter.sendMail({
-      from: `"UMP App" <${process.env.EMAIL_USER}>`,
-      to,
+    // === Send ===
+    const sendSmtpEmail = {
+      sender: { name: "UMP App", email: "umpofficial.noreply@gmail.com" },
+      to: [{ email: to }],
       subject,
-      text:
-        type === "otp"
-          ? `Your OTP code is: ${content}`
-          : `Reset your password using this link: ${content}`,
-      html: htmlContent,
-    });
+      htmlContent,
+    };
 
-    console.log(`✅ Brevo email sent successfully to ${to}: ${info.messageId}`);
-    return info;
+    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log(`✅ Email sent successfully to ${to}. Message ID: ${data.messageId}`);
+    return data;
   } catch (err) {
-    console.error("❌ Mail send error:", err);
+    console.error("❌ Mail send error:", err.message);
     throw new Error("Email could not be sent");
   }
 };
