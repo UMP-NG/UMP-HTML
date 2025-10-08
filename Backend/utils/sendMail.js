@@ -41,7 +41,7 @@ const sendMail = async (to, subject, content, type = "otp") => {
 
     await transporter.verify();
 
-    // Switch between OTP and Reset Password template
+    // === Templates ===
     let htmlContent = "";
 
     if (type === "otp") {
@@ -86,8 +86,8 @@ const sendMail = async (to, subject, content, type = "otp") => {
     console.log(`✅ Gmail email sent to ${to}: ${info.messageId}`);
     return info;
   } catch (err) {
-    console.error("❌ Mail send error:", err.message);
-    throw new Error("Email could not be sent");
+    console.error("❌ Mail send error details:", err);
+    throw err;
   }
 };
 
