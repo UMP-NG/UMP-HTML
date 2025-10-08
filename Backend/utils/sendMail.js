@@ -1,17 +1,23 @@
-import SibApiV3Sdk from "sib-api-v3-sdk";
+import nodemailer from "nodemailer";
 
 const sendMail = async (to, subject, content, type = "otp") => {
   try {
-    console.log("📡 Sending email via Brevo API...");
+    console.log("📡 Connecting to Brevo SMTP...");
 
-    // Configure Brevo API client
-    const defaultClient = SibApiV3Sdk.ApiClient.instance;
-    const apiKey = defaultClient.authentications["api-key"];
-    apiKey.apiKey = process.env.EMAIL_PASS; // your Brevo API key
+    const transporter = nodemailer.createTransport({
+      host: "smtp-relay.brevo.com",
+      port: 587,
+      secure: false, // use STARTTLS
+      auth: {
+        user: process.env.EMAIL_USER, // e.g. 98d752001@smtp-brevo.com
+        pass: process.env.EMAIL_PASS, // your xsmtpsib- key
+      },
+    });
 
-    const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+    await transporter.verify();
+    console.log("✅ Brevo SMTP connection verified successfully.");
 
-    // === Email template ===
+    // === Email content ===
     let htmlContent = "";
     if (type === "otp") {
       htmlContent = `
@@ -33,24 +39,17 @@ const sendMail = async (to, subject, content, type = "otp") => {
         </div>`;
     }
 
-    // === Send ===
-    const sendSmtpEmail = {
-      sender: { name: "UMP App", email: "techtideenterprise0@gmail.com" }, // must be verified in Brevo
-      to: [{ email: to }],
+    const info = await transporter.sendMail({
+      from: `"UMP App" <umpofficial.noreply@gmail.com>`, // can be your Brevo verified sender
+      to,
       subject,
-      htmlContent,
-    };
-
-    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
-    console.log(`✅ Email sent successfully to ${to}. Message ID: ${data.messageId}`);
-    return data;
-  } catch (err) {
-    console.error("❌ Mail send error (full details):", {
-      message: err.message,
-      code: err.code,
-      stack: err.stack,
-      response: err.response ? err.response.text : null,
+      html: htmlContent,
     });
+
+    console.log(`✅ Email sent successfully to ${to}. Message ID: ${info.messageId}`);
+    return info;
+  } catch (err) {
+    console.error("❌ Mail send error details:", err);
     throw new Error("Email could not be sent");
   }
 };
