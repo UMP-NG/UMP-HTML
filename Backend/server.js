@@ -7,6 +7,8 @@ import authRoutes from "./routes/authroutes.js";
 
 dotenv.config();
 console.log("Using email:", process.env.EMAIL_USER);
+console.log("🧩 EMAIL_PASS starts with:", process.env.EMAIL_PASS?.slice(0, 10));
+
 
 connectDB();
 
