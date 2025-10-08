@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UMP - Marketplace</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../Styles/index.css">
+    <link rel="stylesheet" href="../Styles/provideranalytics.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="main-header">
+        <a class="logo" href="/">
+            <img src="../images/ump-logo.jpeg" alt="UMP Logo">
+        </a>
+
+        <div class="profile">
+            <img src="../images/guy.png" alt="Seller Avatar">
+            <span>John Doe</span>
+        </div>
+
+    </header>
+
+    <section class="analytics-toggle">
+        <div class="toggle-container">
+            <button class="toggle-btn active" data-role="walkers">Delivery Analytics</button>
+            <button class="toggle-btn" data-role="services">Service Provider Analytics</button>
+
+        </div>
+    </section>
+
+    <section id="walkers" class="analytics-section active">
+        <h3>Delivery Analytics</h3>
+        <p>Delivery performance, routes, and stats will appear here.</p>
+        <div class="analytics-dashboard">
+            <!-- KPI CARDS -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <h4>Total Earnings (Last 30 Days)</h4>
+                    <p class="kpi-value accent">₦245,000</p>
+                    <small>+12% from last month</small>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>Orders Completed</h4>
+                    <p class="kpi-value">142</p>
+                    <small>↑ Active performance</small>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>Average Delivery Time</h4>
+                    <p class="kpi-value">28 mins</p>
+                    <small>Goal: < 30 mins</small>
+                </div>
+            </div>
+
+            <!-- INCOMING ORDERS SECTION -->
+            <div class="incoming-orders">
+                <div class="section-header">
+                    <h3>Incoming Orders</h3>
+                    <button class="refresh-btn">↻ Refresh</button>
+                </div>
+
+                <div class="orders-list">
+                    <div class="order-item">
+                        <div>
+                            <h4>Order #4521</h4>
+                            <p>Pickup: Marina → Delivery: Ikeja</p>
+                        </div>
+                        <button class="accept-btn">Accept</button>
+                    </div>
+
+                    <div class="order-item">
+                        <div>
+                            <h4>Order #4522</h4>
+                            <p>Pickup: Yaba → Delivery: Lekki</p>
+                        </div>
+                        <button class="accept-btn">Accept</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECENT ACTIVITY -->
+            <div class="recent-activity">
+                <div class="section-header">
+                    <h3>Recent Activity</h3>
+                    <a href="#" class="view-all">View all</a>
+                </div>
+
+                <table class="activity-table">
+                    <thead>
+                        <tr>
+                            <th>Delivery ID</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Earnings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#4490</td>
+                            <td>10:15 AM</td>
+                            <td>11:00 AM</td>
+                            <td>₦1,800</td>
+                        </tr>
+                        <tr>
+                            <td>#4491</td>
+                            <td>11:25 AM</td>
+                            <td>12:05 PM</td>
+                            <td>₦1,500</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- VISUAL PERFORMANCE MODULE -->
+            <div class="visual-performance">
+                <div class="section-header">
+                    <h3>Performance Overview</h3>
+                    <p class="subtext">Daily Earnings (Last 30 Days)</p>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="earningsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- PAYOUT STATUS & NEXT STEPS -->
+            <div class="payout-status">
+                <div class="payout-content">
+                    <h3>Payout Summary</h3>
+
+                    <div class="payout-details">
+                        <div class="detail">
+                            <p>Available for Payout</p>
+                            <h2 class="amount">₦85,200</h2>
+                        </div>
+                        <div class="detail">
+                            <p>Next Scheduled Payout</p>
+                            <h4 class="date">October 12, 2025</h4>
+                        </div>
+                    </div>
+
+                    <div class="payout-actions">
+                        <a href="#" class="view-history">View Full Payout History</a>
+                        <button class="request-btn">Request Early Payout</button>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <section id="services" class="analytics-section">
+        <div class="analytics-dashboard">
+            <!-- KPI CARDS -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <h4>Total Revenue (Last 30 Days)</h4>
+                    <p class="kpi-value accent">₦310,000</p>
+                    <small>+8% from last month</small>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>Sessions Completed</h4>
+                    <p class="kpi-value">56</p>
+                    <small>↑ Consistent activity</small>
+                </div>
+
+                <div class="kpi-card">
+                    <h4>Average Rating</h4>
+                    <p class="kpi-value">4.7 ★</p>
+                    <small>Based on recent 20 sessions</small>
+                </div>
+            </div>
+
+            <!-- RECENT ACTIVITY -->
+            <div class="recent-activity">
+                <div class="section-header">
+                    <h3>Recent Sessions</h3>
+                    <a href="#" class="view-all">View all</a>
+                </div>
+
+                <table class="activity-table">
+                    <thead>
+                        <tr>
+                            <th>Session Date</th>
+                            <th>Client</th>
+                            <th>Service Type</th>
+                            <th>Earnings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Oct 5, 2025</td>
+                            <td>Client A</td>
+                            <td>Cleaning</td>
+                            <td>₦8,000</td>
+                        </tr>
+                        <tr>
+                            <td>Oct 4, 2025</td>
+                            <td>Client B</td>
+                            <td>Plumbing</td>
+                            <td>₦12,500</td>
+                        </tr>
+                        <tr>
+                            <td>Oct 2, 2025</td>
+                            <td>Client C</td>
+                            <td>AC Repair</td>
+                            <td>₦10,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="visual-performance">
+            <div class="section-header">
+                <h3>Performance Overview</h3>
+                <p class="subtext">Daily Revenue (Last 30 Days)</p>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="serviceEarningsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- RECENT MESSAGES -->
+        <div class="recent-messages">
+            <div class="section-header">
+                <h3>Recent Messages</h3>
+                <a href="#" class="view-all">View all</a>
+            </div>
+
+            <div class="message-list">
+                <div class="message">
+                    <div class="message-info">
+                        <h4>Client #1023</h4>
+                        <p class="message-snippet">Thanks for the great service!</p>
+                    </div>
+                    <span class="time">2h ago</span>
+                </div>
+
+                <div class="message">
+                    <div class="message-info">
+                        <h4>Client #0988</h4>
+                        <p class="message-snippet">Can we reschedule for tomorrow?</p>
+                    </div>
+                    <span class="time">5h ago</span>
+                </div>
+
+                <div class="message">
+                    <div class="message-info">
+                        <h4>Support</h4>
+                        <p class="message-snippet">Your payout request is being processed.</p>
+                    </div>
+                    <span class="time">1d ago</span>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 4. Payout Status & Next Steps -->
+        <section class="payout-status">
+            <div class="payout-content">
+                <h3>Payout Summary</h3>
+
+                <div class="payout-details">
+                    <div class="detail">
+                        <p>Available for Payout</p>
+                        <h2 class="amount">₦85,200</h2>
+                    </div>
+                    <div class="detail">
+                        <p>Next Scheduled Payout</p>
+                        <h4 class="date">October 12, 2025</h4>
+                    </div>
+                </div>
+
+                <div class="payout-actions">
+                    <a href="#" class="view-history">View Full Payout History</a>
+                    <button class="request-btn">Request Early Payout</button>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <footer id="pageFooter">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>UMP</h2>
+                <p>University Marketplace — connecting students, products, and creativity.</p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Marketplace</a></li>
+                    <li><a href="#">Creators</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Report Issue</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Connect</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; <span id="year"></span> UMP. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="../functions/provideranalytics.js"></script>
+</body>
+
+</html>
