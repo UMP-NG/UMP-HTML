@@ -4,9 +4,9 @@ import nodemailer from "nodemailer";
 const checkSMTPConnection = (host, port, timeout = 5000) => {
   return new Promise((resolve, reject) => {
     const socket = net.createConnection(port, host);
-    let timer = setTimeout(() => {
+    const timer = setTimeout(() => {
       socket.destroy();
-      reject(new Error("SMTP connection timed out"));
+      reject(new Error(`SMTP connection to port ${port} timed out`));
     }, timeout);
 
     socket.on("connect", () => {
@@ -24,15 +24,27 @@ const checkSMTPConnection = (host, port, timeout = 5000) => {
 
 const sendMail = async (to, subject, content, type = "otp") => {
   try {
-    console.log(`🔌 Checking SMTP connectivity...`);
-    await checkSMTPConnection("smtp.gmail.com", 587);
-    console.log(`✅ SMTP connection looks good, proceeding to send mail...`);
+    console.log("🔌 Checking SMTP connectivity...");
+
+    let selectedPort = 465;
+    let secure = true;
+
+    try {
+      await checkSMTPConnection("smtp.gmail.com", 465);
+      console.log("✅ SMTP (SSL 465) connection OK");
+    } catch (err465) {
+      console.warn("⚠️ Port 465 blocked, trying 587...");
+      await checkSMTPConnection("smtp.gmail.com", 587);
+      console.log("✅ SMTP (TLS 587) connection OK");
+      selectedPort = 587;
+      secure = false;
+    }
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
       host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
+      port: selectedPort,
+      secure,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -40,6 +52,7 @@ const sendMail = async (to, subject, content, type = "otp") => {
     });
 
     await transporter.verify();
+    console.log("📡 Transporter verified successfully.");
 
     // === Templates ===
     let htmlContent = "";
@@ -83,11 +96,11 @@ const sendMail = async (to, subject, content, type = "otp") => {
       html: htmlContent,
     });
 
-    console.log(`✅ Gmail email sent to ${to}: ${info.messageId}`);
+    console.log(`✅ Gmail email sent successfully to ${to}: ${info.messageId}`);
     return info;
   } catch (err) {
     console.error("❌ Mail send error details:", err);
-    throw err;
+    throw new Error("Email could not be sent");
   }
 };
 
