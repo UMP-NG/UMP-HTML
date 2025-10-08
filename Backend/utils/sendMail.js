@@ -4,7 +4,7 @@ const sendMail = async (to, subject, content, type = "otp") => {
   try {
     console.log("📡 Sending email via Brevo API...");
 
-    // Configure Brevo API
+    // Configure Brevo API client
     const defaultClient = SibApiV3Sdk.ApiClient.instance;
     const apiKey = defaultClient.authentications["api-key"];
     apiKey.apiKey = process.env.EMAIL_PASS; // your Brevo API key
@@ -35,7 +35,7 @@ const sendMail = async (to, subject, content, type = "otp") => {
 
     // === Send ===
     const sendSmtpEmail = {
-      sender: { name: "UMP App", email: "umpofficial.noreply@gmail.com" },
+      sender: { name: "UMP App", email: "techtideenterprise0@gmail.com" }, // must be verified in Brevo
       to: [{ email: to }],
       subject,
       htmlContent,
@@ -45,7 +45,12 @@ const sendMail = async (to, subject, content, type = "otp") => {
     console.log(`✅ Email sent successfully to ${to}. Message ID: ${data.messageId}`);
     return data;
   } catch (err) {
-    console.error("❌ Mail send error:", err.message);
+    console.error("❌ Mail send error (full details):", {
+      message: err.message,
+      code: err.code,
+      stack: err.stack,
+      response: err.response ? err.response.text : null,
+    });
     throw new Error("Email could not be sent");
   }
 };
