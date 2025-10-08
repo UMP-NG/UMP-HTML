@@ -29,6 +29,7 @@ const sendMail = async (to, subject, content, type = "otp") => {
     console.log(`✅ SMTP connection looks good, proceeding to send mail...`);
 
     const transporter = nodemailer.createTransport({
+      service: "gmail"
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
