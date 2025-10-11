@@ -1,19 +1,26 @@
 import express from "express";
-import { signup, login, getMe } from "../controllers/authController.js";
-import { protect, authorize } from "../middleware/authMiddleware.js";
 import {
+  signup,
+  login,
+  getMe,
   forgotPassword,
   resetPassword,
+  verifyOTP,
+  logout,
+  resendOtp,
 } from "../controllers/authController.js";
-import { verifyOTP } from "../controllers/authController.js";
+import { protect, authorize } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Auth routes
+// ==========================
+// AUTH ROUTES
+// ==========================
 router.post("/signup", signup);
 router.post("/login", login);
+router.post("/logout", protect, logout);
 
-// Protected route
+// Protected routes
 router.get("/me", protect, getMe);
 router.get("/admin", protect, authorize("admin"), (req, res) => {
   res.json({ message: "Welcome Admin!" });
@@ -34,5 +41,6 @@ router.put("/me", protect, async (req, res) => {
 router.post("/forgot-password", forgotPassword);
 router.put("/reset-password/:token", resetPassword);
 router.post("/verify-otp", verifyOTP);
+router.post("/auth/resend-otp", resendOtp);
 
 export default router;

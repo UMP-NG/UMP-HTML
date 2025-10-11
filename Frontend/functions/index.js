@@ -48,20 +48,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const slides = document.querySelectorAll(".slide");
   const dotsContainer = document.querySelector(".slider-dots");
 
+  // Declare these outside the block
+  let firstClone, lastClone;
+
   // Clone first and last slides
   if (slides.length > 0) {
-    const firstClone = slides[0].cloneNode(true);
-    const lastClone = slides[slides.length - 1].cloneNode(true);
+    firstClone = slides[0].cloneNode(true);
+    lastClone = slides[slides.length - 1].cloneNode(true);
     track.appendChild(firstClone);
     track.insertBefore(lastClone, slides[0]);
   }
 
   // Update slides list after cloning
   const allSlides = document.querySelectorAll(".slide");
-  let currentIndex = 1; // Start at the first real slide
+  let currentIndex = 1;
   let slideInterval;
 
-  // Get proper slide width including gap
   function getSlideFullWidth() {
     const slide = allSlides[0];
     const style = window.getComputedStyle(slide);
@@ -71,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Create dots
   allSlides.forEach((_, i) => {
-    if (i === 0 || i === allSlides.length - 1) return; // skip clones
+    if (i === 0 || i === allSlides.length - 1) return;
     const dot = document.createElement("button");
     if (i === 1) dot.classList.add("active");
     dotsContainer.appendChild(dot);
@@ -85,15 +87,11 @@ document.addEventListener("DOMContentLoaded", () => {
     track.style.transition = "transform 0.6s ease-in-out";
     track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
 
-    // Update dots
     dots.forEach((dot) => dot.classList.remove("active"));
-    if (currentIndex === 0) {
-      dots[dots.length - 1].classList.add("active");
-    } else if (currentIndex === allSlides.length - 1) {
+    if (currentIndex === 0) dots[dots.length - 1].classList.add("active");
+    else if (currentIndex === allSlides.length - 1)
       dots[0].classList.add("active");
-    } else {
-      dots[currentIndex - 1].classList.add("active");
-    }
+    else dots[currentIndex - 1].classList.add("active");
   }
 
   function goToSlide(index) {
@@ -107,7 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSlider();
   }
 
-  // Loop seamlessly when reaching clones
   track.addEventListener("transitionend", () => {
     const slideWidth = getSlideFullWidth();
     if (allSlides[currentIndex] === firstClone) {
@@ -122,7 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Auto slide
   function startAutoSlide() {
     slideInterval = setInterval(nextSlide, 4000);
   }
@@ -173,7 +169,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Init
   const initialWidth = getSlideFullWidth();
   track.style.transform = `translateX(-${currentIndex * initialWidth}px)`;
   startAutoSlide();

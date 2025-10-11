@@ -52,3 +52,34 @@ verifyBtn.addEventListener("click", async () => {
     verifyBtn.textContent = "Verify";
   }
 });
+
+const resendLink = document.getElementById("resend-link");
+
+resendLink.addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const userEmail = sessionStorage.getItem("email"); // or however you stored it
+
+  if (!userEmail) {
+    alert("Missing email. Please go back and enter your email again.");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/resend-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: userEmail }),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      alert("✅ OTP has been resent to your email.");
+    } else {
+      alert("❌ Failed to resend OTP: " + data.message);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("❌ Network error. Please try again.");
+  }
+});

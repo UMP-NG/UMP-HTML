@@ -1,41 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href="../images/logo.png" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link rel="stylesheet" href="../Styles/auth.css" />
-    <title>Authentication Page</title>
-  </head>
-  <body>
-    <div class="auth-container">
-      <!-- Logo -->
-      <div class="logo">
-        <img src="../images/Alx image.jpg" alt="UMP Logo" />
-      </div>
 
-      <!-- Title -->
-      <h1>Verification Code</h1>
-      <p>Enter the 4-digit code sent to your email</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="../images/logo.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="../Styles/auth.css" />
+  <title>Authentication Page</title>
+</head>
 
-      <div class="code-inputs">
-        <input type="text" maxlength="1" />
-        <input type="text" maxlength="1" />
-        <input type="text" maxlength="1" />
-        <input type="text" maxlength="1" />
-      </div>
-
-      <!-- Verify Button -->
-      <button class="verify-btn">Verify</button>
-
-      <!-- Resend -->
-      <p class="resend-text">Didn't receive code? <a href="#">Resend</a></p>
+<body>
+  <div class="auth-container">
+    <!-- Logo -->
+    <div class="logo">
+      <img src="../images/Alx image.jpg" alt="UMP Logo" />
     </div>
 
-    <script type="module" src="../functions/auth.js"></script>
-  </body>
+    <!-- Title -->
+    <h1>Verification Code</h1>
+    <p>Enter the 4-digit code sent to your email</p>
+
+    <div class="code-inputs">
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+    </div>
+
+    <!-- Verify Button -->
+    <button class="verify-btn">Verify</button>
+
+    <!-- Resend -->
+    <p class="resend-text" id="resend-link">Didn't receive code? <a href="#">Resend</a></p>
+  </div>
+
+  <script type="module" src="../functions/auth.js"></script>
+</body>
+
 </html>

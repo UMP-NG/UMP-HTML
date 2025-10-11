@@ -3,7 +3,7 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import sendMail from "../utils/sendMail.js"; // Ensure this is implemented
+import sendMail from "../utils/sendMail.js";
 
 // ===============================
 // SIGNUP WITH OTP
@@ -25,13 +25,18 @@ export const signup = async (req, res) => {
       await existingUser.save({ validateBeforeSave: false });
 
       try {
-        await sendMail(email, "Your OTP Code", `Your OTP is: ${otp}`);
+        await sendMail({
+          email: email,
+          subject: "Your OTP Code",
+          type: "otp",
+          otp: otp,
+        });
       } catch (err) {
         console.error("Mail send error:", err);
       }
 
       return res.status(200).json({
-        message: "OTP resent successfully",
+        message: "OTP sent successfully",
         otp, // ✅ DEV ONLY (remove in production)
       });
     }
@@ -50,7 +55,12 @@ export const signup = async (req, res) => {
     await user.save();
 
     try {
-      await sendMail(email, "Your OTP Code", `Your OTP is: ${otp}`);
+      await sendMail({
+        email: email,
+        subject: "Your OTP Code",
+        type: "otp",
+        otp: otp,
+      });
     } catch (err) {
       console.error("Mail send error:", err);
     }
@@ -205,7 +215,12 @@ export const forgotPassword = async (req, res) => {
     const resetUrl = `https://ump-ng.github.io/UMP-HTML/Frontend/Pages/reset.html?token=${resetToken}`;
 
     try {
-      await sendMail(email, "Password Reset", `Reset link: ${resetUrl}`);
+      await sendMail({
+        email: email,
+        subject: "Password Reset",
+        type: "reset",
+        resetUrl: resetUrl,
+      });
     } catch (err) {
       console.error("Mail send error:", err);
     }
@@ -239,7 +254,7 @@ export const resetPassword = async (req, res) => {
       return res.status(400).json({ message: "Invalid or expired token" });
     }
 
-    user.password = await bcrypt.hash(req.body.password, 10);
+    user.password = req.body.password;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
 
@@ -249,5 +264,34 @@ export const resetPassword = async (req, res) => {
   } catch (error) {
     console.error("Reset password error:", error);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const logout = (req, res) => {
+  // If using cookies to store JWT:
+  res.cookie("token", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+
+  res.status(200).json({ success: true, message: "Logged out successfully" });
+};
+
+export const resendOtp = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    // Re-generate OTP and send email again
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    await sendMail({
+      email,
+      subject: "Your New UMP OTP Code",
+      otp,
+      type: "otp",
+    });
+
+    res.status(200).json({ message: "OTP resent successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to resend OTP", error });
   }
 };

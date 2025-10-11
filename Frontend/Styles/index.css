@@ -632,7 +632,6 @@ body {
     font-size: 0.9rem;
 }
 
-/* Fade in animation for section */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -697,7 +696,6 @@ body {
     transform: scale(1.05) rotate(1deg);
 }
 
-/* Lightbox modal */
 .lightbox {
     display: none;
     position: fixed;
@@ -915,7 +913,7 @@ footer.visible {
 
 @media screen and (max-width: 768px) {
     html {
-        font-size: 50%;
+        font-size: 55%;
     }
 
     .main-header {
@@ -991,7 +989,7 @@ footer.visible {
 
 @media screen and (max-width: 460px) {
     html {
-        font-size: 45%;
+        font-size: 50%;
     }
 
     .main-header .search-form input {
@@ -1023,7 +1021,6 @@ footer.visible {
     .slide.box {
         flex: 0 0 calc(100% - 2rem);
         margin: 0 1rem;
-        /* prevents touching edges */
         height: 28rem;
     }
 
