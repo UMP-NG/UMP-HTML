@@ -2,62 +2,64 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import cookie from "cookie";
 
-// Rate-limited, low-sensitivity auth logging controls
 let lastAuthLogAt = 0;
-const AUTH_LOG_INTERVAL_MS = Number(process.env.AUTH_LOG_INTERVAL_MS) || 5000; // default 5s
+const AUTH_LOG_INTERVAL_MS = Number(process.env.AUTH_LOG_INTERVAL_MS) || 5000;
 
 export const protect = async (req, res, next) => {
   try {
-    // Light-weight diagnostic logging: only presence/absence (no token values), rate-limited.
-    // Enable by setting DEBUG_AUTH=true in your environment. Interval controlled by AUTH_LOG_INTERVAL_MS (ms).
+    // ===== DEBUG LOGGING =====
     if (process.env.DEBUG_AUTH === "true") {
       const now = Date.now();
       if (now - lastAuthLogAt > AUTH_LOG_INTERVAL_MS) {
         lastAuthLogAt = now;
-        const hasAuthHeader = !!req.headers.authorization;
-        let cookieTokenPresent = false;
-        try {
-          if (req.headers.cookie) {
-            const cookies = cookie.parse(req.headers.cookie || "");
-            cookieTokenPresent = !!cookies.token;
-          }
-        } catch (e) {
-          // ignore cookie parse errors
-        }
-        console.log(
-          `[authMiddleware] auth header present: ${hasAuthHeader}, cookie token present: ${cookieTokenPresent}`
-        );
+        console.log("=== Incoming Request ===");
+        console.log("Headers:", req.headers);
+        console.log("Cookies:", req.headers.cookie || "No cookies sent");
       }
     }
 
-    // 1️⃣ Try reading from Authorization header
+    // ===== 1️⃣ Check Authorization header =====
     let token = req.header("Authorization")?.replace("Bearer ", "");
+    if (token) console.log("[Token] Found in Authorization header");
 
-    // 2️⃣ If not found, try reading from cookies
+    // ===== 2️⃣ Check cookie if header missing =====
     if (!token && req.headers.cookie) {
       const cookies = cookie.parse(req.headers.cookie || "");
       token = cookies.token;
+      if (token) console.log("[Token] Found in cookie");
     }
 
+    // ===== 3️⃣ No token found =====
     if (!token) {
+      console.warn("[Protect] No token found in request");
       return res
         .status(401)
         .json({ message: "Not authorized, no token provided" });
     }
 
-    // 3️⃣ Verify JWT
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // ===== 4️⃣ Verify JWT =====
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log("[Token Verified] Decoded payload:", decoded);
+    } catch (err) {
+      console.error("[Protect] Invalid token:", err.message);
+      return res.status(401).json({ message: "Not authorized, token invalid" });
+    }
 
-    // 4️⃣ Attach user to request
-    req.user = await User.findById(decoded.id).select("-password");
-
-    if (!req.user) {
+    // ===== 5️⃣ Attach user to request =====
+    const user = await User.findById(decoded.id).select("-password");
+    if (!user) {
+      console.warn("[Protect] User not found for token:", decoded.id);
       return res.status(404).json({ message: "User not found" });
     }
 
+    req.user = user;
+    console.log("[Protect] User attached to request:", user.email);
+
     next();
   } catch (error) {
-    console.error("Auth middleware error:", error.message);
+    console.error("[Protect Middleware Error]:", error.message);
     return res.status(401).json({ message: "Not authorized, token invalid" });
   }
 };
