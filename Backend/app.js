@@ -59,10 +59,14 @@ app.use(
         callback(new Error("Not allowed by CORS"));
       }
     },
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true, // allow cookies
+    allowedHeaders: ["Content-Type", "Authorization"], // allow custom headers
   })
 );
+
+// Handle preflight OPTIONS requests for all routes
+app.options("*", cors({ credentials: true, origin: allowedOrigins }));
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
