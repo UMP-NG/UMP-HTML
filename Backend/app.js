@@ -183,13 +183,13 @@ app.get("/api/test", (req, res) => {
 
 // Serve main page
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../Frontend", "index.html"));
+  res.sendFile(path.join(__dirname, "../frontend", "index.html"));
 });
 
 // Serve static Pages safely — only HTML files
 app.get("/Pages/:page", (req, res) => {
   const page = req.params.page;
-  const safePath = path.join(__dirname, `../Frontend/pages/${page}`);
+  const safePath = path.join(__dirname, `../frontend/pages/${page}`);
   if (page.endsWith(".html")) {
     res.sendFile(safePath);
   } else {
