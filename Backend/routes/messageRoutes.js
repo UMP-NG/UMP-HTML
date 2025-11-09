@@ -84,7 +84,7 @@ router.get(
   getUnreadCounts
 );
 router.get(
-  "/unread/:userId",
+  "/unread",
   protect,
   requireRole(...ALL_CHAT_ROLES),
   getUnreadMessages

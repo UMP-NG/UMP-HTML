@@ -28,6 +28,13 @@ router.post(
   createOrder
 );
 
+// GET /api/orders/me
+router.get(
+  "/me",
+  protect,
+  requireRole("user", "seller", "walker", "admin"),
+  getMyOrders
+);
 
 router.get("/escrow-details", protect, getEscrowDetails);
 
