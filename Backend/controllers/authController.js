@@ -99,11 +99,14 @@ export const signupProvider = async (req, res) => {
 
     // Basic validation
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
     }
 
     const existing = await User.findOne({ email });
-    if (existing) return res.status(400).json({ message: "User already exists" });
+    if (existing)
+      return res.status(400).json({ message: "User already exists" });
 
     const hashed = await bcrypt.hash(password, 10);
 
@@ -152,7 +155,9 @@ export const signupProvider = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.status(201).json({ message: "Provider account created", user, service });
+    res
+      .status(201)
+      .json({ message: "Provider account created", user, service });
   } catch (error) {
     console.error("Signup Provider error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
@@ -193,14 +198,24 @@ export const verifyOTP = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("[Login Attempt] Email:", email);
 
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
+      console.log("[Login Failed] No user found for email:", email);
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // ✅ Check email verification
+    console.log(
+      "[User Found] User ID:",
+      existingUser._id,
+      "Verified:",
+      existingUser.isVerified
+    );
+
+    // Check email verification
     if (!existingUser.isVerified) {
+      console.log("[Login Failed] User email not verified:", email);
       return res
         .status(403)
         .json({ message: "Please verify your email with the OTP first." });
@@ -211,21 +226,23 @@ export const login = async (req, res) => {
       existingUser.password
     );
     if (!isPasswordCorrect) {
+      console.log("[Login Failed] Incorrect password for user:", email);
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // ✅ Generate JWT token
+    // Generate JWT token
     const token = generateToken(existingUser._id);
+    console.log("[Login Success] User ID:", existingUser._id);
 
-    // ✅ Set token in cookie
+    // Set token in cookie
     res.cookie("token", token, {
-      httpOnly: true, // can't be accessed by JS
-      secure: process.env.NODE_ENV === "production", // only over HTTPS in production
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    // ✅ Send response (you don’t need to send the token anymore)
+    // Send response
     res.status(200).json({
       message: "Login successful",
       user: {
@@ -234,7 +251,7 @@ export const login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Login error:", error);
+    console.error("[Login Error]", error);
     res.status(500).json({ message: "Server error" });
   }
 };
