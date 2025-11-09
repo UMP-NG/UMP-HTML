@@ -6,8 +6,8 @@ let userRoles = [];
 // ✅ Centralized API base
 const API_BASE =
   window.location.hostname === "localhost"
-    ? "http://localhost:5000"
-    : "https://ump-html-1.onrender.com";
+    ? "http://localhost:5000/api"
+    : "https://ump-html-1.onrender.com/api";
 
 
 async function apiFetch(path, options = {}) {
@@ -41,7 +41,7 @@ async function apiFetch(path, options = {}) {
 async function loadUserProfile() {
   console.log("➡ Starting loadUserProfile...");
   try {
-    const res = await fetch("/users/me", { credentials: "include" });
+    const res = await fetch(`${API_BASE}/users/me`, { credentials: "include" });
     if (!res.ok) throw new Error("Failed to fetch user profile");
 
     const user = await res.json();
@@ -302,7 +302,7 @@ async function initWalkerDashboard() {
     ordersList.innerHTML = `<p>Loading incoming orders...</p>`;
 
     try {
-      const res = await fetch("/orders/incoming", {
+      const res = await fetch(`${API_BASE}/orders/incoming`, {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Failed to fetch incoming orders");
@@ -357,7 +357,7 @@ async function initWalkerDashboard() {
   // --- Handle Accept/Reject ---
   async function handleOrderAction(orderId, status) {
     try {
-      const res = await fetch(`/orders/${orderId}/status`, {
+      const res = await fetch(`${API_BASE}/orders/${orderId}/status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -394,7 +394,7 @@ async function initWalkerDashboard() {
 
   async function fetchKPI() {
     try {
-      const res = await fetch("/orders/me", { credentials: "include" });
+      const res = await fetch(`${API_BASE}/orders/me`, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to fetch KPI data");
       const data = await res.json();
 
@@ -420,7 +420,7 @@ async function initWalkerDashboard() {
 
   async function fetchRecentDeliveries() {
     try {
-      const res = await fetch("/orders/me", { credentials: "include" });
+      const res = await fetch(`${API_BASE}/orders/me`, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to fetch recent deliveries");
       const data = await res.json();
 
@@ -456,7 +456,7 @@ async function initWalkerDashboard() {
 
   async function fetchWalkerPayout() {
     try {
-      const res = await fetch("/payouts/summary", {
+      const res = await fetch(`${API_BASE}/payouts/summary`, {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Failed to load walker payout summary");
@@ -511,7 +511,7 @@ async function initWalkerDashboard() {
 
   async function fetchRecentDeliveries() {
     try {
-      const res = await fetch("/orders/me", { credentials: "include" });
+      const res = await fetch(`${API_BASE}/orders/me`, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to fetch recent deliveries");
       const data = await res.json();
 

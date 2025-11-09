@@ -3,7 +3,6 @@ const API_BASE = isLocal
   ? "http://localhost:5000/api"
   : "https://ump-html-1.onrender.com/api";
 
-
 document.addEventListener("DOMContentLoaded", async () => {
   // ======== Selectors ========
   const storeGrid = document.getElementById("storeGrid");
@@ -23,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ============================
   async function apiFetch(endpoint, options = {}) {
     try {
-      const res = await fetch(`${API_BASE}/api${endpoint}`, {
+      const res = await fetch(`${API_BASE}${endpoint}`, {
         method: options.method || "GET",
         headers: {
           "Content-Type": "application/json",
@@ -343,7 +342,7 @@ document.addEventListener("click", async (e) => {
     const sellerId = window.currentSellerId || document.body.dataset.sellerId;
     if (!sellerId) return alert("Seller not found.");
 
-    const res = await fetch(`${API_BASE}/api/users/me`, { credentials: "include" });
+    const res = await fetch(`${API_BASE}/users/me`, { credentials: "include" });
     if (!res.ok) return alert("Please log in to send a message.");
 
     window.location.href = `/messages?to=${sellerId}`;
@@ -355,11 +354,13 @@ document.addEventListener("click", async (e) => {
     const sellerId = window.currentSellerId || document.body.dataset.sellerId;
     if (!sellerId) return alert("Seller not found.");
 
-    const check = await fetch(`${API_BASE}/api/users/me`, { credentials: "include" });
+    const check = await fetch(`${API_BASE}/users/me`, {
+      credentials: "include",
+    });
     if (!check.ok) return alert("Please log in to follow stores.");
 
     try {
-      const res = await fetch(`${API_BASE}/api/sellers/${sellerId}/follow`, {
+      const res = await fetch(`${API_BASE}/sellers/${sellerId}/follow`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

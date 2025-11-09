@@ -18,7 +18,7 @@ if (priceRange && priceValue) {
 // ======== Reusable API Fetch Helper ========
 async function apiFetch(endpoint, options = {}) {
   try {
-    const res = await fetch(`${API_BASE}/api${endpoint}`, {
+    const res = await fetch(`${API_BASE}${endpoint}`, {
       headers: { "Content-Type": "application/json" },
       ...options,
     });

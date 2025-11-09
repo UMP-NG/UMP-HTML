@@ -3,8 +3,8 @@
 // ===============================
 const API_BASE =
   window.location.hostname === "localhost"
-    ? "http://localhost:5000"
-    : "https://ump-html-1.onrender.com";
+    ? "http://localhost:5000/api"
+    : "https://ump-html-1.onrender.com/api";
 
 // -------------------------------
 // API fetch helper (login page: ignore 401)
@@ -53,7 +53,7 @@ async function apiFetchLogin(path, options = {}) {
 // -------------------------------
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    const data = await apiFetchLogin("/auth/me");
+    const data = await apiFetchLogin("/api/auth/me");
     if (data && (data.user || data.name)) {
       console.log("Already logged in → redirecting to dashboard");
       window.location.href = "../index.html";

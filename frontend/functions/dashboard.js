@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function updateUnreadMessages() {
     if (!currentUserId) return;
     try {
-      const data = await apiFetch(`/messages/unread/${currentUserId}`);
+      const data = await apiFetch(`/messages/unread`);
       const unreadCount = data?.count || 0;
       const badge = document.querySelector(".chat-badge");
       if (badge) {
