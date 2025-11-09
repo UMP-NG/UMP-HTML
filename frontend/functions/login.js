@@ -53,7 +53,7 @@ async function apiFetchLogin(path, options = {}) {
 // -------------------------------
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    const data = await apiFetchLogin("/auth/me");
+    const data = await apiFetchLogin("/api/auth/me");
     if (data && (data.user || data.name)) {
       console.log("Already logged in → redirecting to dashboard");
       window.location.href = "../index.html";
