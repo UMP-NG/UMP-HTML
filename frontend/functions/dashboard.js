@@ -12,8 +12,6 @@ let redirectingToLogin = false;
 // API fetch helper
 // -------------------------------
 async function apiFetch(path, options = {}) {
-  if (redirectingToLogin) return;
-
   const headers = options.headers || {};
   if (!headers["Content-Type"] && !(options.body instanceof FormData)) {
     headers["Content-Type"] = "application/json";
@@ -35,12 +33,9 @@ async function apiFetch(path, options = {}) {
     }
 
     if (res.status === 401) {
-      if (!redirectingToLogin) {
-        redirectingToLogin = true;
-        sessionStorage.clear();
-        window.location.replace("../Pages/login.html");
-      }
-      return;
+      // ✅ Instead of forcing login, just return null
+      console.warn(`[apiFetch] 401 Unauthorized for ${path}`);
+      return null;
     }
 
     if (!res.ok) {
@@ -119,7 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (nameEl) nameEl.textContent = "Guest User";
       if (emailEl) emailEl.textContent = "";
       if (statusEl) statusEl.textContent = "✖ Logged out";
-      if (avatarEl) avatarEl.src = "default-avatar.png";
+      if (avatarEl) avatarEl.src = "../images/guy.png";
 
       isLoggedIn = false;
       updateButtons();

@@ -19,7 +19,7 @@ async function apiFetchLogin(path, options = {}) {
     const res = await fetch(API_BASE + path, {
       ...options,
       headers,
-      credentials: "include",
+      credentials: "include", // ✅ include cookies for auth
     });
 
     const text = await res.text();
@@ -31,8 +31,7 @@ async function apiFetchLogin(path, options = {}) {
     }
 
     if (!res.ok) {
-      // On login page, 401 just means not logged in → return null
-      if (res.status === 401) return null;
+      if (res.status === 401) return null; // not logged in
       const err = new Error(
         data?.message || res.statusText || "Request failed"
       );
@@ -123,9 +122,6 @@ signupForm?.addEventListener("submit", async (e) => {
   }
 });
 
-// -------------------------------
-// Login Handler
-// -------------------------------
 const loginForm = document.getElementById("loginForm");
 const loginMsg = document.getElementById("msg-login");
 
@@ -142,14 +138,41 @@ loginForm?.addEventListener("submit", async (e) => {
   }
 
   try {
-    await apiFetchLogin("/auth/login", {
+    console.log("[Login Attempt] Email:", email);
+
+    // 1️⃣ Send login request, include cookies
+    const loginRes = await apiFetchLogin("/auth/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
 
+    console.log("[Login Response] loginRes:", loginRes);
+
+    if (!loginRes) {
+      loginMsg.textContent = "Login failed: no response.";
+      return;
+    }
+
+    // Debug: log current cookies in browser
+    console.log("[Cookies After Login]", document.cookie);
+
+    // 2️⃣ Immediately fetch logged-in user (/me) to verify token
+    const meRes = await apiFetchLogin("/auth/me", { method: "GET" });
+
+    console.log("[/me Response]", meRes);
+
+    if (!meRes) {
+      loginMsg.textContent = "Login failed: unable to verify session.";
+      return;
+    }
+
     loginMsg.textContent = "Logged in. Redirecting...";
+    console.log("[Login Success] User:", meRes.user);
+
+    // 3️⃣ Redirect after successful login
     setTimeout(() => (window.location.href = "../index.html"), 600);
   } catch (err) {
+    console.error("[Login Error]", err);
     loginMsg.textContent = err.body?.message || err.message || "Login failed";
   }
 });
