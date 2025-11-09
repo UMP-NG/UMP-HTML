@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Orders | UMP</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+            background: #fafafa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #222;
+        }
+
+        .orders-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .order-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .order-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .order-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .order-item-details h3 {
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .status.paid {
+            background: #d1ffd6;
+            color: #006b1b;
+        }
+
+        .status.pending {
+            background: #fff4d1;
+            color: #8a6d00;
+        }
+
+        .status.completed {
+            background: #d1e8ff;
+            color: #004d99;
+        }
+
+        .status.failed {
+            background: #ffd1d1;
+            color: #9b0000;
+        }
+
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #0056cc;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #666;
+            padding: 60px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Your Orders</h1>
+
+    <div class="orders-container" id="ordersContainer">
+        <p>Loading your orders...</p>
+    </div>
+
+    <script>
+        const API_BASE =
+            window.location.hostname === "localhost"
+                ? "http://localhost:5000"
+                : "https://ump-backend.onrender.com";
+
+        // ✅ Helper
+        async function apiFetch(url, options = {}) {
+            const res = await fetch(`${API_BASE}${url}`, {
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                ...options,
+            });
+
+            let data;
+            try {
+                data = await res.json();
+            } catch (err) {
+                throw new Error(`Invalid JSON from ${url}`);
+            }
+
+            if (!res.ok) throw new Error(data.message || `Error ${res.status}`);
+            return data;
+        }
+
+        // ✅ Confirm delivery handler
+        async function confirmOrderDelivery(orderId) {
+            const confirmed = confirm(
+                "Have you received this order? Funds will be released to the seller."
+            );
+            if (!confirmed) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/api/orders/${orderId}/confirm-delivery`, {
+                    method: "PUT",
+                    credentials: "include",
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || "Failed to confirm delivery");
+
+                alert(data.message || "✅ Delivery confirmed!");
+                loadOrders();
+            } catch (err) {
+                console.error("❌ Delivery confirmation error:", err);
+                alert(err.message || "Failed to confirm delivery");
+            }
+        }
+
+        // ✅ Load orders from backend
+        async function loadOrders() {
+            const container = document.getElementById("ordersContainer");
+            container.innerHTML = "<p>Loading your orders...</p>";
+
+            try {
+                const data = await apiFetch("/api/orders/my-orders");
+                const orders = data.orders || data; // support both response shapes
+                container.innerHTML = "";
+
+                if (!orders.length) {
+                    container.innerHTML = `
+          <div class="empty-state">
+            <p>🛒 You haven’t placed any orders yet.</p>
+            <button class="btn" onclick="window.location.href='/Pages/market.html'">
+              Go Shopping
+            </button>
+          </div>`;
+                    return;
+                }
+
+                orders.forEach((order) => {
+                    const orderCard = document.createElement("div");
+                    orderCard.className = "order-card";
+
+                    const itemsHTML = order.items
+                        .map(
+                            (item) => `
+              <div class="order-item">
+                <img
+                  src="${item.product?.images?.[0] || '../images/placeholder.png'}"
+                  alt="${item.product?.name || 'Product'}"
+                />
+                <div class="order-item-details">
+                  <h3>${item.product?.name || 'Unnamed Product'}</h3>
+                  <p>Qty: ${item.quantity}</p>
+                </div>
+              </div>`
+                        )
+                        .join("");
+
+                    const confirmBtn =
+                        order.status === "paid" && order.paymentStatus === "paid"
+                            ? `<button class="btn" onclick="confirmOrderDelivery('${order._id}')">Confirm Delivery</button>`
+                            : "";
+
+                    orderCard.innerHTML = `
+          <div class="order-header">
+            <div>
+              <strong>Order #${order._id.slice(-6)}</strong><br />
+              <small>${new Date(order.createdAt).toLocaleDateString()}</small>
+            </div>
+            <span class="status ${order.status}">${order.status}</span>
+          </div>
+
+          <div class="order-items">${itemsHTML}</div>
+
+          <div class="order-footer">
+            <div>
+              <strong>Total:</strong> ₦${order.totalAmount.toLocaleString("en-NG")}<br/>
+              <small>Payment: ${order.paymentStatus}</small>
+            </div>
+            <div>${confirmBtn}</div>
+          </div>
+        `;
+
+                    container.appendChild(orderCard);
+                });
+            } catch (err) {
+                console.error("❌ Failed to load orders:", err);
+                container.innerHTML = `<p>⚠️ Failed to load orders: ${err.message}</p>`;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadOrders);
+    </script>
+</body>
+
+</html>

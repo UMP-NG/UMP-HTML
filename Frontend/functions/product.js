@@ -1,685 +1,713 @@
-let originalImageSrc = null;
+const isLocal = window.location.hostname === "localhost";
+const API_BASE = isLocal
+  ? "http://localhost:5000/api"
+  : "https://ump-html-1.onrender.com/api";
 
-window.onload = function () {
-  const mainImage = document.getElementById("mainImg");
-  if (mainImage) {
-    originalImageSrc = mainImage.src;
-  }
-};
-
-function switchImage(el) {
-  const mainImage = document.getElementById("mainImg");
-  if (!mainImage) return;
-
-  // Change to clicked thumbnail
-  mainImage.src = el.src;
-
-  // After 3s revert back to original
-  setTimeout(() => {
-    mainImage.src = originalImageSrc;
-  }, 5000);
-}
-
-function addToCart(btn) {
-  btn.classList.add("btn-processing");
-  btn.textContent = "Processing...";
-  setTimeout(() => {
-    btn.classList.remove("btn-processing");
-    btn.textContent = "Add to Cart";
-    alert("Item added to cart ✅");
-  }, 1500);
-}
-
-// 🔹 Swatch selector function
-function selectSwatch(el) {
-  // remove 'active' from all
-  document
-    .querySelectorAll(".swatch")
-    .forEach((s) => s.classList.remove("active"));
-
-  // add 'active' to clicked one
-  el.classList.add("active");
-
-  // get chosen color
-  let selectedColor = el.getAttribute("data-color");
-  console.log("Selected color:", selectedColor);
-
-  // update UI if placeholder exists
-  let label = document.getElementById("selected-color-label");
-  if (label) {
-    label.innerText = selectedColor;
-  }
-}
-
-// Expose functions globally (so inline onclick works)
-window.switchImage = switchImage;
-window.selectSwatch = selectSwatch;
-
-// Tab switching with animation
-const tabButtons = document.querySelectorAll(".tab-btn");
-const tabContents = document.querySelectorAll(".tab-content");
-
-tabButtons.forEach((btn) => {
+// ===============================
+// 🧭 Tab Switching Functionality
+// ===============================
+document.querySelectorAll(".tab-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
-    // Remove active state
-    tabButtons.forEach((b) => b.classList.remove("active"));
-    tabContents.forEach((c) => c.classList.remove("active"));
+    const targetTab = btn.dataset.tab;
 
-    // Activate clicked tab
+    // 1️⃣ Remove "active" class from all buttons
+    document
+      .querySelectorAll(".tab-btn")
+      .forEach((b) => b.classList.remove("active"));
+
+    // 2️⃣ Add "active" class to clicked button
     btn.classList.add("active");
-    const target = btn.getAttribute("data-tab");
-    document.getElementById(target).classList.add("active");
+
+    // 3️⃣ Hide all tab contents
+    document
+      .querySelectorAll(".tab-content")
+      .forEach((tab) => tab.classList.remove("active"));
+
+    // 4️⃣ Show selected tab content
+    const activeTab = document.getElementById(targetTab);
+    if (activeTab) activeTab.classList.add("active");
+
+    // Optional: scroll into view on mobile
+    activeTab.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 });
 
-// Example follow button toggle
-document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("follow-btn")) {
-    if (e.target.textContent.includes("Follow")) {
-      e.target.textContent = "✓ Following";
+// -----------------------------
+// 🧩 PRODUCT DETAIL PAGE (Full Integration + Enhanced Logging + View Tracking + Follow System)
+// -----------------------------
+(async function handleProductPage() {
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get("id");
+  if (!productId) {
+    console.warn("⚠️ No product ID found in URL.");
+    return;
+  }
+
+  console.log("🌐 Loading product page for ID:", productId);
+
+  try {
+    // ✅ Fetch product data from backend (use shared apiFetch helper)
+    console.log("📡 Fetching product data from backend...");
+    const data = await apiFetch(`/products/${productId}`);
+    const product = data.product || data;
+
+    if (!product || !product._id) {
+      alert("Product not found.");
+      window.location.href = "./market.html";
+      return;
+    }
+
+    console.log("✅ Product data loaded:", product);
+
+    // --- 🧭 Breadcrumb Update ---
+    const breadcrumbName = document.getElementById("breadcrumb-name");
+    if (breadcrumbName) breadcrumbName.textContent = product.name || "Product";
+
+    // --- 🖼 Update product UI ---
+    document.getElementById("product-name").textContent = product.name || "";
+    document.getElementById("product-price").textContent = product.price
+      ? `₦${Number(product.price).toLocaleString()}`
+      : "Price not available";
+    document.getElementById("product-desc").textContent =
+      product.desc || product.description || "No description provided.";
+    document.getElementById("product-condition").textContent =
+      product.condition || "N/A";
+
+    // --- 🏪 Seller Info ---
+    const seller = product.seller || {};
+    document.getElementById("product-seller").textContent =
+      seller.storeName || seller.name || "Unknown Seller";
+    document.getElementById("seller-name").textContent =
+      seller.storeName || seller.name || "Unknown Seller";
+    document.getElementById("seller-followers").textContent =
+      seller.followers?.length > 0
+        ? `${seller.followers.length} followers`
+        : "No followers yet";
+    document.getElementById("seller-logo").src =
+      seller.logo || seller.avatar || "../images/guy.png";
+    document.getElementById("seller-bio").textContent =
+      seller.bio || "No bio available.";
+    document.getElementById("seller-story").textContent =
+      seller.description || seller.bio || "No seller story yet.";
+
+    // --- 🖼 Product Images ---
+    const mainImg = document.getElementById("product-img");
+    const thumbnails = document.getElementById("product-thumbnails");
+    if (product.images && product.images.length > 0) {
+      mainImg.src = product.images[0];
+      thumbnails.innerHTML = "";
+      product.images.forEach((img) => {
+        const thumb = document.createElement("img");
+        thumb.src = img;
+        thumb.className = "product-thumb";
+        thumb.onclick = () => (mainImg.src = img);
+        thumbnails.appendChild(thumb);
+      });
     } else {
-      e.target.textContent = "+ Follow";
+      mainImg.src = product.image || "../images/placeholder.png";
+    }
+
+    // --- 🎨 Color Swatches ---
+    const swatches = document.getElementById("product-swatches");
+    if (product.colors?.length) {
+      swatches.innerHTML = "";
+      product.colors.forEach((color) => {
+        const swatch = document.createElement("div");
+        swatch.className = "swatch";
+        // support both legacy string colors and new object { name, code }
+        const code = typeof color === "string" ? color : color?.code || "";
+        const name = typeof color === "string" ? color : color?.name || "";
+        if (code) swatch.style.backgroundColor = code;
+        if (name) swatch.title = name;
+        swatch.dataset.color = code;
+        swatch.onclick = () => selectSwatch(swatch);
+        swatches.appendChild(swatch);
+      });
+    }
+
+    const addToCartBtn = document.querySelector(".add-to-cart-btn");
+    if (addToCartBtn) {
+      addToCartBtn.dataset.productId = product._id; // fills in the correct product ID
+    }
+
+    // --- 👁️ Track Product View (dedicated endpoint)
+    await trackProductView(product._id);
+
+    // --- 📊 Product Specs + Reviews — pass already-fetched product to avoid duplicate fetch
+    await loadProductDetails(product);
+
+    // --- ❤️ Add to Wishlist ---
+    const wishlistBtn = document.getElementById("wishlist-btn");
+    if (wishlistBtn) {
+      wishlistBtn.addEventListener("click", () =>
+        addToWishlist(product._id, wishlistBtn)
+      );
+    }
+
+    // --- 👥 Follow Seller Button ---
+    const followBtn = document.getElementById("follow-btn");
+    if (followBtn && seller._id) {
+      // Set initial button state using helper
+      setFollowButtonState(followBtn, !!seller.isFollowing);
+
+      followBtn.addEventListener("click", async () => {
+        await toggleFollowSeller(seller._id, followBtn);
+      });
+    }
+  } catch (err) {
+    console.error("❌ Failed to load product:", err);
+    alert("Could not load product details. Please try again later.");
+  }
+
+  // (trackProductView is implemented at module scope so other scripts/listeners can call it.)
+
+  // -----------------------------
+  // 🔍 Load Full Product Details (Specs + Reviews)
+  // -----------------------------
+  async function loadProductDetails(productOrId) {
+    const id = typeof productOrId === "string" ? productOrId : productOrId?._id;
+    console.log("🔄 Loading detailed info for product:", id);
+    try {
+      let productData = productOrId;
+      if (!productData || typeof productOrId === "string") {
+        productData = await apiFetch(`/products/${id}`);
+      }
+
+      const product = productData.product || productData;
+      console.log("📦 Detailed product data:", product);
+
+      // --- 📊 Specifications ---
+      const specsTable = document.getElementById("product-specs");
+      const specs = product.specs || {};
+
+      // Convert specs to array and filter out empty values
+      const specEntries = Object.entries(specs).filter(
+        ([key, value]) => key && value && String(value).trim()
+      );
+
+      if (specEntries.length > 0) {
+        specsTable.innerHTML = specEntries
+          .map(
+            ([key, value]) =>
+              `<tr>
+                <td><b>${escapeHtml(key)}</b></td>
+                <td>${escapeHtml(String(value))}</td>
+              </tr>`
+          )
+          .join("");
+      } else {
+        specsTable.innerHTML = `<tr><td colspan="2">No specifications available.</td></tr>`;
+      }
+
+      // --- ⭐ Reviews ---
+      renderReviews(product.reviews || [], product._id || id);
+    } catch (err) {
+      console.error("❌ Product detail load error:", err);
     }
   }
-});
 
-(function () {
-  document.querySelectorAll(".rel-carousel-track").forEach((track) => {
-    let isMouseDown = false;
-    let startX = 0;
-    let startScrollLeft = 0;
+  // -----------------------------
+  // 💬 Render Reviews
+  // -----------------------------
+  function renderReviews(reviews, productId) {
+    console.log(
+      `🧩 Rendering ${reviews.length} review(s) for product ID:`,
+      productId
+    );
+    const reviewsList = document.getElementById("reviews-list");
+    reviewsList.innerHTML = "";
 
-    // ---- Mouse drag support (desktop) ----
-    track.addEventListener("mousedown", (e) => {
-      isMouseDown = true;
-      track.classList.add("dragging");
-      startX = e.pageX - track.offsetLeft;
-      startScrollLeft = track.scrollLeft;
-    });
+    if (!reviews.length) {
+      console.log("ℹ️ No reviews found for this product.");
+      reviewsList.innerHTML = "<p>No reviews available yet.</p>";
+      return;
+    }
 
-    window.addEventListener("mouseup", () => {
-      if (isMouseDown) {
-        isMouseDown = false;
-        track.classList.remove("dragging");
+    const avg =
+      reviews.reduce((a, r) => a + (r.rating || 0), 0) / reviews.length;
+    const avgStars = `${"★".repeat(Math.round(avg))}${"☆".repeat(
+      5 - Math.round(avg)
+    )}`;
+    console.log(`⭐ Average Rating: ${avg.toFixed(1)}/5`);
+
+    reviewsList.innerHTML = `
+      <p><b>Average Rating:</b> ${avgStars} ${avg.toFixed(1)}/5</p>
+      ${reviews
+        .map(
+          (r, i) => `
+          <div class="review" data-index="${i}">
+            <p><b>${escapeHtml(r.userName || "Anonymous")}</b> — ${
+            r.rating || 0
+          }★</p>
+            <p>${escapeHtml(r.comment || "")}</p>
+          </div>`
+        )
+        .join("")}
+    `;
+    console.log("✅ Reviews rendered successfully.");
+  }
+
+  // -----------------------------
+  // ✍️ Submit Review
+  // -----------------------------
+  document
+    .getElementById("submitReviewBtn")
+    .addEventListener("click", async () => {
+      const comment = document.getElementById("reviewComment").value.trim();
+      const rating = parseInt(document.getElementById("reviewRating").value);
+      const productId = new URLSearchParams(window.location.search).get("id");
+
+      console.log("📝 Submitting review:", { productId, comment, rating });
+
+      if (!comment || !rating) {
+        alert("Please enter a comment and select a rating.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/products/${productId}/reviews`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ comment, rating }),
+        });
+
+        if (!res.ok) {
+          console.error(
+            "❌ Review submission failed:",
+            res.status,
+            res.statusText
+          );
+          throw new Error("Failed to submit review");
+        }
+
+        const updatedProduct = await res.json();
+        console.log("✅ Review submitted. Updated product:", updatedProduct);
+
+        renderReviews(updatedProduct.reviews, productId);
+        document.getElementById("reviewComment").value = "";
+        document.getElementById("reviewRating").value = "";
+
+        alert("✅ Review submitted successfully!");
+      } catch (err) {
+        console.error("❌ Review submit error:", err);
+        alert("Failed to submit review. Please log in first or try again.");
       }
     });
-
-    track.addEventListener("mousemove", (e) => {
-      if (!isMouseDown) return;
-      e.preventDefault();
-      const x = e.pageX - track.offsetLeft;
-      const walk = (x - startX) * 1.5; // drag sensitivity
-      track.scrollLeft = startScrollLeft - walk;
-    });
-
-    // ---- Touch support (mobile/tablet) ----
-    let touchStartX = 0;
-    let touchStartScroll = 0;
-
-    track.addEventListener(
-      "touchstart",
-      (e) => {
-        if (e.touches.length !== 1) return; // only single-finger drag
-        touchStartX = e.touches[0].pageX - track.offsetLeft;
-        touchStartScroll = track.scrollLeft;
-      },
-      { passive: true }
-    );
-
-    track.addEventListener(
-      "touchmove",
-      (e) => {
-        if (e.touches.length !== 1) return;
-        const x = e.touches[0].pageX - track.offsetLeft;
-        const walk = (x - touchStartX) * 1.5;
-        track.scrollLeft = touchStartScroll - walk;
-      },
-      { passive: true }
-    );
-  });
 })();
 
-// Mock products with complete details
-export const allProducts = [
-  {
-    id: 1,
-    name: "iPhone 15",
-    price: "₦1,198,500",
-    desc: "Apple iPhone 15 Pro Max - sleek titanium design with upgraded performance.",
-    images: [
-      "../images/Apple-iPhone-15-Pro-Max.jpg",
-      "../images/iphone15-side.jpg",
-      "../images/iphone15-back.jpg",
-    ],
-    colors: ["Black", "Silver", "Blue"],
-    seller: {
-      name: "TechHub",
-      store: "Apple Store",
-      followers: 1245,
-      story:
-        "Passionate about bringing the latest Apple products to students at fair prices.",
-      avatar: "../images/seller-techhub.jpg",
-    },
-    condition: "Refurbished",
-    category: "Phones",
-    specs: {
-      dimensions: "159.9 x 76.7 x 8.3 mm",
-      weight: "221g",
-      material: "Titanium frame, Ceramic Shield front",
-      storage: "256GB",
-    },
-    reviews: [
-      {
-        name: "Adeola",
-        rating: 5,
-        comment: "Excellent phone, worth every naira!",
-      },
-      {
-        name: "Chukwuemeka",
-        rating: 4,
-        comment: "Battery life is solid but price is high.",
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "iPhone 16",
-    price: "₦1,398,500",
-    desc: "Apple iPhone 16 - cutting-edge performance and sleek curves.",
-    images: [
-      "../images/iphone 16.jpg",
-      "../images/iphone16-side.jpg",
-      "../images/iphone16-back.jpg",
-    ],
-    seller: {
-      name: "TechHub",
-      store: "Apple Store",
-      followers: 1245,
-      story:
-        "Passionate about bringing the latest Apple products to students at fair prices.",
-      avatar: "../images/seller-techhub.jpg",
-    },
-    colors: ["Gold", "Graphite", "White"],
-    condition: "New",
-    category: "Phones",
-    specs: {
-      dimensions: "160.1 x 77.6 x 8.4 mm",
-      weight: "223g",
-      material: "Aluminum + Ceramic Shield",
-      storage: "512GB",
-    },
-    reviews: [
-      {
-        name: "Tosin",
-        rating: 5,
-        comment: "Smoother and faster than my iPhone 14 Pro.",
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "iPhone 17",
-    price: "₦1,498,500",
-    desc: "Apple iPhone 17 - advanced camera technology with immersive display.",
-    images: [
-      "../images/iphone 17.jpeg",
-      "../images/iphone17-side.jpg",
-      "../images/iphone17-back.jpg",
-    ],
-    seller: {
-      name: "TechHub",
-      store: "Apple Store",
-      followers: 1245,
-      story:
-        "Passionate about bringing the latest Apple products to students at fair prices.",
-      avatar: "../images/seller-techhub.jpg",
-    },
-    colors: ["Titanium Black", "Deep Blue", "Rose Gold"],
-    condition: "New",
-    category: "Phones",
-    specs: {
-      dimensions: "161 x 78 x 8.5 mm",
-      weight: "226g",
-      material: "Titanium frame, Ceramic Shield",
-      storage: "1TB",
-    },
-    reviews: [
-      {
-        name: "Zainab",
-        rating: 5,
-        comment: "The best display I’ve ever seen on a phone.",
-      },
-    ],
-  },
-  {
-    id: 4,
-    name: "Samsung Galaxy S25 Ultra",
-    price: "₦1,275,000",
-    desc: "Samsung’s 2025 flagship with cutting-edge camera and S-Pen.",
-    images: [
-      "../images/s25ultra.png",
-      "../images/s25ultra-back.jpg",
-      "../images/s25ultra-side.jpg",
-    ],
-    seller: {
-      name: "MobileWorld",
-      store: "Samsung Outlet",
-      followers: 860,
-      story: "Your one-stop hub for Samsung devices and support.",
-      avatar: "../images/seller-mobileworld.jpg",
-    },
-    colors: ["Phantom Black", "Green", "Lavender"],
-    condition: "New",
-    category: "Phones",
-    specs: {
-      dimensions: "162.5 x 79.5 x 8.9 mm",
-      weight: "233g",
-      material: "Aluminum + Gorilla Glass Victus",
-      storage: "512GB",
-    },
-    reviews: [
-      {
-        name: "Fatima",
-        rating: 5,
-        comment: "The camera zoom is unbelievable!",
-      },
-      {
-        name: "Ibrahim",
-        rating: 4,
-        comment: "Great phone but a little heavy.",
-      },
-    ],
-  },
-  {
-    id: 5,
-    name: "Wireless Headphones",
-    price: "₦15,000",
-    desc: "Comfortable over-ear headphones with active noise cancellation.",
-    images: ["../images/headphones.jpg", "../images/headphones-side.jpg"],
-    seller: {
-      name: "John Doe",
-      store: "Tech Haven",
-      followers: 210,
-      story: "Student entrepreneur making tech affordable for peers.",
-      avatar: "../images/seller-john.jpg",
-    },
-    colors: ["Black", "White", "Red"],
-    condition: "New",
-    category: "Electronics",
-    specs: {
-      dimensions: "Adjustable headband",
-      weight: "270g",
-      material: "Plastic + foam padding",
-      battery: "30hrs playback",
-    },
-    reviews: [
-      { name: "Seyi", rating: 4, comment: "Nice bass and comfortable fit." },
-    ],
-  },
-  {
-    id: 6,
-    name: "Airpods",
-    price: "₦9,500",
-    desc: "Comfortable true wireless earbuds with clear sound.",
-    images: ["../images/earbuds.jpg", "../images/earbuds-case.jpg"],
-    seller: {
-      name: "Jane Smith",
-      store: "Gadget World",
-      followers: 430,
-      story: "Bringing affordable everyday gadgets to students.",
-      avatar: "../images/seller-jane.jpg",
-    },
-    colors: ["White"],
-    condition: "New",
-    category: "Electronics",
-    specs: {
-      battery: "24hrs playback with case",
-      weight: "4g each",
-      material: "Plastic",
-    },
-    reviews: [
-      { name: "Daniel", rating: 5, comment: "Affordable and works perfectly!" },
-    ],
-  },
-  {
-    id: 7,
-    name: "Smartwatch",
-    price: "₦40,000",
-    desc: "Track your fitness and stay connected on the go.",
-    images: ["../images/smartwatch.jpg", "../images/smartwatch-side.jpg"],
-    seller: {
-      name: "Mike Johnson",
-      store: "Wearables Hub",
-      followers: 590,
-      story: "Helping students stay fit with wearable tech.",
-      avatar: "../images/seller-mike.jpg",
-    },
-    colors: ["Black", "Silver"],
-    condition: "Refurbished",
-    category: "Electronics",
-    specs: {
-      display: "1.8 inch AMOLED",
-      battery: "5 days",
-      material: "Aluminum",
-      weight: "32g",
-    },
-    reviews: [
-      { name: "Kemi", rating: 4, comment: "Good smartwatch for the price." },
-    ],
-  },
-  {
-    id: 8,
-    name: "Laptop Bag",
-    price: "₦3,000",
-    desc: "Durable laptop bag with multiple compartments.",
-    images: ["../images/lapbag.jpeg", "../images/lapbag-open.jpg"],
-    seller: {
-      name: "Emma Brown",
-      store: "Bag World",
-      followers: 175,
-      story:
-        "Emma, a final-year student at UNILAG, designs affordable and stylish accessories to support students and professionals alike.",
-      avatar: "../images/seller-emma.jpg",
-    },
-    colors: ["Black", "Grey", "Navy Blue"],
-    condition: "New",
-    category: "Others",
-    specs: {
-      dimensions: "15.6 inch compatible",
-      weight: "450g",
-      material: "Polyester",
-    },
-    reviews: [
-      {
-        name: "Kunle",
-        rating: 5,
-        comment: "Strong material and very spacious.",
-      },
-    ],
-  },
-  {
-    id: 9,
-    name: "Wireless Earbuds",
-    price: "₦12,000",
-    desc: "Compact wireless earbuds — best seller of the week.",
-    images: ["../images/earbuds.jpg", "../images/earbuds-case.jpg"],
-    seller: {
-      name: "ElectroShop",
-      store: "Main Store",
-      followers: 510,
-      story: "All kinds of affordable electronics at your fingertips.",
-      avatar: "../images/seller-electro.jpg",
-    },
-    colors: ["Black", "White"],
-    condition: "New",
-    category: "Electronics",
-    specs: {
-      battery: "20hrs playback",
-      weight: "5g each",
-      material: "Plastic",
-    },
-    reviews: [
-      {
-        name: "Aisha",
-        rating: 4,
-        comment: "Good sound, case feels a bit cheap.",
-      },
-    ],
-  },
-  {
-    id: 10,
-    name: "Smart Backpack",
-    price: "₦25,000",
-    desc: "Hot trending smart backpack with USB charging port.",
-    images: ["../images/Smart Backpack.jpg", "../images/backpack-open.jpg"],
-    seller: {
-      name: "UrbanGear",
-      store: "Main Store",
-      followers: 305,
-      story: "Stylish, functional student fashion at unbeatable prices.",
-      avatar: "../images/seller-urban.jpg",
-    },
-    colors: ["Black", "Grey"],
-    condition: "New",
-    category: "Others",
-    specs: {
-      dimensions: "Fits up to 17 inch laptops",
-      weight: "900g",
-      material: "Oxford fabric",
-    },
-    reviews: [
-      {
-        name: "Chidera",
-        rating: 5,
-        comment: "Super stylish and useful for school.",
-      },
-    ],
-  },
-  {
-    id: 11,
-    name: "Classic Hoodie",
-    price: "₦5,000",
-    desc: "Cozy and stylish hoodie — best seller of the week.",
-    images: ["../images/hoodie.jpg", "../images/hoodie-back.jpg"],
-    seller: {
-      name: "StyleHub",
-      store: "Fashion Outlet",
-      followers: 780,
-      story: "Affordable everyday student fashion.",
-      avatar: "../images/seller-stylehub.jpg",
-    },
-    colors: ["Black", "Grey", "Red"],
-    condition: "New",
-    category: "Clothing",
-    specs: {
-      sizes: "S, M, L, XL",
-      material: "Cotton blend",
-      weight: "350g",
-    },
-    reviews: [
-      { name: "Precious", rating: 5, comment: "Very soft and fits perfectly." },
-    ],
-  },
-  {
-    id: 12,
-    name: "Notebook Bundle",
-    price: "₦4,000",
-    desc: "Affordable bundle of 5 durable notebooks — trending pick.",
-    images: ["../images/books.jpg", "../images/books-stack.jpg"],
-    seller: {
-      name: "BookWorld",
-      store: "Book Store",
-      followers: 220,
-      story: "Helping students stay prepared with affordable stationery.",
-      avatar: "../images/seller-bookworld.jpg",
-    },
-    colors: [],
-    condition: "New",
-    category: "Books",
-    specs: {
-      pages: "200 each",
-      material: "Premium paper",
-    },
-    reviews: [
-      { name: "Femi", rating: 4, comment: "Great value for the price." },
-    ],
-  },
-  {
-    id: 13,
-    name: "Fitness Tracker",
-    price: "₦15,000",
-    desc: "Track steps, heart rate, and sleep — highly rated pick.",
-    images: ["../images/fitness tracker.jpg", "../images/fitband-side.jpg"],
-    seller: {
-      name: "FitLife",
-      store: "Fitness Shop",
-      followers: 640,
-      story: "Promoting health and wellness in student life.",
-      avatar: "../images/seller-fitlife.jpg",
-    },
-    colors: ["Black", "Blue", "Pink"],
-    condition: "New",
-    category: "Electronics",
-    specs: {
-      display: "1.2 inch OLED",
-      battery: "7 days",
-      weight: "25g",
-    },
-    reviews: [
-      {
-        name: "Ngozi",
-        rating: 5,
-        comment: "Really helps me track my fitness goals.",
-      },
-    ],
-  },
-];
+// -----------------------------
+// ❤️ Wishlist Function
+// -----------------------------
+async function addToWishlist(productId, button) {
+  try {
+    button.disabled = true;
+    button.textContent = "Adding...";
 
-// ===== GET PRODUCT ID FROM URL =====
+    // Use cookies (credentials) for auth; backend should rely on session cookie
+    await apiFetch(`/wishlist/${productId}`, { method: "POST" });
+
+    button.textContent = "❤️ Added to Wishlist";
+    button.classList.add("added");
+    console.log("✅ Wishlist added");
+  } catch (err) {
+    console.error("❌ Wishlist error:", err);
+    if (err.status === 401) {
+      window.location.href = "/Pages/login.html";
+      return;
+    }
+    alert("Failed to add to wishlist.");
+  } finally {
+    button.disabled = false;
+  }
+}
+
 const params = new URLSearchParams(window.location.search);
-const productId = parseInt(params.get("id"));
-const product = allProducts.find((p) => p.id === productId);
-
-if (!product) {
-  alert("Product not found!");
-  window.location.href = "./market.html";
+const productId = params.get("id");
+if (productId) {
+  loadRelatedProducts(productId);
+  loadSellerProducts(productId);
 }
 
-// ===== POPULATE PRODUCT INFO =====
-if (product) {
-  // Breadcrumb
-  const breadcrumbName = document.getElementById("breadcrumb-name");
-  if (breadcrumbName) breadcrumbName.textContent = product.name;
+// ===============================
+// 🎯 RELATED PRODUCTS
+// ===============================
+async function loadRelatedProducts(productId) {
+  const relSection = document.querySelector(
+    ".rel-products .rel-carousel-track"
+  );
 
-  // Main info
-  const productName = document.getElementById("product-name");
-  if (productName) productName.textContent = product.name;
+  try {
+    const data = await apiFetch(`/products/${productId}/related`);
+    // data might be an array or an object { products }
+    const products = Array.isArray(data) ? data : data.products || [];
 
-  const productPrice = document.getElementById("product-price");
-  if (productPrice) productPrice.textContent = product.price;
-
-  const productDesc = document.getElementById("product-desc");
-  if (productDesc) productDesc.textContent = product.desc;
-
-  const productCondition = document.getElementById("product-condition");
-  if (productCondition) productCondition.textContent = product.condition;
-
-  // Sold by (store name)
-  const productSeller = document.getElementById("product-seller");
-  if (productSeller) productSeller.textContent = product.seller.store;
-
-  // Seller info
-  const sellerName = document.getElementById("seller-name");
-  if (sellerName) sellerName.textContent = product.seller.name;
-
-  const sellerFollowers = document.getElementById("seller-followers");
-  if (sellerFollowers)
-    sellerFollowers.textContent =
-      (product.seller.followers
-        ? product.seller.followers.toLocaleString()
-        : "0") + " followers";
-
-  const sellerPhoto = document.getElementById("seller-photo");
-  if (sellerPhoto)
-    sellerPhoto.src = product.seller.avatar || "../images/guy.png";
-
-  const sellerStory = document.getElementById("seller-story");
-  if (sellerStory)
-    sellerStory.textContent =
-      product.seller.story || "This seller hasn’t added a story yet.";
-
-  // Main image
-  const mainImg = document.getElementById("product-img");
-  if (mainImg && product.images && product.images.length > 0)
-    mainImg.src = product.images[0];
-
-  // Thumbnails
-  const thumbnailsContainer = document.getElementById("product-thumbnails");
-  if (thumbnailsContainer && product.images && product.images.length > 0) {
-    thumbnailsContainer.innerHTML = "";
-    product.images.forEach((imgSrc, idx) => {
-      const thumb = document.createElement("img");
-      thumb.src = imgSrc;
-      thumb.alt = `Thumbnail ${idx + 1}`;
-      thumb.addEventListener("click", () => {
-        if (mainImg) mainImg.src = imgSrc;
-      });
-      thumbnailsContainer.appendChild(thumb);
-    });
-  }
-
-  // Swatches / Colors
-  const swatchesContainer = document.getElementById("product-swatches");
-  if (swatchesContainer) {
-    swatchesContainer.innerHTML = "";
-    const colors =
-      product.colors && product.colors.length > 0
-        ? product.colors
-        : ["Default"];
-    colors.forEach((color) => {
-      const swatch = document.createElement("div");
-      swatch.className = "swatch";
-      swatch.style.backgroundColor = color.toLowerCase();
-      swatch.dataset.color = color;
-      swatch.addEventListener("click", () => {
-        const label = document.getElementById("selected-color-label");
-        if (label) label.textContent = color;
-      });
-      swatchesContainer.appendChild(swatch);
-    });
-  }
-
-  // Specifications
-  const specsTable = document.getElementById("product-specs");
-  if (specsTable && product.specs) {
-    specsTable.innerHTML = "";
-    for (const [key, value] of Object.entries(product.specs)) {
-      const row = document.createElement("tr");
-      row.innerHTML = `<td><b>${key}</b></td><td>${value}</td>`;
-      specsTable.appendChild(row);
+    if (!products.length) {
+      relSection.innerHTML = `<p class="empty-text">No similar products found.</p>`;
+      return;
     }
-  }
 
-  // Reviews
-  const reviewsList = document.getElementById("reviews-list");
-  if (reviewsList) {
-    reviewsList.innerHTML = "";
-    if (product.reviews && product.reviews.length > 0) {
-      // Compute average rating
-      const avgRating =
-        product.reviews.reduce((sum, r) => sum + r.rating, 0) /
-        product.reviews.length;
-
-      const productRating = document.getElementById("product-rating");
-      if (productRating)
-        productRating.innerHTML = `<span>${"★".repeat(
-          Math.round(avgRating)
-        )}${"☆".repeat(5 - Math.round(avgRating))}</span> ${avgRating.toFixed(
-          1
-        )}/5`;
-
-      // Render each review
-      product.reviews.forEach((rev) => {
-        const div = document.createElement("div");
-        div.className = "review";
-        div.innerHTML = `
-          <p><b>${rev.name}:</b> <span class="review-stars">${"★".repeat(
-          rev.rating
-        )}${"☆".repeat(5 - rev.rating)}</span></p>
-          <p>${rev.comment}</p>
-        `;
-        reviewsList.appendChild(div);
-      });
-    } else {
-      const productRating = document.getElementById("product-rating");
-      if (productRating) productRating.textContent = "No ratings yet";
-    }
+    relSection.innerHTML = products
+      .map(
+        (p) => `
+        <div class="rel-product-card">
+          <a href="products.html?id=${p._id}">
+            <img src="${
+              p.images?.[0] || p.image || "../images/placeholder.png"
+            }" alt="${escapeAttr(p.name || "")}">
+            <h3 class="rel-card-title">${escapeHtml(p.name || "")}</h3>
+            <p class="rel-card-price">₦${Number(p.price).toLocaleString()}</p>
+          </a>
+        </div>`
+      )
+      .join("");
+  } catch (err) {
+    console.error("❌ Related products error:", err);
+    relSection.innerHTML = `<p class="error-text">Error loading similar products.</p>`;
   }
 }
 
-// Make selected tab fully visible on mobile
-document.querySelectorAll(".tab-btn").forEach((tab) => {
-  tab.addEventListener("click", () => {
-    tab.scrollIntoView({ behavior: "smooth", inline: "center" });
+// ===============================
+// 🛍️ Seller section (robust, cookie-auth)
+// ===============================
+async function apiFetch(path, opts = {}) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    credentials: "include",
+    headers:
+      opts.body instanceof FormData
+        ? {}
+        : { "Content-Type": "application/json" },
+    ...opts,
   });
+
+  const text = await res.text();
+  const data = text
+    ? (() => {
+        try {
+          return JSON.parse(text);
+        } catch {
+          return text;
+        }
+      })()
+    : null;
+
+  if (!res.ok) {
+    const msg =
+      data?.message || data?.error || res.statusText || "Request failed";
+    const err = new Error(msg);
+    err.status = res.status;
+    err.body = data;
+    throw err;
+  }
+  return data;
+}
+
+// ===============================
+// 👁️ Product view tracking (module-scope)
+// - Prevents duplicate tracking by using a Set stored on window
+// - Safe to call from anywhere (page-specific scripts may call it on DOMContentLoaded)
+// ===============================
+async function trackProductView(productId) {
+  if (!productId) return;
+
+  // create global set to avoid duplicate requests for same product during a single session
+  try {
+    window._trackedProductViews = window._trackedProductViews || new Set();
+    if (window._trackedProductViews.has(productId)) {
+      console.debug("👁️ View already tracked for", productId);
+      return;
+    }
+
+    console.log("👁️ Tracking view for product:", productId);
+    const data = await apiFetch(
+      `/products/${encodeURIComponent(productId)}/view`,
+      { method: "POST" }
+    );
+    console.log("✅ View recorded, current count:", data?.views ?? "(unknown)");
+
+    // mark tracked even if response shape unexpected
+    window._trackedProductViews.add(productId);
+    return data;
+  } catch (err) {
+    console.error("❌ Failed to track product view:", err);
+  }
+}
+
+function setText(idOrEl, text) {
+  const el =
+    typeof idOrEl === "string" ? document.getElementById(idOrEl) : idOrEl;
+  if (!el) return;
+  el.textContent = text;
+}
+
+function setSrc(idOrEl, src) {
+  const el =
+    typeof idOrEl === "string" ? document.getElementById(idOrEl) : idOrEl;
+  if (!el) return;
+  el.src = src;
+}
+
+// ===============================
+// Follow button helpers
+// ===============================
+function setFollowButtonState(btn, following) {
+  if (!btn) return;
+  btn.classList.toggle("following", !!following);
+  // Use checkmark for visual clarity
+  btn.innerHTML = following ? `✔️ Following` : `+ Follow`;
+}
+
+function showFollowButtonLoading(btn, loading = true) {
+  if (!btn) return;
+  if (loading) {
+    // store previous HTML so we can restore it
+    btn.dataset._prevHtml = btn.innerHTML;
+    btn.innerHTML = `<span class="follow-spinner" aria-hidden="true">⏳</span> Processing...`;
+    btn.disabled = true;
+  } else {
+    if (btn.dataset._prevHtml) btn.innerHTML = btn.dataset._prevHtml;
+    btn.disabled = false;
+    delete btn.dataset._prevHtml;
+  }
+}
+
+async function loadSellerInfo(sellerId) {
+  const sellerLogo = document.getElementById("seller-logo");
+  const sellerName = document.getElementById("seller-name");
+  const sellerFollowers = document.getElementById("seller-followers");
+  const sellerBio = document.getElementById("seller-bio");
+  const sellerStory = document.getElementById("seller-story");
+  const followBtns = Array.from(document.querySelectorAll(".follow-btn"));
+
+  console.log("🔍 Starting loadSellerInfo for ID:", sellerId);
+
+  try {
+    const seller = await apiFetch(`/sellers/${encodeURIComponent(sellerId)}`);
+
+    console.log("✅ Raw seller response:", seller);
+    console.log("🧠 Seller fields:", {
+      id: seller._id,
+      storeName: seller.storeName,
+      businessName: seller.businessName,
+      name: seller.name,
+      followers: seller.followers?.length,
+      logo: seller.logo,
+      products: seller.products?.length,
+    });
+
+    setSrc(sellerLogo, seller.logo || "../images/store.png");
+    setText(
+      sellerName,
+      seller.storeName || seller.businessName || "Unknown Seller"
+    );
+    setText(
+      sellerFollowers,
+      `${seller.followerCount ?? seller.followers?.length ?? 0} followers`
+    );
+    setText(sellerBio, seller.bio || "No bio available.");
+    setText(sellerStory, seller.story || "No seller story yet.");
+
+    followBtns.forEach((btn) => {
+      btn.dataset.sellerId = sellerId;
+      setFollowButtonState(btn, !!seller.isFollowing);
+      btn.disabled = false;
+
+      // clear any previous listeners
+      btn.removeEventListener("click", btn._followHandler);
+      const handler = async (e) => {
+        e.preventDefault();
+        console.log("➡️ Follow button clicked for seller:", sellerId);
+        await toggleFollowSeller(sellerId, btn);
+      };
+      btn.addEventListener("click", handler);
+      btn._followHandler = handler;
+    });
+
+    console.log("🎯 Seller info rendered successfully.");
+  } catch (err) {
+    console.error("❌ Error loading seller info:", err);
+    if (err.status === 404)
+      console.warn("⚠️ Seller not found on backend:", sellerId);
+    setText(sellerName, "Seller info unavailable.");
+    setText(sellerFollowers, "");
+  }
+}
+
+// ===============================
+// 👥 Follow / Unfollow Seller
+// ===============================
+async function toggleFollowSeller(sellerId, button) {
+  if (!sellerId) return;
+
+  const followButtons = Array.from(
+    document.querySelectorAll(".follow-btn")
+  ).filter((b) => b.dataset.sellerId == sellerId);
+
+  try {
+    if (button) showFollowButtonLoading(button, true);
+
+    const data = await apiFetch(
+      `/sellers/${encodeURIComponent(sellerId)}/follow`,
+      { method: "POST" }
+    );
+
+    const following = !!data.following;
+    const followerCount =
+      data.followerCount ??
+      data.followersCount ??
+      data.followers?.length ??
+      null;
+
+    followButtons.forEach((btn) => {
+      setFollowButtonState(btn, following);
+      btn.disabled = false;
+    });
+
+    const followersEl = document.getElementById("seller-followers");
+    if (followersEl && followerCount !== null) {
+      followersEl.textContent =
+        followerCount > 0
+          ? `${followerCount} follower${followerCount === 1 ? "" : "s"}`
+          : "No followers yet";
+    }
+
+    console.log("✅ Follow status updated:", data);
+    return data;
+  } catch (err) {
+    if (err.message === "You cannot follow yourself") {
+      alert("You cannot follow yourself");
+      return; // stop further processing
+    }
+
+    console.error("❌ toggleFollowSeller error:", err);
+
+    if (err && err.status === 401) {
+      window.location.href = "/Pages/login.html";
+      return;
+    }
+
+    alert(err.message || "Could not update follow status.");
+  } finally {
+    if (button) showFollowButtonLoading(button, false);
+  }
+}
+
+async function loadSellerProducts(productId) {
+  const track = document.querySelector(".seller-products .rel-carousel-track");
+  if (!track) return;
+
+  track.innerHTML = `<div class="loading">Loading seller products…</div>`;
+
+  try {
+    // Get current product
+    const productData = await apiFetch(
+      `/products/${encodeURIComponent(productId)}`
+    );
+
+    // normalize possible shapes: { product } or direct product object
+    const product = productData.product || productData;
+    if (!product) throw new Error("Product payload malformed");
+
+    // seller may be id string or object
+    const sellerId = product.seller?._id || product.seller;
+    if (!sellerId) {
+      track.innerHTML = "<p>No seller info available.</p>";
+      return;
+    }
+
+    // populate seller section first
+    await loadSellerInfo(sellerId);
+
+    // fetch other products
+    const listData = await apiFetch(
+      `/products?seller=${encodeURIComponent(sellerId)}`
+    );
+    const products = (listData.products || []).filter(
+      (p) => p._id !== productId
+    );
+
+    if (!products.length) {
+      track.innerHTML = "<p>No more products from this seller yet.</p>";
+      return;
+    }
+
+    // render
+    track.innerHTML = "";
+    const fragment = document.createDocumentFragment();
+
+    products.forEach((p) => {
+      const card = document.createElement("div");
+      card.className = "rel-product-card";
+      const imgSrc =
+        p.image ||
+        (Array.isArray(p.images) && p.images[0]) ||
+        "../images/placeholder.jpg";
+      const price = Number(p.price) || 0;
+
+      // accessible card
+      card.innerHTML = `
+        <button type="button" class="rel-card-inner" data-product-id="${
+          p._id
+        }" aria-label="Open ${escapeHtml(p.name || "product")}">
+          <img class="rel-card-image" src="${escapeAttr(
+            imgSrc
+          )}" alt="${escapeAttr(p.name || "")}">
+          <h3 class="rel-card-title">${escapeHtml(p.name || "")}</h3>
+          <p class="rel-card-price">₦${price.toLocaleString()}</p>
+        </button>
+      `;
+
+      // navigate on click
+      card.querySelector(".rel-card-inner").addEventListener("click", () => {
+        window.location.href = `products.html?id=${encodeURIComponent(p._id)}`;
+      });
+
+      fragment.appendChild(card);
+    });
+
+    track.appendChild(fragment);
+  } catch (err) {
+    console.error("Error loading seller products:", err);
+    track.innerHTML = "<p>Error loading seller products.</p>";
+  }
+}
+
+/* Utilities to avoid XSS when inserting small strings into attributes/text */
+function escapeHtml(str) {
+  if (!str && str !== 0) return "";
+  return String(str).replace(
+    /[&<>"']/g,
+    (s) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[
+        s
+      ])
+  );
+}
+function escapeAttr(val) {
+  return escapeHtml(val);
+}
+
+/* Init on page load */
+document.addEventListener("DOMContentLoaded", () => {
+  try {
+    const bodyProductId =
+      document.body && document.body.dataset && document.body.dataset.productId;
+    if (bodyProductId) {
+      trackProductView(bodyProductId);
+    }
+  } catch (e) {
+    console.warn("Could not read body dataset for productId", e);
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const productId = urlParams.get("id");
+  if (productId) loadSellerProducts(productId);
+
+  document
+    .querySelectorAll(".tab-btn")
+    .forEach((tab) =>
+      tab.addEventListener("click", () =>
+        tab.scrollIntoView({ behavior: "smooth", inline: "center" })
+      )
+    );
 });

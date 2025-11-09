@@ -30,6 +30,7 @@ html {
     padding: 2rem 5%;
     background: var(--color-primary);
     border-bottom: 1px solid #eee;
+    border-radius: 1rem;
     margin-top: 9rem;
 }
 
@@ -114,7 +115,6 @@ html {
     margin-top: 0.5rem;
 }
 
-/* Bedrooms */
 .bed-options {
     display: flex;
     gap: 0.8rem;
@@ -167,6 +167,7 @@ html {
     position: relative;
     display: flex;
     flex-direction: column;
+    cursor: pointer;
 }
 
 /* LIST VIEW CARD LAYOUT */
@@ -323,9 +324,26 @@ html {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
 }
 
+.no-results {
+    text-align: center;
+    margin-top: 8rem;
+}
 
-/* Responsive */
+.no-results img {
+    width: 180px;
+    opacity: 0.8;
+}
+
+.no-results h3 {
+    font-size: 2rem;
+    margin: 1rem auto;
+}
+
 @media (max-width: 768px) {
+    html {
+        font-size: 55%;
+    }
+
     .controls-header {
         flex-direction: column;
         align-items: flex-start;
@@ -334,5 +352,17 @@ html {
 
     .filters-card {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 460px) {
+    html {
+        font-size: 45%;
+    }
+}
+
+@media (max-width: 360px) {
+    html {
+        font-size: 35%;
     }
 }

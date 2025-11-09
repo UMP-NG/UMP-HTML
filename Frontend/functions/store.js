@@ -1,497 +1,378 @@
-// Mock sellers
-const sellers = [
-  {
-    id: 1,
-    name: "TechHub",
-    bio: "Passionate about bringing the latest Apple products to students at fair prices.",
-    banner: "../images/banner.jpg",
-    logo: "../images/banner.jpg",
-    sold: 320,
-    rating: "★★★★★",
-    category: ["Phones"],
-    products: [
-      {
-        id: 1,
-        name: "iPhone 15",
-        price: "₦1,198,500",
-        image: "../images/Apple-iPhone-15-Pro-Max.jpg",
-      },
-      {
-        id: 2,
-        name: "iPhone 16",
-        price: "₦1,398,500",
-        image: "../images/iphone 16.jpg",
-      },
-      {
-        id: 3,
-        name: "iPhone 17",
-        price: "₦1,498,500",
-        image: "../images/iphone 17.jpeg",
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "MobileWorld",
-    bio: "Your one-stop hub for Samsung devices and support.",
-    banner: "../images/banner.jpg",
-    logo: "../images/banner.jpg",
-    sold: 185,
-    rating: "★★★★☆",
-    category: ["Phones"],
-    products: [
-      {
-        id: 4,
-        name: "Samsung Galaxy S25 Ultra",
-        price: "₦1,275,000",
-        image: "../images/s25ultra.png",
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "John Doe",
-    bio: "Student entrepreneur making tech affordable for peers.",
-    banner: "../images/banner.jpg",
-    logo: "../images/banner.jpg",
-    sold: 95,
-    rating: "★★★☆☆",
-    category: ["Electronics"],
-    products: [
-      {
-        id: 5,
-        name: "Wireless Headphones",
-        price: "₦15,000",
-        image: "../images/headphones.jpg",
-      },
-    ],
-  },
-  {
-    id: 4,
-    name: "Jane Smith",
-    bio: "Bringing affordable everyday gadgets to students.",
-    banner: "../images/banner.jpg",
-    logo: "../images/banner.jpg",
-    sold: 140,
-    rating: "★★★★☆",
-    category: ["Electronics"],
-    products: [
-      {
-        id: 6,
-        name: "Airpods",
-        price: "₦9,500",
-        image: "../images/earbuds.jpg",
-      },
-    ],
-  },
-  {
-    id: 5,
-    name: "Mike Johnson",
-    bio: "Helping students stay fit with wearable tech.",
-    banner: "../images/banner.jpg",
-    logo: "../images/banner.jpg",
-    sold: 70,
-    rating: "★★★★☆",
-    category: ["Electronics"],
-    products: [
-      {
-        id: 7,
-        name: "Smartwatch",
-        price: "₦40,000",
-        image: "../images/smartwatch.jpg",
-      },
-    ],
-  },
-  {
-    id: 6,
-    name: "Emma Brown",
-    bio: "Passionate about affordable fashion accessories.",
-    banner: "../images/banner.jpg",
-    logo: "../images/banner.jpg",
-    sold: 60,
-    rating: "★★★☆☆",
-    category: ["Accessories"],
-    products: [
-      {
-        id: 8,
-        name: "Laptop Bag",
-        price: "₦3,000",
-        image: "../images/lapbag.jpeg",
-      },
-    ],
-  },
-  {
-    id: 7,
-    name: "ElectroShop",
-    bio: "All kinds of affordable electronics at your fingertips.",
-    banner: "../images/banner.jpg",
-    logo: "../images/banner.jpg",
-    sold: 210,
-    rating: "★★★★☆",
-    category: ["Electronics"],
-    products: [
-      {
-        id: 9,
-        name: "Wireless Earbuds",
-        price: "₦12,000",
-        image: "../images/earbuds.jpg",
-      },
-    ],
-  },
-  {
-    id: 8,
-    name: "UrbanGear",
-    bio: "Stylish, functional student fashion at unbeatable prices.",
-    banner: "../images/banner.jpg",
-    logo: "../images/banner.jpg",
-    sold: 120,
-    rating: "★★★★☆",
-    category: ["Accessories"],
-    products: [
-      {
-        id: 10,
-        name: "Smart Backpack",
-        price: "₦25,000",
-        image: "../images/Smart Backpack.jpg",
-      },
-    ],
-  },
-  {
-    id: 9,
-    name: "StyleHub",
-    bio: "Affordable everyday student fashion.",
-    banner: "../images/banner.jpg",
-    logo: "../images/banner.jpg",
-    sold: 80,
-    rating: "★★★☆☆",
-    category: ["Fashion"],
-    products: [
-      {
-        id: 11,
-        name: "Classic Hoodie",
-        price: "₦5,000",
-        image: "../images/hoodie.jpg",
-      },
-    ],
-  },
-  {
-    id: 10,
-    name: "BookWorld",
-    bio: "Helping students stay prepared with affordable stationery.",
-    banner: "../images/banner.jpg",
-    logo: "../images/banner.jpg",
-    sold: 55,
-    rating: "★★★★☆",
-    category: ["Books"],
-    products: [
-      {
-        id: 12,
-        name: "Notebook Bundle",
-        price: "₦4,000",
-        image: "../images/books.jpg",
-      },
-    ],
-  },
-  {
-    id: 11,
-    name: "FitLife",
-    bio: "Promoting health and wellness in student life.",
-    banner: "../images/banner.jpg",
-    logo: "../images/banner.jpg",
-    sold: 95,
-    rating: "★★★★☆",
-    category: ["Electronics"],
-    products: [
-      {
-        id: 13,
-        name: "Fitness Tracker",
-        price: "₦15,000",
-        image: "../images/fitness tracker.jpg",
-      },
-    ],
-  },
-];
+const isLocal = window.location.hostname === "localhost";
+const API_BASE = isLocal
+  ? "http://localhost:5000/api"
+  : "https://ump-html-1.onrender.com/api";
 
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("store.js is loaded");
 
-  // Check if this page has a seller grid (store listing)
-  const grid = document.getElementById("storeGrid");
-  console.log("storeGrid element found:", grid);
-  if (grid) {
-    console.log("Rendering sellers:", sellers);
-    displaySellers(sellers, grid);
-  }
-
-  // Check if this page has a seller profile (seller.html)
-  const container = document.getElementById("sellerProfile");
-  console.log("sellerProfile element found:", container);
-
-  if (container) {
-    const params = new URLSearchParams(window.location.search);
-    const sellerId = parseInt(params.get("id"));
-    console.log("Seller ID from URL:", sellerId);
-
-    const seller = sellers.find((s) => s.id === sellerId);
-    console.log("Seller found:", seller);
-
-    if (seller) {
-      renderSellerProfile(seller, container);
-    } else {
-      console.warn("Seller not found!");
-    }
-  }
-});
-
-// Functions
-function displaySellers(list, grid) {
-  console.log("displaySellers called with list:", list);
-  grid.innerHTML = list
-    .map(
-      (s) => `
-      <a href="seller.html?id=${s.id}" class="store-card">
-        <img src="${s.logo}" alt="${s.name}" class="store-avatar" />
-        <h3 class="store-name">${s.name}</h3>
-        <div class="store-stats">⭐ ${s.rating}</div>
-      </a>
-    `
-    )
-    .join("");
-}
-
-grid.addEventListener("click", (e) => {
-  const link = e.target.closest("a.store-card");
-  if (link) {
-    e.preventDefault(); // temporarily stop navigation so we can see logs
-    console.log("✅ Store card clicked:", link.href);
-  }
-});
-
-function renderSellerProfile(seller, container) {
-  container.innerHTML = `
-    <section class="seller-header">
-      <img src="${seller.banner}" alt="${
-    seller.name
-  } Banner" class="store-banner" />
-      <div class="seller-info">
-        <img src="${seller.logo}" alt="${
-    seller.name
-  } Logo" class="seller-avatar" />
-        <h2 class="seller-name">${seller.name}</h2>
-        <p class="seller-bio">${seller.bio}</p>
-        <button class="contact-btn">Contact Seller</button>
-        <div class="seller-stats">
-          <div>Items Sold: ${seller.sold}</div>
-          <div>Rating: ${seller.rating}</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="seller-products">
-      <h3>Available Products</h3>
-      <div class="seller-grid">
-        ${seller.products
-          .map(
-            (p) => `
-            <div class="seller-card" data-product-id="${p.id}">
-              <a href="./product.html?id=${p.id}" class="product-link">
-                <div class="seller-product-card">
-                  <img src="${p.image}" alt="${p.name}">
-                    <div class="seller-product-action">
-                        <button class="quick-view" data-product-id="12"><i class="fas fa-eye"></i></button>
-                        <button class="add-to-cart" data-product-id="12"><i class="fas fa-cart-plus"></i></button>
-                    </div>
-                </div>
-                <div class="seller-product-info">
-                  <h3>${p.name}</h3>
-                  <p>${p.price}</p>
-                </div>
-              </a>
-            </div>
-          `
-          )
-          .join("")}
-      </div>
-    </section>
-  `;
-
-  console.log("Rendered seller links:", grid.querySelectorAll("a"));
-}
-
-// === Store search (updated class names to match your CSS) ===
-document.addEventListener("DOMContentLoaded", () => {
-  const searchInput = document.getElementById("searchInput");
-  const searchResults = document.getElementById("searchResults"); // <div id="searchResults" class="store-search-grid"></div>
-  const storeDirectory = document.querySelector(".store-directory"); // wrapper to hide when searching
-
-  if (!searchInput || !searchResults) return; // nothing to do on other pages
-
-  // Ensure the container has the CSS class we expect
-  if (!searchResults.classList.contains("store-search-grid")) {
-    searchResults.classList.add("store-search-grid");
-  }
-
-  // hide results by default
-  searchResults.style.display = "none";
-
-  function renderSellers(results) {
-    // hide the default directory while searching
-    if (storeDirectory) storeDirectory.style.display = "none";
-
-    // show results container
-    searchResults.style.display = "grid"; // your CSS expects a grid on .store-search-grid
-
-    if (!results || results.length === 0) {
-      searchResults.innerHTML = `
-        <div class="no-results">
-          <h2>Sorry, no sellers found</h2>
-          <p>We couldn’t find any matches for your search.</p>
-        </div>
-      `;
-      return;
-    }
-
-    // build the seller cards using the CSS classes you defined
-    searchResults.innerHTML = results
-      .map(
-        (s) => `
-      <div class="search-card" data-seller-id="${s.id}">
-        <a href="seller.html?id=${s.id}" class="search-link">
-          <div class="search-image">
-            <img src="${s.logo}" alt="${s.name}">
-          </div>
-          <div class="search-info">
-            <h3>${s.name}</h3>
-            <p>${s.bio ? s.bio : ""}</p>
-            <small>⭐ ${s.rating} • ${s.sold ?? 0} sold</small>
-          </div>
-        </a>
-      </div>
-    `
-      )
-      .join("");
-  }
-
-  // Input listener: when user types, hide the directory and show filtered results.
-  searchInput.addEventListener("input", (e) => {
-    const term = e.target.value.trim().toLowerCase();
-
-    if (term === "") {
-      // show default directory again
-      if (storeDirectory) storeDirectory.style.display = ""; // resets to stylesheet
-      searchResults.style.display = "none";
-      searchResults.innerHTML = "";
-      return;
-    }
-
-    // filter sellers by name, tag or bio
-    const filtered = sellers.filter((s) => {
-      const name = s.name?.toLowerCase() ?? "";
-      const tag = (s.tag ?? "").toLowerCase();
-      const bio = (s.bio ?? "").toLowerCase();
-      return name.includes(term) || tag.includes(term) || bio.includes(term);
-    });
-
-    renderSellers(filtered);
-  });
-
-  // Optional: handle Enter (submit) so pressing Enter behaves same as typing
-  searchInput.addEventListener("keyup", (e) => {
-    if (e.key === "Enter") {
-      const term = e.target.value.trim().toLowerCase();
-      if (term !== "") {
-        const filtered = sellers.filter((s) => {
-          const name = s.name?.toLowerCase() ?? "";
-          const tag = (s.tag ?? "").toLowerCase();
-          const bio = (s.bio ?? "").toLowerCase();
-          return (
-            name.includes(term) || tag.includes(term) || bio.includes(term)
-          );
-        });
-        renderSellers(filtered);
-      }
-    }
-  });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("store.js is loaded");
-
+document.addEventListener("DOMContentLoaded", async () => {
+  // ======== Selectors ========
   const storeGrid = document.getElementById("storeGrid");
+  const sellerProfile = document.getElementById("sellerProfile");
+  const searchInput = document.getElementById("searchInput");
+  const searchResults = document.getElementById("searchResults");
+  const storeDirectory = document.querySelector(".store-directory");
   const filterBtns = document.querySelectorAll(".filter-btn");
-
-  // Function to render sellers
-  function renderSellers(sellersToRender) {
-    storeGrid.innerHTML = sellersToRender
-      .map(
-        (seller) => `
-      <div class="store-card" data-id="${seller.id}">
-        <img src="${seller.logo || "../images/guy.png"}" 
-     alt="${seller.name}" 
-     class="store-avatar">
-
-        <h3 class="store-name">${seller.name}</h3>
-        <p class="store-stats">${seller.products.length} products</p>
-        <span class="store-tag">${seller.category}</span>
-      </div>
-    `
-      )
-      .join("");
-  }
-
-  // Initially show all sellers
-  renderSellers(sellers);
-
-  // Filter button clicks
-  filterBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const category = btn.dataset.category;
-
-      if (category === "all") {
-        renderSellers(sellers);
-      } else {
-        const filtered = sellers.filter(
-          (s) => s.category.toLowerCase() === category.toLowerCase()
-        );
-        renderSellers(filtered);
-      }
-    });
-  });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
   const filterToggle = document.getElementById("Toggle");
   const filterPanel = document.getElementById("Panel");
   const closePanel = document.getElementById("closePanel");
 
-  if (!filterToggle || !filterPanel || !closePanel) {
-    console.error("❌ One or more elements not found in DOM");
-    return;
+  let sellers = [];
+
+  // ============================
+  // 🌐 Backend API helper (Uses cookies, no localStorage)
+  // ============================
+  async function apiFetch(endpoint, options = {}) {
+    try {
+      const res = await fetch(`${API_BASE}/api${endpoint}`, {
+        method: options.method || "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: options.body ? JSON.stringify(options.body) : null,
+        credentials: "include", // ✅ cookies for auth
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.error("apiFetch error:", err);
+      throw err;
+    }
   }
 
-  // Toggle panel with main button
-  filterToggle.addEventListener("click", () => {
-    filterPanel.classList.toggle("active");
-    filterToggle.textContent = filterPanel.classList.contains("active")
-      ? "✖ Close Filters"
-      : "☰ Filters";
-  });
+  // ============================
+  // 👩‍💼 Load sellers from backend
+  // ============================
+  async function loadSellers() {
+    try {
+      const res = await apiFetch("/sellers");
+      sellers = Array.isArray(res) ? res : res.sellers || [];
 
-  // Close panel with close button
-  closePanel.addEventListener("click", () => {
-    filterPanel.classList.remove("active");
-    filterToggle.textContent = "☰ Filters";
-  });
+      if (!sellers || sellers.length === 0) {
+        console.warn("⚠️ No sellers found in database.");
+        if (storeGrid) {
+          storeGrid.innerHTML = `
+            <div class="empty-state">
+              <img src="../images/empty.png" alt="Empty state" />
+              <h3>No Service Providers Available Yet</h3>
+              <p>Once service providers join, their profiles will appear here.</p>
+              <button class="refresh-btn" id="refreshBtn">🔄 Refresh</button>
+            </div>
+          `;
 
-  // Optional: click outside to close
-  document.addEventListener("click", (e) => {
-    if (
-      filterPanel.classList.contains("active") &&
-      !filterPanel.contains(e.target) &&
-      !filterToggle.contains(e.target)
-    ) {
+          const refreshBtn = document.getElementById("refreshBtn");
+          if (refreshBtn) {
+            refreshBtn.addEventListener("click", () => {
+              console.log("refreshBtn clicked ✅");
+              window.location.reload();
+            });
+          }
+        }
+        return;
+      }
+
+      if (storeGrid) displaySellers(sellers, storeGrid);
+      if (sellerProfile) showSellerProfile();
+    } catch (err) {
+      console.error("❌ Failed to load sellers:", err);
+      if (storeGrid)
+        storeGrid.innerHTML = `
+          <div class="error-msg">
+            <p>Failed to load sellers. Please try again later.</p>
+          </div>`;
+    }
+  }
+
+  // ============================
+  // 🧱 Display sellers in a grid
+  // ============================
+  function displaySellers(list, grid) {
+    if (!list || list.length === 0) {
+      grid.innerHTML = `
+        <div class="empty-state">
+          <img src="../images/guy.png" alt="No sellers">
+          <p>No sellers found.</p>
+        </div>`;
+      return;
+    }
+
+    grid.innerHTML = list
+      .map(
+        (s) => `
+        <a href="seller.html?id=${s._id}" class="store-card">
+          <img src="${s.logo || "../images/guy.png"}" alt="${
+          s.name
+        }" class="store-avatar" />
+          <h3 class="store-name">${s.name}</h3>
+          <div class="store-stats">⭐ ${s.rating || "0"}</div>
+        </a>`
+      )
+      .join("");
+  }
+
+  // ============================
+  // 🧍 Seller profile page
+  // ============================
+  function showSellerProfile() {
+    const params = new URLSearchParams(window.location.search);
+    const sellerId = params.get("id");
+    const seller = sellers.find((s) => s._id === sellerId);
+    window.currentSellerId = sellerId;
+
+    if (!sellerProfile) return;
+
+    if (!seller) {
+      sellerProfile.innerHTML = `
+        <div class="empty-state">
+          <img src="../images/guy.png" alt="No seller" />
+          <p>Seller not found or may have been removed.</p>
+        </div>`;
+      return;
+    }
+
+    sellerProfile.innerHTML = `
+      <section class="seller-header">
+        <img src="${seller.banner || "../images/banner.jpg"}" alt="${
+      seller.name
+    }" class="store-banner" />
+        <div class="seller-info">
+          <img src="${seller.logo || "../images/guy.png"}" alt="${
+      seller.name
+    }" class="seller-avatar" />
+          <h2 class="seller-name">${seller.name}</h2>
+          <p class="seller-bio">${
+            seller.bio || "This seller has no bio yet."
+          }</p>
+
+          <div class="seller-actions">
+            <button class="contact-btn" id="contactSellerBtn">💬 Contact Seller</button>
+            <button class="btn btn-primary" id="followSellerBtn">
+              ${seller.isFollowed ? "Following ✓" : "Follow Store"}
+            </button>
+          </div>
+
+          <div class="seller-stats">
+            <div>Items Sold: ${seller.sold || 0}</div>
+            <div>Rating: ${seller.rating || "0"}</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="seller-products">
+        <h3>Available Products</h3>
+        <div class="seller-grid">
+          ${
+            seller.products && seller.products.length > 0
+              ? seller.products
+                  .map(
+                    (p) => `
+                    <div class="seller-card" data-product-id="${p._id}">
+                      <a href="./product.html?id=${p._id}" class="product-link">
+                        <div class="seller-product-card">
+                          <img src="${
+                            p.image || "../images/default.jpg"
+                          }" alt="${p.name}">
+                          <div class="seller-product-action">
+                            <button class="quick-view" data-product-id="${
+                              p._id
+                            }">
+                              <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="add-to-cart" data-product-id="${
+                              p._id
+                            }">
+                              <i class="fas fa-cart-plus"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="seller-product-info">
+                          <h3>${p.name}</h3>
+                          <p>${p.price || "N/A"}</p>
+                        </div>
+                      </a>
+                    </div>`
+                  )
+                  .join("")
+              : `
+                <div class="no-products" id="noProducts">
+                  <img src="../images/empty.png" alt="No products" class="no-products__img" />
+                  <div class="no-products__content">
+                    <h4 class="no-products__title">This seller has no products yet</h4>
+                    <p class="no-products__text">
+                      The seller hasn't added items to their store. Check back later or follow the store to get updates.
+                    </p>
+                    <div class="no-products__actions">
+                      <button class="btn btn-primary" id="followSellerBtn">Follow Store</button>
+                      <button class="btn btn-ghost" id="refreshProductsBtn">Refresh</button>
+                    </div>
+                  </div>
+                </div>`
+          }
+        </div>
+      </section>`;
+  }
+
+  // ============================
+  // 🔍 Search sellers
+  // ============================
+  if (searchInput && searchResults) {
+    searchResults.style.display = "none";
+
+    function renderSearchResults(results) {
+      if (storeDirectory) storeDirectory.style.display = "none";
+      searchResults.style.display = "grid";
+
+      if (!results.length) {
+        searchResults.innerHTML = `
+          <div class="no-results">
+            <h2>No sellers found</h2>
+            <p>Try another keyword.</p>
+          </div>`;
+        return;
+      }
+
+      searchResults.innerHTML = results
+        .map(
+          (s) => `
+          <div class="search-card" data-seller-id="${s._id}">
+            <a href="seller.html?id=${s._id}" class="search-link">
+              <div class="search-image">
+                <img src="${s.logo || "../images/guy.png"}" alt="${s.name}">
+              </div>
+              <div class="search-info">
+                <h3>${s.name}</h3>
+                <p>${s.bio || ""}</p>
+                <small>⭐ ${s.rating || "0"} • ${s.sold || 0} sold</small>
+              </div>
+            </a>
+          </div>`
+        )
+        .join("");
+    }
+
+    searchInput.addEventListener("input", async (e) => {
+      const term = e.target.value.trim();
+      if (!term) {
+        if (storeDirectory) storeDirectory.style.display = "";
+        searchResults.style.display = "none";
+        return;
+      }
+
+      try {
+        const res = await apiFetch(
+          `/sellers/search?q=${encodeURIComponent(term)}`
+        );
+        const data = Array.isArray(res) ? res : res.sellers || [];
+        renderSearchResults(data);
+      } catch (err) {
+        console.error("❌ Search failed:", err);
+        searchResults.innerHTML = `
+          <div class="no-results">
+            <h2>Search failed</h2>
+            <p>Try again later.</p>
+          </div>`;
+      }
+    });
+  }
+
+  // ============================
+  // 🎛️ Filter toggle panel
+  // ============================
+  if (filterToggle && filterPanel && closePanel) {
+    filterToggle.addEventListener("click", () => {
+      filterPanel.classList.toggle("active");
+      filterToggle.textContent = filterPanel.classList.contains("active")
+        ? "✖ Close Filters"
+        : "☰ Filters";
+    });
+
+    closePanel.addEventListener("click", () => {
       filterPanel.classList.remove("active");
       filterToggle.textContent = "☰ Filters";
+    });
+
+    document.addEventListener("click", (e) => {
+      if (
+        filterPanel.classList.contains("active") &&
+        !filterPanel.contains(e.target) &&
+        !filterToggle.contains(e.target)
+      ) {
+        filterPanel.classList.remove("active");
+        filterToggle.textContent = "☰ Filters";
+      }
+    });
+  }
+
+  // ============================
+  // 🧩 Filter sellers by category
+  // ============================
+  if (filterBtns && filterBtns.length > 0 && storeGrid) {
+    filterBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const category = btn.dataset.category;
+        if (category === "all") {
+          displaySellers(sellers, storeGrid);
+        } else {
+          const filtered = sellers.filter(
+            (s) =>
+              s.category &&
+              s.category.some((c) => c.toLowerCase() === category.toLowerCase())
+          );
+          displaySellers(filtered, storeGrid);
+        }
+      });
+    });
+  }
+
+  // ✅ Load sellers on page ready
+  await loadSellers();
+});
+
+// ============================
+// 🖱️ Global Click Actions
+// ============================
+document.addEventListener("click", async (e) => {
+  // 🔁 Refresh products
+  if (e.target.id === "refreshProductsBtn") {
+    e.target.textContent = "Checking…";
+    window.location.reload();
+  }
+
+  // 💬 Contact Seller
+  if (e.target.id === "contactSellerBtn") {
+    const sellerId = window.currentSellerId || document.body.dataset.sellerId;
+    if (!sellerId) return alert("Seller not found.");
+
+    const res = await fetch(`${API_BASE}/api/users/me`, { credentials: "include" });
+    if (!res.ok) return alert("Please log in to send a message.");
+
+    window.location.href = `/messages?to=${sellerId}`;
+  }
+
+  // 🤝 Follow / Unfollow Seller
+  if (e.target.id === "followSellerBtn") {
+    const btn = e.target;
+    const sellerId = window.currentSellerId || document.body.dataset.sellerId;
+    if (!sellerId) return alert("Seller not found.");
+
+    const check = await fetch(`${API_BASE}/api/users/me`, { credentials: "include" });
+    if (!check.ok) return alert("Please log in to follow stores.");
+
+    try {
+      const res = await fetch(`${API_BASE}/api/sellers/${sellerId}/follow`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message || "Failed to follow");
+
+      btn.textContent = data.isFollowing ? "Following ✓" : "Follow Store";
+      btn.classList.toggle("following", data.isFollowing);
+    } catch (err) {
+      console.error(err);
+      alert("Unable to follow this seller right now.");
     }
-  });
+  }
 });

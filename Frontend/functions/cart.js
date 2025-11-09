@@ -1,34 +1,39 @@
+const API_BASE =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5000"
+    : "https://ump-html-1.onrender.com";
+
 let currentStep = 1;
 
 function showStep(step) {
+  console.log(`🪜 Showing step ${step}`); // 👈 log which step is being displayed
+
   const allSteps = document.querySelectorAll(".step-content");
   const steps = document.querySelectorAll(".step");
   const labels = document.querySelectorAll(".step-label");
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
 
-  // Remove active/completed classes
   allSteps.forEach((s) => s.classList.remove("active"));
   steps.forEach((s) => s.classList.remove("active", "completed"));
   labels.forEach((l) => l.classList.remove("active-label"));
 
-  // Show current step
   document
     .querySelector(`.step-content[data-step="${step}"]`)
     ?.classList.add("active");
   steps[step - 1]?.classList.add("active");
   labels[step - 1]?.classList.add("active-label");
 
-  // Mark previous as completed
   for (let i = 0; i < step - 1; i++) {
     steps[i]?.classList.add("completed");
   }
 
-  // Button logic
   if (step === 1) {
+    console.log("👈 Hiding Previous button (first step)");
     prevBtn.style.display = "none";
     nextBtn.textContent = "Next";
   } else if (step === steps.length) {
+    console.log("🏁 Last step reached — changing Next to Finish");
     prevBtn.style.display = "inline-block";
     nextBtn.textContent = "Finish";
   } else {
@@ -37,246 +42,401 @@ function showStep(step) {
   }
 }
 
-function nextStep() {
+async function nextStep() {
   const totalSteps = document.querySelectorAll(".step").length;
 
+  // ✅ STEP 1 VALIDATION
+  if (currentStep === 1) {
+    const cartItems = document.querySelectorAll(".cart-item");
+    const deliverySelected = document.querySelector(
+      'input[name="delivery"]:checked'
+    );
+
+    if (cartItems.length === 0) {
+      alert("🛒 Please add at least one product to your cart.");
+      console.warn("❌ No cart items found.");
+      return;
+    }
+
+    if (!deliverySelected) {
+      alert("🚚 Please select a delivery option before continuing.");
+      console.warn("❌ Delivery option not selected.");
+      return;
+    }
+  }
+
+  if (currentStep === 2) {
+    const step2 = document.querySelector('.step-content[data-step="2"]');
+    if (!step2) {
+      console.error("❌ Step 2 container not found");
+      return;
+    }
+
+    const fullNameEl = step2.querySelector("#fullName");
+    const emailEl = step2.querySelector("#email");
+    const locationEl = step2.querySelector("#location");
+    const notesEl = step2.querySelector("#notes");
+    const phoneEl = step2.querySelector("#phone");
+
+    if (!fullNameEl || !emailEl || !locationEl || !notesEl || !phoneEl) {
+      console.error("❌ Some input elements not found in Step 2");
+      return;
+    }
+
+    const fullName = fullNameEl.value.trim();
+    const email = emailEl.value.trim();
+    const location = locationEl.value.trim();
+    const notes = notesEl.value.trim();
+    const phone = phoneEl.value.trim();
+
+    if (!fullName || !email || !location || !notes || !phone) {
+      alert("⚠️ Please fill in all required fields before proceeding.");
+      console.warn("❌ Missing required info fields.");
+      return;
+    }
+  }
+
+  // ✅ MOVE TO NEXT STEP OR FINISH
   if (currentStep < totalSteps) {
     currentStep++;
     showStep(currentStep);
   } else {
-    // ✅ Instead of finishing immediately, check payment method
     const paymentChoice = document.querySelector(
       'input[name="payment"]:checked'
     );
     if (!paymentChoice) {
-      alert("Please select a payment method.");
+      alert("💳 Please select a payment method.");
       return;
     }
 
-    // hide progressive sections
-    document
-      .querySelectorAll(
-        ".forgot-something, .btn-container, .step-content, .progress-container, .progress-label"
-      )
-      .forEach((sec) => (sec.style.display = "none"));
-
-    // hide both forms first
-    document.getElementById("cardForm").classList.add("hidden");
-    document.getElementById("transferForm").classList.add("hidden");
-
-    // show the selected form
-    if (paymentChoice.value === "card") {
-      document.getElementById("cardForm").classList.remove("hidden");
-    } else if (paymentChoice.value === "transfer") {
-      document.getElementById("transferForm").classList.remove("hidden");
-    }
-
-    // optional: disable the next/finish button so user uses form
-    document.getElementById("nextBtn").style.display = "none";
+    console.log("💰 Payment choice:", paymentChoice.value);
+    await checkoutCart(paymentChoice.value);
   }
 }
 
 function prevStep() {
+  console.log("⬅️ Previous button clicked");
   if (currentStep > 1) {
     currentStep--;
+    console.log(`↩️ Going back to step ${currentStep}`);
     showStep(currentStep);
+  } else {
+    console.log("🚫 Already at first step, cannot go back further");
   }
 }
 
 function goBackToCheckout() {
-  // hide forms
-  document.getElementById("cardForm").classList.add("hidden");
-  document.getElementById("transferForm").classList.add("hidden");
+  console.log("🔙 Returning to checkout view");
+  document.getElementById("cardForm")?.classList.add("hidden");
+  document.getElementById("transferForm")?.classList.add("hidden");
 
-  // restore checkout sections
   document
     .querySelectorAll(
       ".forgot-something, .btn-container, .step-content, .progress-container, .progress-label"
     )
     .forEach((sec) => (sec.style.display = ""));
 
-  // bring back the navigation buttons
   document.getElementById("nextBtn").style.display = "inline-block";
   document.getElementById("prevBtn").style.display = "inline-block";
 }
 
 window.goBackToCheckout = goBackToCheckout;
-
-// Initialize
-document.addEventListener("DOMContentLoaded", () => {
-  showStep(currentStep);
-
-  document.getElementById("nextBtn")?.addEventListener("click", nextStep);
-  document.getElementById("prevBtn")?.addEventListener("click", prevStep);
-
-  if (typeof updateCartCount === "function") updateCartCount();
-  if (typeof renderCart === "function") renderCart();
-});
-
-// Expose functions globally if needed
-window.nextStep = nextStep;
-window.prevStep = prevStep;
-
-// ✅ Make cart functions available for inline onclicks
-window.updateQuantity = updateQuantity;
-window.removeFromCart = removeFromCart;
-
 // ---------------------------
-// CART UTILITIES (localStorage)
+// 🧠 CART UTILITIES (Backend Version)
 // ---------------------------
-const CART_KEY = "cart";
 
-// Load cart from localStorage
-function loadCart() {
-  const raw = localStorage.getItem(CART_KEY);
-  console.log("🔄 Loading cart from localStorage:", raw);
-  return JSON.parse(raw) || [];
+// Cookie helpers (replace localStorage usage)
+function cookieSet(name, value, days = 7) {
+  const expires = new Date(
+    Date.now() + days * 24 * 60 * 60 * 1000
+  ).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(
+    value
+  )}; expires=${expires}; path=/`;
 }
 
-// Save cart to localStorage
-function saveCart(cart) {
-  console.log("💾 Saving cart:", cart);
-  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+function cookieGet(name) {
+  const m = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+  return m ? decodeURIComponent(m[1]) : null;
 }
 
-// Add product to cart
-function addToCart(productId) {
-  const product = allProducts.find((p) => p.id == productId);
-  if (!product) return;
+function cookieRemove(name) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+}
 
-  let cart = loadCart();
-  let existing = cart.find((item) => item.id == product.id);
+// Auth check helper — do not rely on reading httpOnly cookie from JS
+async function authCheck() {
+  try {
+    const res = await fetch(`${API_BASE}/api/auth/me`, {
+      credentials: "include",
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.user || null;
+  } catch (err) {
+    console.error("authCheck error:", err);
+    return null;
+  }
+}
 
-  if (existing) {
-    existing.quantity += 1; // ✅ use quantity
-  } else {
-    cart.push({ ...product, quantity: 1 }); // ✅ use quantity
+// Generic API fetch wrapper
+async function apiFetch(url, options = {}) {
+  const fetchOptions = {
+    credentials: "include",
+    ...options,
+    headers: {
+      ...(options.headers || {}),
+    },
+  };
+  if (
+    fetchOptions.body &&
+    !(fetchOptions.body instanceof FormData) &&
+    !fetchOptions.headers["Content-Type"]
+  ) {
+    fetchOptions.headers["Content-Type"] = "application/json";
   }
 
-  saveCart(cart);
-  console.log("Cart updated:", cart); // ✅ debug log
-  updateCartCount();
+  const res = await fetch(`${API_BASE}${url}`, fetchOptions);
+  if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+  return res.json();
 }
 
-// Remove product
-function removeFromCart(productId) {
-  console.log("🗑 Removing product:", productId);
-  let cart = loadCart().filter((item) => item.id != productId);
-  saveCart(cart);
-  renderCart();
-  updateCartCount();
-}
-
-// Update quantity
-function updateQuantity(productId, change) {
-  let cart = loadCart();
-  let item = cart.find((p) => p.id == productId);
-
-  if (item) {
-    item.quantity += change; // ✅ use quantity
-    if (item.quantity <= 0) {
-      cart = cart.filter((p) => p.id != productId);
-    }
+// Fetch user cart from backend
+async function loadCart() {
+  try {
+    const data = await apiFetch("/api/cart");
+    return data.items || [];
+  } catch (err) {
+    console.error("❌ Failed to load cart:", err);
+    return [];
   }
+}
 
-  saveCart(cart);
-  renderCart();
-  updateCartCount();
+function showLoading(show = true, message = "Processing...") {
+  const overlay = document.getElementById("loadingOverlay");
+  if (!overlay) return;
+  overlay.querySelector("p").textContent = message;
+  overlay.classList.toggle("hidden", !show);
 }
 
 // ---------------------------
-// MARKETPLACE HANDLERS
+// 🛒 Add to Cart (Guest + Auth Users, Safe JSON Handling)
 // ---------------------------
-document.addEventListener("click", (e) => {
-  if (e.target.closest(".add-to-cart")) {
-    const id = e.target.closest(".add-to-cart").dataset.productId;
-    console.log("🖱 Clicked Add to Cart:", id);
-    addToCart(id);
-  }
-
-  if (e.target.closest(".quick-view")) {
-    const id = e.target.closest(".quick-view").dataset.productId;
-    console.log("👁 Quick view product:", id);
-    openQuickView(id);
-  }
-});
-
-// ---------------------------
-// QUICK VIEW MODAL
-// ---------------------------
-function openQuickView(productId) {
-  const product = allProducts.find((p) => p.id == productId);
-  console.log("🔍 Opening quick view:", product);
-
-  if (!product) return;
-
-  document.getElementById("modalProductImage").src = product.image;
-  document.getElementById("modalProductName").textContent = product.name;
-  document.getElementById("modalProductPrice").textContent = product.price;
-  document.getElementById("modalProductDesc").textContent = product.desc;
-  document.getElementById("modalSellerName").textContent = product.seller;
-  document.getElementById("modalStoreName").textContent = product.store;
-  document.getElementById("modalCategory").textContent = product.category;
-
-  document.getElementById("quickViewModal").style.display = "block";
-}
-
-document.getElementById("closeModal")?.addEventListener("click", () => {
-  console.log("❎ Closing quick view modal");
-  document.getElementById("quickViewModal").style.display = "none";
-});
-
-// ---------------------------
-// CART PAGE RENDERING
-// ---------------------------
-function renderCart() {
-  const container = document.getElementById("cartItems");
-  if (!container) {
-    console.warn("❌ No #cartItems container found in DOM");
+async function addToCart(productId, quantity = 1) {
+  if (!productId) {
+    console.error("❌ addToCart called without productId");
     return;
   }
 
-  let cart = loadCart();
+  try {
+    const user = await authCheck(); // Check if user is logged in
+
+    // ---------------------------
+    // 🧩 Guest cart (stored in cookie)
+    // ---------------------------
+    if (!user) {
+      let guestCart = (() => {
+        const v = cookieGet("guestCart");
+        return v ? JSON.parse(v) : [];
+      })();
+
+      const existing = guestCart.find((item) => item.productId === productId);
+      if (existing) {
+        existing.quantity += quantity;
+      } else {
+        guestCart.push({ productId, quantity });
+      }
+
+      cookieSet("guestCart", JSON.stringify(guestCart), 7);
+      console.log("✅ Product added to guest cart:", productId, quantity);
+      renderGuestCart();
+      alert("✅ Product added to your cart (guest mode).");
+      return;
+    }
+
+    // ---------------------------
+    // ✅ Authenticated user — send request to backend
+    // ---------------------------
+    const res = await apiFetch("/api/cart/add", {
+      method: "POST",
+      body: JSON.stringify({ productId, quantity }),
+    });
+
+    // Parse JSON response safely
+    let data;
+    try {
+      data = (await res.json?.()) || res; // works if apiFetch already returns JSON
+    } catch (jsonErr) {
+      console.error("❌ Failed to parse JSON response:", jsonErr);
+      throw new Error("Invalid response from server");
+    }
+
+    if (!res.ok && data?.message) {
+      throw new Error(data.message);
+    }
+
+    console.log("✅ Add to cart response:", data);
+    alert("✅ Product added to cart!");
+    renderCart();
+  } catch (err) {
+    console.error("❌ Failed to add to cart:", err);
+    alert(err.message || "Error adding product to cart");
+  }
+}
+
+// ✅ Event delegation for Add to Cart buttons
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".add-to-cart, .add-to-cart-btn");
+  if (!btn) return; // not an add-to-cart button
+
+  const productId = btn.dataset.productId;
+  if (!productId) {
+    console.error("❌ No product ID found on button");
+    return;
+  }
+
+  addToCart(productId, 1); // adjust quantity if needed
+});
+
+// ---------------------------
+// 🔹 Set productId from URL for static product pages
+// ---------------------------
+function setProductIdFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get("id");
+  if (!productId) return;
+
+  const addToCartBtn = document.querySelector(".add-to-cart");
+  if (addToCartBtn) addToCartBtn.dataset.productId = productId;
+}
+
+// ---------------------------
+// 🔹 Initialize on page load
+// ---------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  setProductIdFromURL();
+  setProductIdFromURL();
+});
+
+// Expose globally for inline buttons or dynamic content
+window.addToCart = addToCart;
+
+async function removeFromCart(productId) {
+  try {
+    await apiFetch(`/api/cart/remove/${productId}`, { method: "DELETE" });
+    renderCart();
+  } catch (err) {
+    console.error("❌ Failed to remove item:", err);
+  }
+}
+
+async function updateQuantity(productId, change) {
+  const qtySpan = document.querySelector(
+    `.cart-item[data-id="${productId}"] .qty`
+  );
+  if (!qtySpan) return console.error("Quantity element not found");
+
+  let currentQty = parseInt(qtySpan.textContent, 10);
+  if (isNaN(currentQty)) currentQty = 1; // fallback
+
+  const newQty = Math.max(currentQty + change, 1); // minimum 1
+
+  try {
+    await apiFetch("/api/cart/update", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ productId, quantity: newQty }), // ✅ send absolute quantity
+    });
+
+    // Update the DOM after backend confirms
+    qtySpan.textContent = newQty;
+
+    // Optionally, re-render summary
+    const cart = await loadCart();
+    renderSummary(cart);
+  } catch (err) {
+    console.error("❌ Failed to update quantity:", err);
+  }
+}
+
+window.addToCart = addToCart;
+window.removeFromCart = removeFromCart;
+window.updateQuantity = updateQuantity;
+
+// ---------------------------
+// 🖼️ CART RENDERING (Updated)
+// ---------------------------
+async function renderCart() {
+  const container = document.getElementById("cartItems");
+  if (!container) return;
+
+  const cart = await loadCart();
+
+  const deliverySection = document.getElementById("deliveryOptions");
+  if (deliverySection) {
+    deliverySection.style.display = cart.length ? "block" : "none";
+  }
+
   container.innerHTML = "";
 
-  if (cart.length === 0) {
-    container.innerHTML = `<p>Your cart is empty</p>`;
+  if (!cart.length) {
+    container.innerHTML = `
+      <div class="empty-cart">
+        <p>🛒 Your cart is empty.</p>
+        <button class="btn" onclick="window.location.href='/Pages/market.html'">
+          🛍️ Continue Shopping
+        </button>
+      </div>`;
+    renderSummary([]);
     return;
   }
 
-  console.log("🖼 Rendering cart with items:", cart);
-
   cart.forEach((item) => {
+    const imgSrc =
+      (item.product?.images && item.product.images.length > 0
+        ? item.product.images[0]
+        : item.product?.image) || "../images/placeholder.png";
+
+    const name = item.product?.name || "Unnamed Product";
+    const price = item.product?.price || 0;
+    const sellerName = item.product?.seller?.storeName || "Unknown Store";
+
     const row = document.createElement("div");
     row.className = "cart-item";
-
-    // Use first image in array if available
-    const imgSrc = item.images?.[0] || "../images/placeholder.png";
+    row.dataset.id = item.product._id; // ✅ Add this for updateQuantity to find the element
 
     row.innerHTML = `
-      <img src="${imgSrc}" alt="${item.name}" class="cart-item-img" />
-      <div class="cart-item-details">
-        <h3 class="product-name">${item.name}</h3>
-        <a href="#" class="seller-name">${item.seller?.store || "Unknown Store"}</a>
-        <p class="product-attr">Condition: ${item.condition}</p>
-        <div class="cart-item-actions">
-          <div class="quantity-control">
-            <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-            <span class="qty">${item.quantity}</span>
-            <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-          </div>
-          <span class="line-price">${item.price}</span>
-          <button class="remove-item" onclick="removeFromCart(${item.id})">✕</button>
+    <img src="${imgSrc}" alt="${name}" class="cart-item-img" />
+    <div class="cart-item-details">
+      <h3>${name}</h3>
+      <a href="#" class="seller-name">${sellerName}</a>
+      <div class="cart-item-actions">
+        <div class="quantity-control">
+          <button onclick="updateQuantity('${item.product._id}', -1)">-</button>
+          <span class="qty">${item.quantity}</span>
+          <button onclick="updateQuantity('${item.product._id}', 1)">+</button>
         </div>
+        <span class="line-price">₦${price.toLocaleString("en-NG")}</span>
+        <button class="remove-item" onclick="removeFromCart('${
+          item.product._id
+        }')">✕</button>
       </div>
-    `;
-
+    </div>`;
     container.appendChild(row);
   });
 
   renderSummary(cart);
 }
 
+// ---------------------------
+// 💰 CART SUMMARY + DELIVERY
+// ---------------------------
+function calculateSubtotal(cart) {
+  return cart.reduce(
+    (sum, item) => sum + (item.product?.price || 0) * (item.quantity || 1),
+    0
+  );
+}
 
 function renderSummary(cart) {
   const existing = document.querySelector(".cart-summary");
@@ -284,117 +444,423 @@ function renderSummary(cart) {
 
   const summary = document.createElement("div");
   summary.className = "cart-summary";
-
-  const subtotal = cart.reduce((sum, item) => {
-    const price = parseFloat(item.price.replace(/[^\d.]/g, ""));
-    return sum + price * item.quantity;
-  }, 0);
+  const subtotal = calculateSubtotal(cart);
 
   summary.innerHTML = `
     <h2>Summary</h2>
-    <p>Subtotal: <strong>₦${subtotal.toLocaleString("en-NG", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}</strong></p>
+    <p>Subtotal: <strong>₦${subtotal.toLocaleString("en-NG")}</strong></p>
   `;
-
   document.querySelector(".cart-layout")?.appendChild(summary);
-}
-
-// ---------------------------
-// DELIVERY OPTIONS
-// ---------------------------
-function updateDelivery() {
-  const cart = loadCart();
-  let subtotal = cart.reduce((sum, item) => {
-    const price = parseFloat(item.price.replace(/[^\d.]/g, ""));
-    return sum + price * item.quantity;
-  }, 0);
-
-  // Get selected delivery
-  const deliveryOption = document.querySelector(
-    'input[name="delivery"]:checked'
-  );
-  if (!deliveryOption) return subtotal; // no delivery selected yet
-
-  const deliveryFee = parseFloat(deliveryOption.value);
-  return subtotal + deliveryFee;
 }
 
 function renderSummaryWithDelivery() {
   const container = document.querySelector(".cart-summary");
   if (!container) return;
 
-  const cart = loadCart();
-  let subtotal = cart.reduce((sum, item) => {
-    const price = parseFloat(item.price.replace(/[^\d.]/g, ""));
-    return sum + price * item.quantity;
-  }, 0);
-
   const deliveryOption = document.querySelector(
     'input[name="delivery"]:checked'
   );
   const deliveryFee = deliveryOption ? parseFloat(deliveryOption.value) : 0;
 
+  const subtotal = parseFloat(
+    container.querySelector("strong").textContent.replace(/[^\d]/g, "")
+  );
+
   container.innerHTML = `
     <h2>Summary</h2>
-    <p>Subtotal: <strong>₦${subtotal.toLocaleString("en-NG")}</strong></p>
-    <p>Delivery: <strong>₦${deliveryFee.toLocaleString("en-NG")}</strong></p>
-    <p>Total: <strong>₦${(subtotal + deliveryFee).toLocaleString(
+    <p>Subtotal: ₦${subtotal.toLocaleString("en-NG")}</p>
+    <p>Delivery: ₦${deliveryFee.toLocaleString("en-NG")}</p>
+    <p><strong>Total: ₦${(subtotal + deliveryFee).toLocaleString(
       "en-NG"
     )}</strong></p>
   `;
 }
 
-// Re-render summary when delivery option changes
-document.querySelectorAll('input[name="delivery"]').forEach((el) => {
-  el.addEventListener("change", renderSummaryWithDelivery);
+// ---------------------------
+// 🧾 Guest Cart (Updated)
+// ---------------------------
+function renderGuestCart() {
+  const container = document.getElementById("cartItems");
+  if (!container) return;
+
+  const guestCart = (() => {
+    const v = cookieGet("guestCart");
+    return v ? JSON.parse(v) : [];
+  })();
+
+  container.innerHTML = "";
+
+  if (!guestCart.length) {
+    container.innerHTML = `
+      <div class="empty-cart">
+        <p>🛒 Your guest cart is empty.</p>
+        <button class="btn" onclick="window.location.href='/Pages/market.html'">
+          🛍️ Continue Shopping
+        </button>
+      </div>`;
+    renderSummary([]);
+    return;
+  }
+
+  guestCart.forEach((item) => {
+    const row = document.createElement("div");
+    row.className = "cart-item";
+    row.innerHTML = `
+      <img src="../images/placeholder.png" alt="Product" class="cart-item-img" />
+      <div class="cart-item-details">
+        <h3>Product ID: ${item.productId}</h3>
+        <div class="cart-item-actions">
+          <div class="quantity-control">
+            <span class="qty">${item.quantity}</span>
+          </div>
+          <button class="remove-item" onclick="removeGuestItem('${item.productId}')">✕</button>
+        </div>
+      </div>`;
+    container.appendChild(row);
+  });
+
+  renderSummary(
+    guestCart.map((i) => ({ product: { price: 0 }, quantity: i.quantity }))
+  );
+}
+
+function removeGuestItem(productId) {
+  let guestCart = (() => {
+    const v = cookieGet("guestCart");
+    return v ? JSON.parse(v) : [];
+  })();
+  guestCart = guestCart.filter((i) => i.productId !== productId);
+  cookieSet("guestCart", JSON.stringify(guestCart), 7);
+  renderGuestCart();
+}
+window.removeGuestItem = removeGuestItem;
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const user = await authCheck();
+  if (user) {
+    await renderCart(); // user logged in
+  } else {
+    renderGuestCart(); // guest mode
+  }
 });
 
-// ✅ Update nextStep validation to require delivery
-const originalNextStep = nextStep;
-nextStep = function () {
-  if (currentStep === 1) {
-    // step with delivery
-    const selectedDelivery = document.querySelector(
-      'input[name="delivery"]:checked'
-    );
-    if (!selectedDelivery) {
-      alert("Please select a delivery option to proceed.");
-      return;
-    }
+const guestCart = (() => {
+  const v = cookieGet("guestCart");
+  return v ? JSON.parse(v) : [];
+})();
+if (guestCart?.length) {
+  for (const item of guestCart) {
+    await addToCart(item.productId, item.quantity);
   }
-  originalNextStep();
-};
+  cookieRemove("guestCart");
+}
 
-// Call renderSummaryWithDelivery initially to include delivery fee if selected
-document.addEventListener("DOMContentLoaded", renderSummaryWithDelivery);
+document
+  .querySelectorAll('input[name="delivery"]')
+  .forEach((el) => el.addEventListener("change", renderSummaryWithDelivery));
+
+// ---------------------------
+// 🚀 INIT
+// ---------------------------
+document.addEventListener("DOMContentLoaded", async () => {
+  const user = await authCheck();
+  if (user) await renderCart();
+  showStep(currentStep);
+});
 
 document.addEventListener("DOMContentLoaded", () => {
-  const cardNumber = document.getElementById("cardNumber");
-  const expiryDate = document.getElementById("expiryDate");
-  const cvv = document.getElementById("cvv");
+  document.getElementById("nextBtn")?.addEventListener("click", nextStep);
+  document.getElementById("prevBtn")?.addEventListener("click", prevStep);
+  console.log("✅ Step navigation initialized");
+});
 
-  // Format Card Number (1234 5678 9012 3456)
-  cardNumber.addEventListener("input", (e) => {
-    let value = e.target.value.replace(/\D/g, ""); // remove non-digits
-    value = value.substring(0, 16); // max 16 digits
-    e.target.value = value.replace(/(\d{4})(?=\d)/g, "$1 "); // add spaces
-  });
+async function loadRecommendations() {
+  const container = document.querySelector(".recommendations"); // ✅ match your HTML
+  if (!container) return;
 
-  // Format Expiry Date (MM/YY)
-  expiryDate.addEventListener("input", (e) => {
-    let value = e.target.value.replace(/\D/g, ""); // remove non-digits
-    if (value.length >= 3) {
-      value = value.substring(0, 4);
-      e.target.value = value.replace(/(\d{2})(\d{1,2})/, "$1/$2");
-    } else {
-      e.target.value = value;
+  container.innerHTML = "<p>Loading recommendations...</p>";
+
+  try {
+    // ✅ Fetch product data from backend
+    const { products } = await apiFetch("/api/products?limit=8");
+    container.innerHTML = "";
+
+    // ✅ Handle empty data
+    if (!products || !products.length) {
+      container.innerHTML = "<p>No recommendations available right now.</p>";
+      return;
     }
-  });
 
-  // CVV only allows 3 digits
-  cvv.addEventListener("input", (e) => {
-    e.target.value = e.target.value.replace(/\D/g, "").substring(0, 3);
+    // ✅ Render product cards
+    products.forEach((p) => {
+      const card = document.createElement("div");
+      card.className = "recom-card";
+
+      const imageSrc =
+        (Array.isArray(p.images) && p.images.length > 0 && p.images[0]) ||
+        "../images/placeholder.png";
+      const price = Number(p.price || 0).toLocaleString("en-NG");
+
+      card.innerHTML = `
+        <img src="${imageSrc}" alt="${p.name || "Product"}" />
+        <p>${p.name || "Unnamed Product"}</p>
+        <span>₦${price}</span>
+      `;
+
+      // ✅ Navigate to product page
+      card.addEventListener("click", () => {
+        window.location.href = `/Pages/products.html?id=${p._id}`;
+      });
+
+      container.appendChild(card);
+    });
+  } catch (err) {
+    console.error("⚠️ Failed to load recommendations:", err);
+    container.innerHTML =
+      "<p>⚠️ Error loading products. Please try again later.</p>";
+  }
+}
+
+async function checkoutCart(paymentMethod) {
+  try {
+    const cart = await loadCart();
+    if (!cart.length) {
+      alert("🛒 Your cart is empty!");
+      return;
+    }
+
+    // ✅ Delivery details
+    const deliveryOption = document.querySelector(
+      'input[name="delivery"]:checked'
+    );
+    const deliveryFee = deliveryOption ? parseFloat(deliveryOption.value) : 0;
+    const deliveryMethod = deliveryFee === 700 ? "pickup" : "delivery";
+
+    // ✅ Collect checkout info
+    const info = {
+      fullName: document.querySelector("#fullName").value.trim(),
+      email: document.querySelector("#email").value.trim(),
+      location: document.querySelector("#location").value.trim(),
+      notes: document.querySelector("#notes").value.trim(),
+      phone: document.querySelector("#phone").value.trim(),
+      paymentMethod,
+      deliveryFee,
+      deliveryMethod,
+      shippingAddress: {
+        name: document.querySelector("#fullName").value.trim(),
+        phone: document.querySelector("#phone").value.trim(),
+        address: document.querySelector("#location").value.trim(),
+        notes: document.querySelector("#notes").value.trim(),
+      },
+      items: cart,
+    };
+
+    // 🏦 Handle transfer method separately
+    if (paymentMethod === "transfer") {
+      // Hide checkout steps and show transfer form
+      document.querySelector(".checkout-steps").classList.add("hidden");
+      const transferForm = document.getElementById("transferForm");
+      transferForm.classList.remove("hidden");
+
+      // Get escrow bank details from backend
+      const bankRes = await apiFetch("/api/orders/escrow-details");
+      const { bankName, accountNumber, accountName } = bankRes.data || {};
+
+      // Populate the form with backend data
+      transferForm.querySelector(
+        "p:nth-of-type(2)"
+      ).innerHTML = `<strong>Bank Name:</strong> ${bankName || "Loading..."}`;
+      transferForm.querySelector(
+        "p:nth-of-type(3)"
+      ).innerHTML = `<strong>Account Number:</strong> ${
+        accountNumber || "N/A"
+      }`;
+      transferForm.querySelector(
+        "p:nth-of-type(4)"
+      ).innerHTML = `<strong>Account Name:</strong> ${accountName || "N/A"}`;
+
+      // Handle proof upload submission
+      const transferSubmit = transferForm.querySelector("form");
+      transferSubmit.onsubmit = async (e) => {
+        e.preventDefault();
+
+        const proofInput = transferSubmit.querySelector("input[type='file']");
+        if (!proofInput.files.length) {
+          alert("⚠️ Please upload proof of transfer.");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("paymentProof", proofInput.files[0]);
+        formData.append("orderInfo", JSON.stringify(info));
+
+        const res = await apiFetch("/api/orders/transfer", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (res.success) {
+          alert("✅ Transfer submitted! Your payment will be verified soon.");
+          window.location.href = "/Pages/checkout-success.html";
+        } else {
+          alert("❌ Failed to submit transfer proof. Try again.");
+        }
+      };
+
+      return; // Stop normal checkout
+    }
+
+    // 💳 For other payment methods
+    const res = await apiFetch("/api/orders/checkout", {
+      method: "POST",
+      body: JSON.stringify(info),
+    });
+
+    alert("✅ Checkout successful!");
+    window.location.href = "/Pages/checkout-success.html";
+  } catch (err) {
+    console.error("❌ Checkout failed:", err);
+    alert("⚠️ Checkout failed. Please try again.");
+  }
+}
+
+// 🔧 Helper for file selection
+async function selectFile() {
+  return new Promise((resolve) => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*,.pdf";
+    input.onchange = () => resolve(input.files[0]);
+    input.click();
   });
+}
+
+// ✅ Initialize when DOM is ready
+document.addEventListener("DOMContentLoaded", loadRecommendations);
+
+document.addEventListener("DOMContentLoaded", () => {
+  const cardForm = document.getElementById("cardPaymentForm");
+  const transferForm = document.querySelector("#transferForm form");
+
+  // 💳 Card Payment Submission
+  if (cardForm) {
+    cardForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      showLoading(true, "Initializing card payment...");
+
+      const cardData = {
+        number: document.getElementById("cardNumber").value.trim(),
+        expiry: document.getElementById("expiryDate").value.trim(),
+        cvv: document.getElementById("cvv").value.trim(),
+      };
+
+      try {
+        const res = await apiFetch("/api/payments/initialize", {
+          method: "POST",
+          body: JSON.stringify({
+            method: "card",
+            cardData,
+          }),
+        });
+
+        showLoading(false);
+
+        if (res.authorizationUrl) {
+          // Redirect to payment page (Paystack/Flutterwave)
+          window.location.href = res.authorizationUrl;
+        } else {
+          alert("✅ Payment simulated successfully (test mode).");
+          console.log("Payment response:", res);
+        }
+      } catch (err) {
+        showLoading(false);
+        alert("❌ Payment failed to initialize.");
+        console.error("Payment error:", err);
+      }
+    });
+  }
+
+  // 🏦 Bank Transfer Proof Upload
+  if (transferForm) {
+    transferForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const proofFile =
+        transferForm.querySelector('input[type="file"]').files[0];
+      if (!proofFile) {
+        alert("Please upload proof of payment.");
+        return;
+      }
+
+      showLoading(true, "Uploading payment proof...");
+
+      const formData = new FormData();
+      formData.append("paymentProof", proofFile);
+      formData.append("method", "transfer");
+
+      try {
+        const res = await apiFetch("/api/payments/confirm", {
+          method: "POST",
+          body: formData,
+        });
+
+        showLoading(false);
+
+        if (res.success) {
+          alert(
+            "✅ Transfer confirmed! Your order is now pending seller confirmation."
+          );
+          goBackToCheckout();
+        } else {
+          alert("⚠️ Payment confirmation failed. Please contact support.");
+        }
+      } catch (err) {
+        showLoading(false);
+        console.error("❌ Transfer upload failed:", err);
+        alert("Error uploading proof of payment.");
+      }
+    });
+  }
+});
+
+// ✅ Attach listener for card payment form
+document.getElementById("cardForm")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const payBtn = e.target.querySelector("button[type='submit']");
+  payBtn.disabled = true;
+  payBtn.textContent = "Processing...";
+
+  try {
+    // ✅ Get the active order from the backend session
+    const orderResponse = await apiFetch("/api/orders/current", {
+      method: "GET",
+    });
+    if (!orderResponse || !orderResponse._id) {
+      alert("No active order found. Please create an order first.");
+      return;
+    }
+
+    const res = await apiFetch("/api/payments/initialize", {
+      method: "POST",
+      body: JSON.stringify({
+        orderId: orderResponse._id,
+        provider: "Paystack",
+      }),
+    });
+
+    if (res.authorization_url) {
+      window.location.href = res.authorization_url; // ✅ Secure redirect to Paystack
+    } else {
+      console.error("Missing payment URL in response:", res);
+      alert("Failed to start payment. Please try again.");
+    }
+  } catch (err) {
+    console.error("💥 Payment initialization error:", err);
+    alert("Unable to initialize payment. Please try again later.");
+  } finally {
+    payBtn.disabled = false;
+    payBtn.textContent = "Pay with Card";
+  }
 });

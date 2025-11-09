@@ -252,11 +252,177 @@ body {
     background: #ff5c5c;
 }
 
+/* ===============================
+   🧩 SETTINGS MODAL STYLING
+================================= */
+.modal {
+    display: none;
+    /* hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    overflow: auto;
+    /* allow scrolling on mobile */
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 1rem;
+    max-width: 550px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.25s ease-in-out;
+}
+
+/* Scrollbar styling */
+.modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background-color: #999;
+}
+
+/* Close button */
+.close-butn {
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    font-size: 1.5rem;
+    color: #333;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.close-butn:hover {
+    color: crimson;
+}
+
+/* Headings */
+.modal-content h2 {
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #222;
+}
+
+.settings-section h3 {
+    margin-top: 1.5rem;
+    color: #444;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+/* Inputs & Textarea */
+.settings-section label {
+    display: block;
+    font-size: 0.9rem;
+    color: #555;
+    margin: 10px 0 5px;
+}
+
+.settings-section input,
+.settings-section select,
+.settings-section textarea {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: 0.2s;
+    outline: none;
+}
+
+.settings-section input:focus,
+.settings-section select:focus,
+.settings-section textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
+}
+
+.settings-section textarea {
+    resize: vertical;
+    min-height: 70px;
+}
+
+/* Image preview */
+#imagePreviewContainer {
+    text-align: center;
+    margin-top: 10px;
+}
+
+#imagePreview {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: 5px;
+    border: 2px solid #eee;
+}
+
+/* Save button */
+.save-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1.2rem;
+    transition: background 0.3s ease;
+}
+
+.save-btn:hover {
+    background: #0056b3;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .modal-content {
+        max-width: 95%;
+        padding: 1.5rem;
+    }
+
+    .save-btn {
+        font-size: 0.95rem;
+    }
+}
+
 
 /* Advert Slider Container */
 .advert-slider {
     width: 100%;
-    margin: 6rem auto;
+    margin: 7rem auto;
     padding: 4rem 2rem;
     position: relative;
     z-index: 1;
@@ -306,7 +472,7 @@ body {
 }
 
 .slide.box h3 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     color: orangered;
     margin: 1.2rem;
     z-index: 1;
@@ -322,8 +488,8 @@ body {
 }
 
 .slider-dots button {
-    width: 12px;
-    height: 12px;
+    width: 1.2rem;
+    height: 1.2rem;
     border-radius: 50%;
     border: none;
     background: #ddd;
@@ -338,11 +504,11 @@ body {
 /* end of ad secton */
 
 .featured-categories {
-    padding: 60px 20px;
-    max-width: 1200px;
+    padding: 6rem 2rem;
+    max-width: 120rem;
     margin: auto;
     text-align: center;
-    
+
 }
 
 .featured-categories h2 {
@@ -352,7 +518,7 @@ body {
 }
 
 .featured-categories p {
-    font-size: 1rem;
+    font-size: 1.3rem;
     color: #555;
     margin-bottom: 40px;
 }
@@ -412,32 +578,32 @@ body {
 }
 
 .category-overlay h3 {
-    font-size: 1.4rem;
-    margin-bottom: 5px;
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
 }
 
 .category-overlay span {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     background: rgba(255, 255, 255, 0.2);
-    padding: 4px 10px;
-    border-radius: 8px;
+    padding: 0.4rem 1rem;
+    border-radius: 0.8rem;
 }
 
 .vibe {
-    padding: 60px 20px;
-    max-width: 1200px;
+    padding: 6rem 2rem;
+    max-width: 120rem;
     margin: auto;
     text-align: center;
 }
 
 .vibe h2 {
-    font-size: 2rem;
+    font-size: 2.3rem;
     margin-bottom: 10px;
     font-weight: 700;
 }
 
 .vibe p {
-    font-size: 1rem;
+    font-size: 1.4rem;
     color: #555;
     margin-bottom: 40px;
 }
@@ -445,15 +611,15 @@ body {
 .vibe-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 25px;
+    gap: 2.5rem;
 }
 
 .vibe-card {
     position: relative;
     overflow: hidden;
-    border-radius: 16px;
+    border-radius: 1.6rem;
     cursor: pointer;
-    height: 300px;
+    height: 30rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transform: translateY(30px);
     opacity: 0;
@@ -535,7 +701,7 @@ body {
 
 .creators-section h2 {
     font-size: 2rem;
-    margin-bottom: 30px;
+    margin-bottom: 3rem;
     font-weight: bold;
     color: #333;
 }
@@ -543,14 +709,14 @@ body {
 .creators-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
+    gap: 2.5rem;
     justify-items: center;
 }
 
 .creator-card {
-    width: 220px;
-    height: 280px;
-    perspective: 1000px;
+    width: 22rem;
+    height: 28rem;
+    perspective: 100rem;
     cursor: pointer;
 }
 
@@ -589,12 +755,12 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 15px;
+    padding: 1.5rem;
 }
 
 .card-front img {
-    width: 80px;
-    height: 80px;
+    width: 9rem;
+    height: 9rem;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 15px;
@@ -602,13 +768,13 @@ body {
 }
 
 .card-front h3 {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     margin-bottom: 5px;
     color: #333;
 }
 
 .card-front p {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     color: #666;
 }
 
@@ -625,11 +791,11 @@ body {
 
 .card-back h4 {
     margin-bottom: 10px;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 .card-back p {
-    font-size: 0.9rem;
+    font-size: 1.3rem;
 }
 
 @keyframes fadeInUp {
@@ -645,20 +811,20 @@ body {
 }
 
 .posts {
-    padding: 60px 20px;
-    max-width: 1200px;
+    padding: 6rem 2rem;
+    max-width: 120rem;
     margin: auto;
     text-align: center;
 }
 
 .posts h2 {
     font-size: 2rem;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
     font-weight: 700;
 }
 
 .posts p {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #555;
     margin-bottom: 40px;
 }
@@ -666,14 +832,14 @@ body {
 .campus-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
+    gap: 1.5rem;
 }
 
 .campus-card {
     position: relative;
     overflow: hidden;
-    border-radius: 12px;
-    height: 220px;
+    border-radius: 1.2rem;
+    height: 22rem;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
@@ -722,8 +888,8 @@ body {
 
 .close-btn {
     position: absolute;
-    top: 20px;
-    right: 30px;
+    top: 2rem;
+    right: 3rem;
     font-size: 2rem;
     color: white;
     text-decoration: none;
@@ -749,7 +915,7 @@ h2 {
 }
 
 p.section-desc {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #555;
     margin-bottom: 40px;
 }
@@ -782,13 +948,13 @@ p.section-desc {
 }
 
 .feature h3 {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     margin-bottom: 10px;
     font-weight: 600;
 }
 
 .feature p {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     color: #666;
 }
 
@@ -913,7 +1079,7 @@ footer.visible {
 
 @media screen and (max-width: 768px) {
     html {
-        font-size: 55%;
+        font-size: 50%;
     }
 
     .main-header {
@@ -989,7 +1155,7 @@ footer.visible {
 
 @media screen and (max-width: 460px) {
     html {
-        font-size: 50%;
+        font-size: 45%;
     }
 
     .main-header .search-form input {

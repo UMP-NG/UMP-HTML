@@ -4,9 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/x-icon" href="../images/logo.png" />
+  <meta name="description" content="Enter your verification code to securely access your UMP account.">
+  <meta name="keywords" content="UMP, verification, authentication, login, security code, account access">
+  <link rel="icon" type="image/x-icon" href="../images/ump-logo.jpeg" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <link rel="stylesheet" href="../Styles/auth.css" />
+  <link rel="stylesheet" href="../styles/auth.css" />
   <title>Authentication Page</title>
 </head>
 
@@ -32,9 +34,10 @@
     <button class="verify-btn">Verify</button>
 
     <!-- Resend -->
-    <p class="resend-text" id="resend-link">Didn't receive code? <a href="#">Resend</a></p>
+    <p class="resend-text">Didn't receive code? <button id="resend-link">Resend</button></p>
   </div>
 
+  <script type="module" src="../functions/api.js"></script>
   <script type="module" src="../functions/auth.js"></script>
 </body>
 

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="logo" href="../images/">
     <title>UMP - Marketplace</title>
 
     <!-- Styles -->
@@ -22,9 +23,10 @@
         </a>
 
         <div class="profile">
-            <img src="../images/guy.png" alt="Seller Avatar">
-            <span>John Doe</span>
+            <img id="profileAvatar" src="/images/guy.png" alt="Avatar" />
+            <span id="profileName">Loading...</span>
         </div>
+
 
     </header>
 
@@ -36,27 +38,26 @@
         </div>
     </section>
 
-    <section id="walkers" class="analytics-section active">
+    <section id="walkers" class="analytics-section">
         <h3>Delivery Analytics</h3>
-        <p>Delivery performance, routes, and stats will appear here.</p>
         <div class="analytics-dashboard">
             <!-- KPI CARDS -->
             <div class="kpi-grid">
                 <div class="kpi-card">
-                    <h4>Total Earnings (Last 30 Days)</h4>
-                    <p class="kpi-value accent">₦245,000</p>
-                    <small>+12% from last month</small>
+                    <h4>Total Deliveries (30 Days)</h4>
+                    <p class="kpi-value accent" id="totalDeliveries">Loading...</p>
+                    <small id="deliveryChange"></small>
                 </div>
 
                 <div class="kpi-card">
                     <h4>Orders Completed</h4>
-                    <p class="kpi-value">142</p>
+                    <p class="kpi-value" id="ordersCompleted">Loading...</p>
                     <small>↑ Active performance</small>
                 </div>
 
                 <div class="kpi-card">
                     <h4>Average Delivery Time</h4>
-                    <p class="kpi-value">28 mins</p>
+                    <p class="kpi-value" id="avgDeliveryTime">Loading...</p>
                     <small>Goal: < 30 mins</small>
                 </div>
             </div>
@@ -65,117 +66,109 @@
             <div class="incoming-orders">
                 <div class="section-header">
                     <h3>Incoming Orders</h3>
-                    <button class="refresh-btn">↻ Refresh</button>
+                    <button id="refreshOrdersBtn" class="refresh-btn">↻ Refresh</button>
                 </div>
-
-                <div class="orders-list">
-                    <div class="order-item">
-                        <div>
-                            <h4>Order #4521</h4>
-                            <p>Pickup: Marina → Delivery: Ikeja</p>
-                        </div>
-                        <button class="accept-btn">Accept</button>
-                    </div>
-
-                    <div class="order-item">
-                        <div>
-                            <h4>Order #4522</h4>
-                            <p>Pickup: Yaba → Delivery: Lekki</p>
-                        </div>
-                        <button class="accept-btn">Accept</button>
-                    </div>
+                <div id="ordersList" class="orders-list">
+                    <p>Loading incoming orders...</p>
                 </div>
             </div>
 
-            <!-- RECENT ACTIVITY -->
+            <!-- DELIVERY HISTORY -->
             <div class="recent-activity">
                 <div class="section-header">
-                    <h3>Recent Activity</h3>
+                    <h3>Recent Deliveries</h3>
                     <a href="#" class="view-all">View all</a>
                 </div>
 
                 <table class="activity-table">
                     <thead>
                         <tr>
-                            <th>Delivery ID</th>
-                            <th>Start Time</th>
-                            <th>End Time</th>
+                            <th>Order ID</th>
+                            <th>Receiver</th>
+                            <th>Location</th>
+                            <th>Status</th>
                             <th>Earnings</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="deliveryHistory">
                         <tr>
-                            <td>#4490</td>
-                            <td>10:15 AM</td>
-                            <td>11:00 AM</td>
-                            <td>₦1,800</td>
-                        </tr>
-                        <tr>
-                            <td>#4491</td>
-                            <td>11:25 AM</td>
-                            <td>12:05 PM</td>
-                            <td>₦1,500</td>
+                            <td colspan="5">Loading...</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+        </div>
 
-            <!-- VISUAL PERFORMANCE MODULE -->
-            <div class="visual-performance">
-                <div class="section-header">
-                    <h3>Performance Overview</h3>
-                    <p class="subtext">Daily Earnings (Last 30 Days)</p>
-                </div>
+        <div class="payout-status">
+            <div class="payout-content">
+                <h3>Walker Payout Summary</h3>
 
-                <div class="chart-container">
-                    <canvas id="earningsChart"></canvas>
-                </div>
-            </div>
-
-            <!-- PAYOUT STATUS & NEXT STEPS -->
-            <div class="payout-status">
-                <div class="payout-content">
-                    <h3>Payout Summary</h3>
-
-                    <div class="payout-details">
-                        <div class="detail">
-                            <p>Available for Payout</p>
-                            <h2 class="amount">₦85,200</h2>
-                        </div>
-                        <div class="detail">
-                            <p>Next Scheduled Payout</p>
-                            <h4 class="date">October 12, 2025</h4>
-                        </div>
+                <div class="payout-details">
+                    <div class="detail">
+                        <p>Available for Payout</p>
+                        <p id="walkerAvailablePayout">Loading...</p>
                     </div>
-
-                    <div class="payout-actions">
-                        <a href="#" class="view-history">View Full Payout History</a>
-                        <button class="request-btn">Request Early Payout</button>
+                    <div class="detail">
+                        <p>Next Scheduled Payout</p>
+                        <p id="walkerNextPayout">Loading...</p>
                     </div>
                 </div>
+
+                <div class="payout-actions">
+                    <a href="#" class="view-history" id="openPayoutForm">Update Payout Details</a>
+                    <button id="walkerRequestPayoutBtn" class="request-btn">
+                        Request Early Payout
+                    </button>
+                </div>
             </div>
+        </div>
+
+        <!-- 🧾 Payout Details Modal -->
+        <div id="payoutModal" class="payout-modal">
+            <div class="payout-modal__content">
+                <h3 class="payout-modal__title">Update Payout Details</h3>
+
+                <form id="payoutForm" class="payout-modal__form">
+                    <label class="payout-modal__label">Bank Name</label>
+                    <input type="text" id="bankName" class="payout-modal__input" required />
+
+                    <label class="payout-modal__label">Account Number</label>
+                    <input type="text" id="accountNumber" class="payout-modal__input" required maxlength="10" />
+
+                    <div class="payout-modal__actions">
+                        <button type="submit" class="payout-modal__btn payout-modal__btn--primary">
+                            Save Details
+                        </button>
+                        <button type="button" id="closeModal" class="payout-modal__btn payout-modal__btn--secondary">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </section>
 
     <section id="services" class="analytics-section">
         <div class="analytics-dashboard">
+
             <!-- KPI CARDS -->
             <div class="kpi-grid">
                 <div class="kpi-card">
                     <h4>Total Revenue (Last 30 Days)</h4>
-                    <p class="kpi-value accent">₦310,000</p>
-                    <small>+8% from last month</small>
+                    <p class="kpi-value accent" id="serviceTotalRevenue">Loading...</p>
+                    <small id="serviceRevenueChange"></small>
                 </div>
 
                 <div class="kpi-card">
                     <h4>Sessions Completed</h4>
-                    <p class="kpi-value">56</p>
+                    <p class="kpi-value" id="serviceSessionsCompleted">Loading...</p>
                     <small>↑ Consistent activity</small>
                 </div>
 
                 <div class="kpi-card">
                     <h4>Average Rating</h4>
-                    <p class="kpi-value">4.7 ★</p>
-                    <small>Based on recent 20 sessions</small>
+                    <p class="kpi-value" id="serviceAvgRating">Loading...</p>
+                    <small>Based on recent sessions</small>
                 </div>
             </div>
 
@@ -195,30 +188,156 @@
                             <th>Earnings</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="serviceRecentSessions">
                         <tr>
-                            <td>Oct 5, 2025</td>
-                            <td>Client A</td>
-                            <td>Cleaning</td>
-                            <td>₦8,000</td>
-                        </tr>
-                        <tr>
-                            <td>Oct 4, 2025</td>
-                            <td>Client B</td>
-                            <td>Plumbing</td>
-                            <td>₦12,500</td>
-                        </tr>
-                        <tr>
-                            <td>Oct 2, 2025</td>
-                            <td>Client C</td>
-                            <td>AC Repair</td>
-                            <td>₦10,000</td>
+                            <td colspan="4">Loading...</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
+        <!-- SERVICES SECTION (My Services) -->
+        <div class="services-section">
+            <h2>My Services</h2>
+            <button id="serviceAddBtn" class="request-btn">+ Add Service</button>
+
+            <div id="serviceList" class="services-list"></div>
+        </div>
+
+        <!-- Modal Form for Adding/Editing Services -->
+        <div id="serviceModal" class="modal" aria-hidden="true">
+            <div class="modal-content">
+                <span class="close-butn" id="serviceCloseModal">&times;</span>
+                <h3 id="serviceModalTitle">Add New Service</h3>
+
+                <form id="serviceForm" class="form-pane" enctype="multipart/form-data">
+                    <input type="hidden" id="serviceId" />
+
+                    <h3 class="form-title">🧰 Offer Your Expertise</h3>
+
+                    <!-- Name -->
+                    <div class="form-group animate">
+                        <input type="text" id="serviceName" name="name" placeholder=" " required />
+                        <label for="serviceName">Your Name or Business Name</label>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="form-group animate">
+                        <input type="text" id="serviceTitle" name="title" placeholder=" " required />
+                        <label for="serviceTitle">Service Title (e.g., Graphics Design, Tutoring)</label>
+                    </div>
+
+                    <!-- Major (Category) -->
+                    <div class="form-group animate">
+                        <input type="text" id="serviceMajor" name="major" placeholder=" " required />
+                        <label for="serviceMajor">Service Category (e.g., Design, Writing, Tech)</label>
+                    </div>
+
+                    <!-- Short Description -->
+                    <div class="form-group animate">
+                        <textarea id="serviceDesc" name="desc" placeholder=" " rows="3"></textarea>
+                        <label for="serviceDesc">Short Description of Service</label>
+                    </div>
+
+                    <!-- Detailed About -->
+                    <div class="form-group animate">
+                        <textarea id="serviceAbout" name="about" placeholder=" " rows="3" required></textarea>
+                        <label for="serviceAbout">Detailed About You / Your Service</label>
+                    </div>
+
+                    <!-- Rate -->
+                    <div class="form-group animate">
+                        <input type="number" id="serviceRate" name="rate" placeholder=" " required />
+                        <label for="serviceRate">Service Rate (e.g., 5000)</label>
+                    </div>
+
+                    <!-- Currency -->
+                    <div class="form-group animate">
+                        <select id="serviceCurrency" name="currency">
+                            <option value="NGN" selected>NGN</option>
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                        </select>
+                        <label for="serviceCurrency">Currency</label>
+                    </div>
+
+                    <!-- Package -->
+                    <div class="form-group animate">
+                        <select id="servicePackage" name="package">
+                            <option value="">Select Package</option>
+                            <option value="Basic">Basic</option>
+                            <option value="Standard">Standard</option>
+                            <option value="Premium">Premium</option>
+                        </select>
+                        <label for="servicePackage">Service Package</label>
+                    </div>
+
+                    <!-- Duration -->
+                    <div class="form-group animate">
+                        <input type="number" id="serviceDuration" name="duration" placeholder=" " />
+                        <label for="serviceDuration">Duration (in hours or days)</label>
+                    </div>
+
+                    <!-- Certifications -->
+                    <div class="form-group animate">
+                        <input type="text" id="serviceCertifications" name="certifications" placeholder=" " />
+                        <label for="serviceCertifications">Certifications (comma-separated)</label>
+                    </div>
+
+                    <!-- Portfolio -->
+                    <div class="form-group animate">
+                        <input type="text" id="servicePortfolio" name="portfolio" placeholder=" " />
+                        <label for="servicePortfolio">Portfolio Links (comma-separated)</label>
+                    </div>
+
+                    <!-- Policies -->
+                    <div class="form-group animate">
+                        <input type="text" id="servicePolicies" name="policies" placeholder=" " />
+                        <label for="servicePolicies">Policies (comma-separated)</label>
+                    </div>
+
+                    <!-- Availability Times -->
+                    <div class="form-group animate availability-group">
+                        <label class="availability-label">Time Slots</label>
+                        <div class="availability-options">
+                            <input type="checkbox" id="serviceAvailMorning" name="timeSlots" value="Morning" />
+                            <label for="serviceAvailMorning">🌅 Morning</label>
+
+                            <input type="checkbox" id="serviceAvailAfternoon" name="timeSlots" value="Afternoon" />
+                            <label for="serviceAvailAfternoon">🌞 Afternoon</label>
+
+                            <input type="checkbox" id="serviceAvailEvening" name="timeSlots" value="Evening" />
+                            <label for="serviceAvailEvening">🌙 Evening</label>
+                        </div>
+                    </div>
+
+                    <!-- Available toggle -->
+                    <div class="form-group animate">
+                        <label class="availability-label">Currently Available?</label>
+                        <input type="checkbox" id="serviceAvailable" name="available" checked />
+                    </div>
+
+                    <!-- Image -->
+                    <div class="form-group file-upload animate">
+                        <label class="file-label">Upload a Service Image</label>
+                        <input type="file" id="serviceImage" name="image" accept="image/*" />
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="form-group animate">
+                        <input type="text" id="serviceTags" name="tags" placeholder=" " />
+                        <label for="serviceTags">Tags (comma-separated, e.g. creative, web, design)</label>
+                    </div>
+                    <!-- Submit -->
+                    <div class="form-group">
+                        <button type="submit" class="btn-primary">Save Service</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- PERFORMANCE CHART -->
         <div class="visual-performance">
             <div class="section-header">
                 <h3>Performance Overview</h3>
@@ -237,57 +356,79 @@
                 <a href="#" class="view-all">View all</a>
             </div>
 
-            <div class="message-list">
-                <div class="message">
-                    <div class="message-info">
-                        <h4>Client #1023</h4>
-                        <p class="message-snippet">Thanks for the great service!</p>
-                    </div>
-                    <span class="time">2h ago</span>
-                </div>
-
-                <div class="message">
-                    <div class="message-info">
-                        <h4>Client #0988</h4>
-                        <p class="message-snippet">Can we reschedule for tomorrow?</p>
-                    </div>
-                    <span class="time">5h ago</span>
-                </div>
-
-                <div class="message">
-                    <div class="message-info">
-                        <h4>Support</h4>
-                        <p class="message-snippet">Your payout request is being processed.</p>
-                    </div>
-                    <span class="time">1d ago</span>
-                </div>
+            <div id="serviceMessages" class="message-list">
+                <!-- Messages will be loaded dynamically here -->
             </div>
         </div>
 
+        <!-- Message Modal -->
+        <div id="serviceMessageModal" class="modal">
+            <div class="modal-content">
+                <span class="close-butn" id="serviceCloseMessageModal">&times;</span>
+                <h4 id="serviceModalSender">Sender Name</h4>
+                <p id="serviceModalMessage">Full message goes here</p>
+
+                <form id="serviceReplyForm">
+                    <input type="hidden" name="receiverId" id="serviceModalReceiverId">
+                    <textarea name="text" id="serviceReplyText" placeholder="Type your reply..." required></textarea>
+                    <button type="submit">Send Reply</button>
+                </form>
+            </div>
+        </div>
 
         <!-- 4. Payout Status & Next Steps -->
-        <section class="payout-status">
+        <div class="payout-status">
             <div class="payout-content">
                 <h3>Payout Summary</h3>
 
                 <div class="payout-details">
                     <div class="detail">
                         <p>Available for Payout</p>
-                        <h2 class="amount">₦85,200</h2>
+                        <p id="serviceAvailablePayout">Loading...</p>
                     </div>
                     <div class="detail">
                         <p>Next Scheduled Payout</p>
-                        <h4 class="date">October 12, 2025</h4>
+                        <p id="serviceNextPayout">Loading...</p>
                     </div>
                 </div>
 
                 <div class="payout-actions">
-                    <a href="#" class="view-history">View Full Payout History</a>
+                    <a href="#" id="openServicePayoutForm" class="view-history">
+                        Update Payout Details
+                    </a>
                     <button class="request-btn">Request Early Payout</button>
                 </div>
             </div>
-        </section>
+        </div>
+
+        <!-- 🧾 Service Payout Details Modal -->
+        <div id="servicePayoutModal" class="service-payout-modal">
+            <div class="service-payout-modal__content">
+                <h3 class="service-payout-modal__title">Update Payout Details</h3>
+
+                <form id="servicePayoutForm" class="service-payout-modal__form">
+                    <label class="service-payout-modal__label">Bank Name</label>
+                    <input type="text" id="serviceBankName" class="service-payout-modal__input" required />
+
+                    <label class="service-payout-modal__label">Account Number</label>
+                    <input type="text" id="serviceAccountNumber" class="service-payout-modal__input" required
+                        maxlength="10" />
+
+                    <div class="service-payout-modal__actions">
+                        <button type="submit" class="service-payout-modal__btn service-payout-modal__btn--primary">
+                            Save Details
+                        </button>
+                        <button type="button" id="closeServiceModal"
+                            class="service-payout-modal__btn service-payout-modal__btn--secondary">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </section>
+
 
     <footer id="pageFooter">
         <div class="footer-container">
@@ -331,6 +472,7 @@
         </div>
     </footer>
 
+    <script type="module" src="../functions/api.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="module" src="../functions/provideranalytics.js"></script>
 </body>

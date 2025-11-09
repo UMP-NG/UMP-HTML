@@ -21,11 +21,11 @@
             <img src="../images/ump-logo.jpeg" alt="UMP Logo">
         </a>
         <nav class="nav_links">
-            <a href="./index.html" class="nav-link">Home</a>
+            <a href="../index.html" class="nav-link">Home</a>
             <a href="./market.html" class="nav-link">Marketplace</a>
             <a href="./services.html" class="nav-link">Services</a>
             <a href="./store.html" class="nav-link">Store</a>
-            <a href="./provider.html" class="nav-link">Become a Provider</a>
+            <a href="./provider.html" class="nav-link" id="out">Become a Partner</a>
             <a href="./hostel.html" class="nav-link">Hostel Hub</a>
         </nav>
 
@@ -44,16 +44,16 @@
         <!-- Profile Popup -->
         <div class="profile-popup">
             <div class="profile-settings">
-                <a href=""><i class="fas fa-cog"></i></a>
+                <a href="#" id="openSettings"><i class="fas fa-cog"></i></a>
             </div>
             <div class="profile-header">
                 <div class="profile-avatar">
-                    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Avatar" />
+                    <img id="profileAvatar" src="../images/guy.png" alt="Avatar" class="profile-avatar" />
                 </div>
                 <div class="profile-info">
                     <h3 id="profileName">Matthew Oseni</h3>
-                    <span class="profile-email">230401234@live.unilag.edu.ng</span>
-                    <span class="profile-status">✔ Logged in</span>
+                    <span id="profileEmail" class="profile-email">230401234@live.unilag.edu.ng</span>
+                    <span id="profileStatus" class="profile-status">✔ Logged in</span>
                 </div>
             </div>
 
@@ -64,13 +64,90 @@
         </div>
     </header>
 
+    <!-- 🧩 Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-butn" id="closeSettings">&times;</span>
+            <h2>User Settings</h2>
+
+            <!-- 👤 Basic Profile Info -->
+            <div class="settings-section">
+                <h3>Basic Information</h3>
+
+                <label for="displayName">Display Name:</label>
+                <input type="text" id="displayName" placeholder="Enter full name" />
+
+                <label for="profileImage">Profile Image:</label>
+                <input type="file" id="profileImage" accept="image/*" />
+
+                <div id="imagePreviewContainer" style="margin-top:10px; text-align:center;">
+                    <img id="imagePreview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Preview"
+                        style="width:80px; height:80px; border-radius:50%; object-fit:cover;" />
+                </div>
+
+                <label for="bio">Bio:</label>
+                <textarea id="bio" placeholder="Write something about yourself..."></textarea>
+
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" placeholder="Enter phone number" />
+
+                <label for="address">Address:</label>
+                <input type="text" id="address" placeholder="Enter your address" />
+
+                <label for="dateOfBirth">Date of Birth:</label>
+                <input type="date" id="dateOfBirth" />
+
+                <label for="gender">Gender:</label>
+                <select id="gender">
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <label for="website">Website:</label>
+                <input type="url" id="website" placeholder="https://yourwebsite.com" />
+            </div>
+
+            <!-- 💳 Preferences / Security -->
+            <div class="settings-section">
+                <h3>Preferences & Security</h3>
+
+                <label for="twoFactor">Two-Factor Authentication:</label>
+                <select id="twoFactor">
+                    <option value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>
+
+                <label for="notifications">Notifications:</label>
+                <select id="notifications">
+                    <option value="all">All Notifications</option>
+                    <option value="important">Important Only</option>
+                    <option value="none">None</option>
+                </select>
+            </div>
+
+            <!-- 🧾 Account Info -->
+            <div class="settings-section">
+                <h3>Account Information</h3>
+                <p id="accountStatus">Status: <strong>Active</strong></p>
+                <p id="loyaltyPoints">Loyalty Points: <strong>0</strong></p>
+                <p id="lastLogin">Last Login: <strong>--</strong></p>
+            </div>
+
+            <!-- 💾 Save -->
+            <div class="settings-section">
+                <button id="saveSettings" class="save-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-overlay">
             <div class="hero-content">
-                <h1>Turn Your Talent into Triumph.</h1>
+                <h1>Are You Ready To Partner With UMP?</h1>
                 <p>Join the UMP Partner Community: Your Path to Selling, Service, and Dispatch.</p>
-                <a href="#partner" class="btn">Become a Partner</a>
             </div>
         </div>
     </section>
@@ -90,26 +167,49 @@
                 <h2>Become a Seller</h2>
                 <p>Start selling your products to the UMP community and grow your brand.</p>
 
-                <form class="form-pane active" id="form-seller">
-                    <h2>Launch Your Store</h2>
-                    <div class="form-group">
-                        <input type="text" placeholder="Full Name" required>
+                <form class="form-pane active" id="form-seller" enctype="multipart/form-data">
+                    <h3 class="form-title">🚀 Launch Your Store</h3>
+
+                    <div class="form-group animate">
+                        <input type="text" name="name" required placeholder=" " />
+                        <label>Store Name *</label>
                     </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Student ID / Email" required>
+
+                    <div class="form-group animate">
+                        <input type="text" name="businessName" placeholder=" " />
+                        <label>Business Name</label>
                     </div>
-                    <div class="form-group">
-                        <input type="password" placeholder="Password" required>
+
+                    <div class="form-group animate">
+                        <textarea name="bio" rows="3" placeholder=" "></textarea>
+                        <label>About / Bio</label>
                     </div>
-                    <div class="form-group">
-                        <input type="text" placeholder="Proposed Store Name" required>
+
+                    <div class="form-group file-upload animate">
+                        <label class="file-label">Store Banner Image</label>
+                        <input type="file" name="banner" accept="image/*" />
                     </div>
-                    <div class="form-group">
-                        <input type="text" placeholder="Product Category Focus" required>
+
+                    <div class="form-group file-upload animate">
+                        <label class="file-label">Store Logo / Avatar</label>
+                        <input type="file" name="logo" accept="image/*" />
                     </div>
-                    <div class="form-group">
-                        <textarea placeholder="Brief Pitch / Mission Statement" rows="4"></textarea>
+
+                    <div class="form-group animate">
+                        <input type="text" name="category" required placeholder=" " />
+                        <label>Product Category *</label>
                     </div>
+
+                    <div class="form-group animate">
+                        <textarea name="description" rows="4" placeholder=" "></textarea>
+                        <label>Store Description</label>
+                    </div>
+
+                    <div class="form-group animate">
+                        <input type="text" name="location" required placeholder=" " />
+                        <label>Store Location *</label>
+                    </div>
+
                     <button type="submit" class="btn">Submit Seller Application</button>
                 </form>
             </div>
@@ -119,30 +219,126 @@
                 <h2>Service Provider</h2>
                 <p>Offer your services to students and partners with ease.</p>
 
-                <form class="form-pane" id="form-service">
-                    <h2>Offer Your Expertise</h2>
-                    <div class="form-group">
-                        <input type="text" placeholder="Full Name" required>
+                <form class="form-pane" id="form-service" enctype="multipart/form-data">
+                    <h3 class="form-title">🧰 Offer Your Expertise</h3>
+
+                    <!-- Name -->
+                    <div class="form-group animate">
+                        <input type="text" id="name" name="name" placeholder=" " required />
+                        <label for="name">Your Name or Business Name</label>
                     </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Student ID / Email" required>
+
+                    <!-- Title -->
+                    <div class="form-group animate">
+                        <input type="text" id="title" name="title" placeholder=" " required />
+                        <label for="title">Service Title (e.g., Graphics Design, Tutoring)</label>
                     </div>
-                    <div class="form-group">
-                        <input type="text" placeholder="Service Specialty (Tutoring, Design, etc.)" required>
+
+                    <!-- Major (Category) -->
+                    <div class="form-group animate">
+                        <input type="text" id="major" name="major" placeholder=" " required />
+                        <label for="major">Service Category (e.g., Design, Writing, Tech)</label>
                     </div>
-                    <div class="form-group">
-                        <input type="url" placeholder="Certification / Portfolio Link (Optional)">
+
+                    <!-- Short Description -->
+                    <div class="form-group animate">
+                        <textarea id="desc" name="desc" placeholder=" " rows="3"></textarea>
+                        <label for="desc">Short Description of Service</label>
                     </div>
-                    <div class="form-group">
-                        <label>Availability:</label>
-                        <div class="toggle-inputs">
-                            <label><input type="checkbox"> Morning</label>
-                            <label><input type="checkbox"> Afternoon</label>
-                            <label><input type="checkbox"> Evening</label>
+
+                    <!-- Detailed About -->
+                    <div class="form-group animate">
+                        <textarea id="about" name="about" placeholder=" " rows="3" required></textarea>
+                        <label for="about">Detailed About You / Your Service</label>
+                    </div>
+
+                    <!-- Rate -->
+                    <div class="form-group animate">
+                        <input type="number" id="rate" name="rate" placeholder=" " required />
+                        <label for="rate">Service Rate (e.g., 5000)</label>
+                    </div>
+
+                    <!-- Currency -->
+                    <div class="form-group animate">
+                        <select id="currency" name="currency">
+                            <option value="NGN" selected>NGN</option>
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                        </select>
+                        <label for="currency">Currency</label>
+                    </div>
+
+                    <!-- Package -->
+                    <div class="form-group animate">
+                        <select id="package" name="package">
+                            <option value="">Select Package</option>
+                            <option value="Basic">Basic</option>
+                            <option value="Standard">Standard</option>
+                            <option value="Premium">Premium</option>
+                        </select>
+                        <label for="package">Service Package</label>
+                    </div>
+
+                    <!-- Duration -->
+                    <div class="form-group animate">
+                        <input type="number" id="duration" name="duration" placeholder=" " />
+                        <label for="duration">Duration (in hours or days)</label>
+                    </div>
+
+                    <!-- Certifications -->
+                    <div class="form-group animate">
+                        <input type="text" id="certifications" name="certifications" placeholder=" " />
+                        <label for="certifications">Certifications (comma-separated)</label>
+                    </div>
+
+                    <!-- Portfolio -->
+                    <div class="form-group animate">
+                        <input type="text" id="portfolio" name="portfolio" placeholder=" " />
+                        <label for="portfolio">Portfolio Links (comma-separated)</label>
+                    </div>
+
+                    <!-- Policies -->
+                    <div class="form-group animate">
+                        <input type="text" id="policies" name="policies" placeholder=" " />
+                        <label for="policies">Policies (comma-separated)</label>
+                    </div>
+
+                    <!-- Availability Times -->
+                    <div class="form-group animate availability-group">
+                        <label class="availability-label">Time Slots</label>
+                        <div class="availability-options">
+                            <input type="checkbox" id="avail-morning" name="timeSlots" value="Morning" />
+                            <label for="avail-morning">🌅 Morning</label>
+
+                            <input type="checkbox" id="avail-afternoon" name="timeSlots" value="Afternoon" />
+                            <label for="avail-afternoon">🌞 Afternoon</label>
+
+                            <input type="checkbox" id="avail-evening" name="timeSlots" value="Evening" />
+                            <label for="avail-evening">🌙 Evening</label>
                         </div>
                     </div>
+
+                    <!-- Available toggle -->
+                    <div class="form-group animate">
+                        <label class="availability-label">Currently Available?</label>
+                        <input type="checkbox" id="available" name="available" checked />
+                    </div>
+
+                    <!-- Image -->
+                    <div class="form-group file-upload animate">
+                        <label class="file-label">Upload a Service Image</label>
+                        <input type="file" id="image" name="image" accept="image/*" />
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="form-group animate">
+                        <input type="text" id="tags" name="tags" placeholder=" " />
+                        <label for="tags">Tags (comma-separated, e.g. creative, web, design)</label>
+                    </div>
+
                     <button type="submit" class="btn">Submit Provider Application</button>
                 </form>
+
             </div>
 
             <!-- Dispatcher -->
@@ -150,37 +346,46 @@
                 <h2>Campus Dispatcher</h2>
                 <p>Join as a dispatcher and help deliver goods quickly on campus.</p>
 
-                <form class="form-pane" id="form-dispatcher">
-                    <h2>Join the Dispatch Team</h2>
-                    <div class="form-group">
-                        <input type="text" placeholder="Full Name" required>
+                <form class="form-pane" id="form-walker">
+                    <h3 class="form-title">🚚 Join the Dispatch Team</h3>
+
+                    <div class="form-group animate">
+                        <input type="text" id="transportMethod" name="transportMethod" required placeholder=" " />
+                        <label for="transportMethod">Transportation Method (e.g., Bike, Car, Walking)</label>
                     </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Student ID / Email" required>
+
+                    <div class="form-group animate">
+                        <input type="text" id="zonesCovered" name="zonesCovered" required placeholder=" " />
+                        <label for="zonesCovered">Zones Covered (e.g., Main Campus, Hostel Area)</label>
                     </div>
-                    <div class="form-group">
-                        <input type="text" placeholder="Transportation Method (Bike, Car, etc.)" required>
+
+                    <div class="form-group animate">
+                        <textarea id="availability" name="availability" rows="3" placeholder=" " required></textarea>
+                        <label for="availability">Available Days/Times</label>
                     </div>
-                    <div class="form-group">
-                        <input type="text" placeholder="Campus Zones Covered" required>
+
+                    <div class="form-group file-upload animate">
+                        <label class="file-label">Upload Student ID (Optional)</label>
+                        <input type="file" id="idCard" name="idCard" accept="image/*" />
                     </div>
-                    <div class="form-group">
-                        <label>Weekly Availability:</label>
-                        <textarea placeholder="Enter your available days/times (e.g., Mon-Fri 2pm-6pm)"
-                            rows="3"></textarea>
-                    </div>
+
                     <button type="submit" class="btn">Submit Dispatcher Application</button>
                 </form>
             </div>
+        </div>
+
         </div>
     </section>
 
     <div class="move">
         <p>Already Registered?</p>
         <a href="./analytics.html">Sellers Page</a>
+    </div>
+    <div class="move">
+        <p>Already Registered?</p>
         <a href="./provideranalytics.html">Services/Walkers Page</a>
     </div>
-    
+
     <footer id="pageFooter">
         <div class="footer-container">
             <div class="footer-logo">
@@ -223,6 +428,7 @@
         </div>
     </footer>
 
+    <script type="module" src="../functions/dashboard.js"></script>
     <script type="module" src="../functions/provider.js"></script>
     <script type="module" src="../functions/index.js"></script>
     </body>

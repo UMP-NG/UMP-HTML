@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category | UMP</title>
+    <link rel="stylesheet" href="../Styles/index.css">
+</head>
+
+<body>
+    <header>
+        <a href="/index.html" class="back-btn">← Back to Categories</a>
+        <h1 id="categoryTitle">Loading...</h1>
+    </header>
+
+    <section class="products-container" id="productsContainer">
+        <p>Loading products...</p>
+    </section>
+
+    <script type="module" src="../functions/api.js"></script>
+    <script type="module" src="../functions/category.js"></script>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            text-align: center;
+            padding: 1.5rem;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: #333;
+            font-size: 0.9rem;
+            position: absolute;
+            left: 1rem;
+            top: 1.5rem;
+        }
+
+        .products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .price {
+            color: #e91e63;
+            font-weight: bold;
+        }
+    </style>
+</body>
+
+</html>

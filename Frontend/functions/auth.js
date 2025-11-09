@@ -1,6 +1,17 @@
-// ../functions/auth.js
+import API from "./api.js"
+const API_BASE =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5000"
+    : "https://ump-html-1.onrender.com";
 
-import API from "../functions/api.js";
+function cookieGet(name) {
+  const m = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
+function cookieRemove(name) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+}
 
 // Select DOM elements
 const inputs = document.querySelectorAll(".code-inputs input");
@@ -30,7 +41,7 @@ verifyBtn.addEventListener("click", async () => {
     return;
   }
 
-  const email = localStorage.getItem("pendingEmail"); // from signup step
+  const email = cookieGet("pendingEmail"); // from signup step (cookie)
   if (!email) {
     alert("No email found — please sign up again.");
     window.location.href = "../Pages/signup.html";
@@ -43,7 +54,7 @@ verifyBtn.addEventListener("click", async () => {
   try {
     await API.verifyOtp({ email, otp });
     alert("✅ Email verified successfully!");
-    localStorage.removeItem("pendingEmail");
+    cookieRemove("pendingEmail");
     window.location.href = "..Pages/login.html"; // redirect to login
   } catch (err) {
     alert(err.body?.message || "Invalid or expired OTP.");
@@ -58,7 +69,7 @@ const resendLink = document.getElementById("resend-link");
 resendLink.addEventListener("click", async (e) => {
   e.preventDefault();
 
-  const userEmail = sessionStorage.getItem("email"); // or however you stored it
+  const userEmail = cookieGet("email"); // replaced sessionStorage with cookie
 
   if (!userEmail) {
     alert("Missing email. Please go back and enter your email again.");
@@ -66,7 +77,7 @@ resendLink.addEventListener("click", async (e) => {
   }
 
   try {
-    const response = await fetch("http://localhost:5000/api/auth/resend-otp", {
+    const response = await fetch(`${API_BASE}/api/auth/resend-otp`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: userEmail }),

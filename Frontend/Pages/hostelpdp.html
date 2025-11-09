@@ -7,8 +7,8 @@
     <title>UMP - Homepage</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="../Styles/index.css" />
     <link rel="stylesheet" href="../Styles/hostelpdp.css">
+    <link rel="stylesheet" href="../Styles/index.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" />
 </head>
@@ -20,11 +20,12 @@
             <img src="../images/ump-logo.jpeg" alt="UMP Logo">
         </a>
         <nav class="nav_links">
-            <a href="./index.html" class="nav-link">Home</a>
+            <a href="../index.html" class="nav-link">Home</a>
             <a href="./market.html" class="nav-link">Marketplace</a>
+            <a href="./services.html" class="nav-link">Services</a>
             <a href="./store.html" class="nav-link">Store</a>
-            <a href="./provider.html" class="nav-link">Become a Provider</a>
-            <a href="#" class="nav-link">Hostel Hub</a>
+            <a href="./provider.html" class="nav-link" id="out">Become a Partner</a>
+            <a href="./hostel.html" class="nav-link">Hostel Hub</a>
         </nav>
 
         <div class="navbar_icons">
@@ -42,16 +43,16 @@
         <!-- Profile Popup -->
         <div class="profile-popup">
             <div class="profile-settings">
-                <a href=""><i class="fas fa-cog"></i></a>
+                <a href="#" id="openSettings"><i class="fas fa-cog"></i></a>
             </div>
             <div class="profile-header">
                 <div class="profile-avatar">
-                    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Avatar" />
+                    <img id="profileAvatar" src="../images/guy.png" alt="Avatar" class="profile-avatar" />
                 </div>
                 <div class="profile-info">
                     <h3 id="profileName">Matthew Oseni</h3>
-                    <span class="profile-email">230401234@live.unilag.edu.ng</span>
-                    <span class="profile-status">✔ Logged in</span>
+                    <span id="profileEmail" class="profile-email">230401234@live.unilag.edu.ng</span>
+                    <span id="profileStatus" class="profile-status">✔ Logged in</span>
                 </div>
             </div>
 
@@ -62,10 +63,88 @@
         </div>
     </header>
 
+    <!-- 🧩 Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-butn" id="closeSettings">&times;</span>
+            <h2>User Settings</h2>
+
+            <!-- 👤 Basic Profile Info -->
+            <div class="settings-section">
+                <h3>Basic Information</h3>
+
+                <label for="displayName">Display Name:</label>
+                <input type="text" id="displayName" placeholder="Enter full name" />
+
+                <label for="profileImage">Profile Image:</label>
+                <input type="file" id="profileImage" accept="image/*" />
+
+                <div id="imagePreviewContainer" style="margin-top:10px; text-align:center;">
+                    <img id="imagePreview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Preview"
+                        style="width:80px; height:80px; border-radius:50%; object-fit:cover;" />
+                </div>
+
+                <label for="bio">Bio:</label>
+                <textarea id="bio" placeholder="Write something about yourself..."></textarea>
+
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" placeholder="Enter phone number" />
+
+                <label for="address">Address:</label>
+                <input type="text" id="address" placeholder="Enter your address" />
+
+                <label for="dateOfBirth">Date of Birth:</label>
+                <input type="date" id="dateOfBirth" />
+
+                <label for="gender">Gender:</label>
+                <select id="gender">
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <label for="website">Website:</label>
+                <input type="url" id="website" placeholder="https://yourwebsite.com" />
+            </div>
+
+            <!-- 💳 Preferences / Security -->
+            <div class="settings-section">
+                <h3>Preferences & Security</h3>
+
+                <label for="twoFactor">Two-Factor Authentication:</label>
+                <select id="twoFactor">
+                    <option value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>
+
+                <label for="notifications">Notifications:</label>
+                <select id="notifications">
+                    <option value="all">All Notifications</option>
+                    <option value="important">Important Only</option>
+                    <option value="none">None</option>
+                </select>
+            </div>
+
+            <!-- 🧾 Account Info -->
+            <div class="settings-section">
+                <h3>Account Information</h3>
+                <p id="accountStatus">Status: <strong>Active</strong></p>
+                <p id="loyaltyPoints">Loyalty Points: <strong>0</strong></p>
+                <p id="lastLogin">Last Login: <strong>--</strong></p>
+            </div>
+
+            <!-- 💾 Save -->
+            <div class="settings-section">
+                <button id="saveSettings" class="save-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Property Header -->
     <section class="property-header">
         <nav class="breadcrumbs">
-            <a href="#">Accommodation</a>
+            <a href="./hostel.html">Accommodation</a>
             <span>›</span>
             <a id="propertyLocation" href="#"></a>
             <span>›</span>
@@ -88,7 +167,7 @@
     <section class="property-showcase">
         <div class="gallery-column">
             <div class="main-image">
-                <img id="mainImage" src="" alt="">
+                <img id="mainImage" src="../images/badimage.png" alt="Property Image" />
             </div>
             <div class="thumbnail-row" id="thumbnailRow"></div>
         </div>
@@ -109,10 +188,41 @@
             </div>
 
             <div class="contact-cta">
-                <button class="cta-btn">Schedule a Viewing</button>
+                <button class="cta-btn" id="contactBtn">Schedule a Viewing</button>
             </div>
         </div>
     </section>
+
+    <!-- Optional booking modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span id="closeBooking" class="close">&times;</span>
+            <h2>Schedule a Viewing</h2>
+            <form id="bookingForm">
+                <label for="viewDate">Select Date:</label>
+                <input type="date" id="viewDate" required />
+
+                <label for="viewTime">Select Time:</label>
+                <input type="time" id="viewTime" required />
+
+                <label for="notes">Notes (optional):</label>
+                <textarea id="notes" placeholder="Any special request..."></textarea>
+
+                <button type="submit" class="submit-btn">Confirm Booking</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 🎥 Property Video Section -->
+    <div class="property-video" id="propertyVideoContainer" style="display: none;">
+        <h3>Property Tour</h3>
+        <div class="video-wrapper">
+            <video id="propertyVideo" controls preload="metadata">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
 
     <!-- Property Details Tabs -->
     <section class="property-details">
@@ -149,33 +259,14 @@
         </div>
     </section>
 
-
-    <!-- D. Related Listings -->
+    <!-- Related Listings (Dynamic) -->
     <section class="related-listings">
         <h2>You Might Also Like</h2>
-        <div class="carousel">
-            <div class="listing-card">
-                <img src="../images/hostel2.jpg" alt="">
-                <h4>Maple Heights</h4>
-                <p>₦180,000 / Year</p>
-            </div>
-            <div class="listing-card">
-                <img src="../images/hostel.jpg" alt="">
-                <h4>Campus View Lodge</h4>
-                <p>₦160,000 / Year</p>
-            </div>
-            <div class="listing-card">
-                <img src="../images/apart3.jpg" alt="">
-                <h4>Greenwood Hostel</h4>
-                <p>₦120,000 / Year</p>
-            </div>
-            <div class="listing-card">
-                <img src="../images/apart2.jpg" alt="">
-                <h4>Peace Court</h4>
-                <p>₦200,000 / Year</p>
-            </div>
+        <div class="carousel" id="relatedContainer">
+            <div class="loading">Loading related properties...</div>
         </div>
     </section>
+
 
     <footer id="pageFooter">
         <div class="footer-container">
@@ -220,6 +311,7 @@
     </footer>
 
     <!-- JS -->
+    <script type="module" src="../functions/dashboard.js"></script>
     <script type="module" src="../functions/index.js"></script>
     <script type="module" src="../functions/hostelpdp.js"></script>
 </body>

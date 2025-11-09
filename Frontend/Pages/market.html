@@ -7,6 +7,7 @@
     <title>UMP - Marketplace</title>
 
     <!-- Styles -->
+     <link rel="stylesheet" href="../Styles/index.css" />
     <link rel="stylesheet" href="../Styles/market.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" />
@@ -20,11 +21,11 @@
             <img src="../images/ump-logo.jpeg" alt="UMP Logo">
         </a>
         <nav class="nav_links">
-            <a href="./index.html" class="nav-link">Home</a>
+            <a href="../index.html" class="nav-link">Home</a>
             <a href="./market.html" class="nav-link">Marketplace</a>
             <a href="./services.html" class="nav-link">Services</a>
             <a href="./store.html" class="nav-link">Store</a>
-            <a href="./provider.html" class="nav-link">Become a Provider</a>
+            <a href="./provider.html" class="nav-link" id="out">Become a Partner</a>
             <a href="./hostel.html" class="nav-link">Hostel Hub</a>
         </nav>
 
@@ -36,23 +37,23 @@
         </div>
 
         <form action="" class="search-form">
-            <input type="search" id="searchInput" placeholder="Search here..." />
-            <label for="searchInput" class="fas fa-search"></label>
+            <input type="text" id="searchInput" placeholder="Search products..." />
+            <button type="submit"><i class="fas fa-search"></i></button>
         </form>
 
         <!-- Profile Popup -->
         <div class="profile-popup">
             <div class="profile-settings">
-                <a href=""><i class="fas fa-cog"></i></a>
+                <a href="#" id="openSettings"><i class="fas fa-cog"></i></a>
             </div>
             <div class="profile-header">
                 <div class="profile-avatar">
-                    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Avatar" />
+                    <img id="profileAvatar" src="../images/guy.png" alt="Avatar" class="profile-avatar" />
                 </div>
                 <div class="profile-info">
                     <h3 id="profileName">Matthew Oseni</h3>
-                    <span class="profile-email">230401234@live.unilag.edu.ng</span>
-                    <span class="profile-status">✔ Logged in</span>
+                    <span id="profileEmail" class="profile-email">230401234@live.unilag.edu.ng</span>
+                    <span id="profileStatus" class="profile-status">✔ Logged in</span>
                 </div>
             </div>
 
@@ -62,6 +63,84 @@
             </div>
         </div>
     </header>
+
+    <!-- 🧩 Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-butn" id="closeSettings">&times;</span>
+            <h2>User Settings</h2>
+
+            <!-- 👤 Basic Profile Info -->
+            <div class="settings-section">
+                <h3>Basic Information</h3>
+
+                <label for="displayName">Display Name:</label>
+                <input type="text" id="displayName" placeholder="Enter full name" />
+
+                <label for="profileImage">Profile Image:</label>
+                <input type="file" id="profileImage" accept="image/*" />
+
+                <div id="imagePreviewContainer" style="margin-top:10px; text-align:center;">
+                    <img id="imagePreview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Preview"
+                        style="width:80px; height:80px; border-radius:50%; object-fit:cover;" />
+                </div>
+
+                <label for="bio">Bio:</label>
+                <textarea id="bio" placeholder="Write something about yourself..."></textarea>
+
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" placeholder="Enter phone number" />
+
+                <label for="address">Address:</label>
+                <input type="text" id="address" placeholder="Enter your address" />
+
+                <label for="dateOfBirth">Date of Birth:</label>
+                <input type="date" id="dateOfBirth" />
+
+                <label for="gender">Gender:</label>
+                <select id="gender">
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <label for="website">Website:</label>
+                <input type="url" id="website" placeholder="https://yourwebsite.com" />
+            </div>
+
+            <!-- 💳 Preferences / Security -->
+            <div class="settings-section">
+                <h3>Preferences & Security</h3>
+
+                <label for="twoFactor">Two-Factor Authentication:</label>
+                <select id="twoFactor">
+                    <option value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>
+
+                <label for="notifications">Notifications:</label>
+                <select id="notifications">
+                    <option value="all">All Notifications</option>
+                    <option value="important">Important Only</option>
+                    <option value="none">None</option>
+                </select>
+            </div>
+
+            <!-- 🧾 Account Info -->
+            <div class="settings-section">
+                <h3>Account Information</h3>
+                <p id="accountStatus">Status: <strong>Active</strong></p>
+                <p id="loyaltyPoints">Loyalty Points: <strong>0</strong></p>
+                <p id="lastLogin">Last Login: <strong>--</strong></p>
+            </div>
+
+            <!-- 💾 Save -->
+            <div class="settings-section">
+                <button id="saveSettings" class="save-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
 
     <div class="filter-sort-bar">
         <select id="sortSelect">
@@ -112,326 +191,43 @@
 
     </div>
 
-    <div id="mainContent">
-        <!-- Discovery Bar -->
-        <div class="discovery-bar">
-            <div class="tag">
-                <a href=""><i class="fas fa-graduation-cap"></i>
-                    <span>Graduation Sales</span></a>
-            </div>
-            <div class="tag">
-                <a href=""><i class="fas fa-paint-brush"></i>
-                    <span>Art Dept. Faves</span></a>
-            </div>
-            <div class="tag">
-                <a href=""><i class="fas fa-laptop"></i>
-                    <span>Tech Deals</span></a>
-            </div>
-            <div class="tag">
-                <a href=""><i class="fas fa-book"></i>
-                    <span>Book Picks</span></a>
-            </div>
-            <div class="tag">
-                <a href=""><i class="fas fa-tshirt"></i>
-                    <span>Campus Fashion</span></a>
-            </div>
+    <!-- Trending Now Carousel -->
+    <section class="trending-carousel" id="trendingSection" style="display: none;">
+        <h2 class="carousel-title">🔥 Trending Now</h2>
+        <div class="carousel-wrapper">
+            <div class="carousel-track" id="trendingTrack"></div>
         </div>
+    </section>
 
-        <!-- Trending Now Carousel -->
-        <section class="trending-carousel">
-            <h2 class="carousel-title">🔥 Trending Now</h2>
-            <div class="carousel-wrapper">
-                <div class="carousel-track">
-                    <div class="carousel-card">
-                        <div class="img-container">
-                            <img src="../images/earbuds.jpg" alt="Product 1" />
-                        </div>
-                        <h4>Wireless Earbuds</h4>
-                        <span>$29.99</span>
-                        <p>Best seller of the week</p>
-                        <button class="carousel-btn">Check It Out</button>
-                    </div>
-                    <div class="carousel-card">
-                        <div class="img-container">
-                            <img src="../images/Smart Backpack.jpg" alt="Product 3" />
-                        </div>
-                        <h4>Smart Backpack</h4>
-                        <span>$59.99</span>
-                        <p>Hot trending item</p>
-                        <button class="carousel-btn">Check It Out</button>
-                    </div>
-                    <div class="carousel-card">
-                        <div class="img-container">
-                            <img src="../images/hoodie.jpg" alt="Product 3" />
-                        </div>
-                        <h4>Classic Hoodie</h4>
-                        <span>$39.99</span>
-                        <p>Best seller of the week</p>
-                        <button class="carousel-btn">Check It Out</button>
-                    </div>
-                    <div class="carousel-card">
-                        <div class="img-container">
-                            <img src="../images/books.jpg" alt="Product 4" />
-                        </div>
-                        <h4>Notebook Bundle</h4>
-                        <span>$12.99</span>
-                        <p>Hot trending item</p>
-                        <button class="carousel-btn">Check It Out</button>
-                    </div>
-                    <div class="carousel-card">
-                        <div class="img-container">
-                            <img src="../images/fitness tracker.jpg" alt="Product 5" />
-                        </div>
-                        <h4>Fitness Tracker</h4>
-                        <span>$45.00</span>
-                        <p>Highly rated pick</p>
-                        <button class="carousel-btn">Check It Out</button>
-                    </div>
+    <!-- Main Product Grid -->
+    <section class="product-grid"></section>
+    <!-- Search Results Container -->
+    <div id="searchResults"></div>
+
+    <!-- Quick View Modal -->
+    <div class="modal" id="quickViewModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modalProductImage" src="" alt="Product">
                 </div>
-            </div>
-        </section>
+                <div class="modal-details">
+                    <h2 id="modalProductName">Product Name</h2>
+                    <p class="modal-price" id="modalProductPrice">$0.00</p>
+                    <p class="modal-desc" id="modalProductDesc">Product description goes here...</p>
 
-        <!-- Main Product Grid -->
-        <section class="product-grid">
-            <div class="product-card" data-product-id="6">
-                <a href="products.html?id=6" class="product-link">
-                    <div class="product-image">
-                        <img src="../images/earbuds.jpg" alt="Product 6">
-                        <div class="product-actions">
-                            <button class="quick-view" data-product-id="6"><i class="fas fa-eye"></i></button>
-                            <button class="add-to-cart" data-product-id="6"><i class="fas fa-cart-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Airpods</h3>
-                        <p>₦9,500</p>
-                    </div>
-                </a>
-            </div>
+                    <p><strong>Seller:</strong> <span id="modalSellerName">Seller Name</span></p>
+                    <p><strong>Store:</strong> <span id="modalStoreName">Store Name</span></p>
+                    <p><strong>Category:</strong> <span id="modalCategory">Category</span></p>
 
-            <div class="product-card" data-product-id="5">
-                <a href="products.html?id=5" class="product-link">
-                    <div class="product-image">
-                        <img src="../images/headphones.jpg" alt="Product 1">
-                        <div class="product-actions">
-                            <button class="quick-view" data-product-id="5"><i class="fas fa-eye"></i></button>
-                            <button class="add-to-cart" data-product-id="5"><i class="fas fa-cart-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Wireless Headphones</h3>
-                        <p>₦15,000</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="product-card" data-product-id="7">
-                <a href="products.html?id=7" class="product-link">
-                    <div class="product-image">
-                        <img src="../images/smartwatch.jpg" alt="Product 3">
-                        <div class="product-actions">
-                            <button class="quick-view" data-product-id="7"><i class="fas fa-eye"></i></button>
-                            <button class="add-to-cart" data-product-id="7"><i class="fas fa-cart-plus"></i></button>
-                        </div>
-                    </div>
-
-                    <div class="product-info">
-                        <h3>Smartwatch</h3>
-                        <p>₦40,000</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="product-card" data-product-id="8">
-                <a href="products.html?id=8" class="product-link">
-                    <div class="product-image">
-                        <img src="../images/lapbag.jpeg" alt="Product 8">
-                        <div class="product-actions">
-                            <button class="quick-view" data-product-id="8"><i class="fas fa-eye"></i></button>
-                            <button class="add-to-cart" data-product-id="8"><i class="fas fa-cart-plus"></i></button>
-                        </div>
-                    </div>
-                </a>
-                <div class="product-info">
-                    <h3>Laptop Bag</h3>
-                    <p>₦3,000</p>
-                </div>
-            </div>
-
-            <div class="product-card" data-product-id="1">
-                <a href="products.html?id=1" class="product-link">
-                    <div class="product-image">
-                        <img src="../images/Apple-iPhone-15-Pro-Max.jpg" alt="iPhone 15">
-                        <div class="product-actions">
-                            <button class="quick-view" data-product-id="1"><i class="fas fa-eye"></i></button>
-                            <button class="add-to-cart" data-product-id="1"><i class="fas fa-cart-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>iPhone 15</h3>
-                        <p>₦1,198,500</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="product-card" data-product-id="2">
-                <a href="products.html?id=2" class="product-link">
-                    <div class="product-image">
-                        <img src="../images/iphone 16.jpg" alt="iPhone 16">
-                        <div class="product-actions">
-                            <button class="quick-view" data-product-id="2"><i class="fas fa-eye"></i></button>
-                            <button class="add-to-cart" data-product-id="2"><i class="fas fa-cart-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>iPhone 16</h3>
-                        <p>₦1,398,500</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="product-card" data-product-id="3">
-                <a href="products.html?id=3" class="product-link">
-                    <div class="product-image">
-                        <img src="../images/iphone 17.jpeg" alt="iPhone 17">
-                        <div class="product-actions">
-                            <button class="quick-view" data-product-id="3"><i class="fas fa-eye"></i></button>
-                            <button class="add-to-cart" data-product-id="3"><i class="fas fa-cart-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>iPhone 17</h3>
-                        <p>₦1,498,500</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="product-card" data-product-id="4">
-                <a href="products.html?id=4" class="product-link">
-                    <div class="product-image">
-                        <img src="../images/s25ultra.png" alt="Samsung Galaxy S25 Ultra">
-                        <div class="product-actions">
-                            <button class="quick-view" data-product-id="4"><i class="fas fa-eye"></i></button>
-                            <button class="add-to-cart" data-product-id="4"><i class="fas fa-cart-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Samsung Galaxy S25 Ultra</h3>
-                        <p>₦1,275,000</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="product-card" data-product-id="9">
-                <a href="products.html?id=9" class="product-link">
-                    <div class="product-image">
-                        <img src="../images/earbuds.jpg" alt="Wireless Earbuds">
-                        <div class="product-actions">
-                            <button class="quick-view" data-product-id="9"><i class="fas fa-eye"></i></button>
-                            <button class="add-to-cart" data-product-id="9"><i class="fas fa-cart-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Wireless Earbuds</h3>
-                        <p>₦12,000</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="product-card" data-product-id="10">
-                <a href="products.html?id=10" class="product-link">
-                    <div class="product-image">
-                        <img src="../images/Smart Backpack.jpg" alt="Smart Backpack">
-                        <div class="product-actions">
-                            <button class="quick-view" data-product-id="10"><i class="fas fa-eye"></i></button>
-                            <button class="add-to-cart" data-product-id="10"><i class="fas fa-cart-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Smart Backpack</h3>
-                        <p>₦25,000</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="product-card" data-product-id="11">
-                <a href="products.html?id=11" class="product-link">
-                    <div class="product-image">
-                        <img src="../images/hoodie.jpg" alt="Classic Hoodie">
-                        <div class="product-actions">
-                            <button class="quick-view" data-product-id="11"><i class="fas fa-eye"></i></button>
-                            <button class="add-to-cart" data-product-id="11"><i class="fas fa-cart-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Classic Hoodie</h3>
-                        <p>₦5,000</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="product-card" data-product-id="12">
-                <a href="products.html?id=12" class="product-link">
-                    <div class="product-image">
-                        <img src="../images/books.jpg" alt="Notebook Bundle">
-                        <div class="product-actions">
-                            <button class="quick-view" data-product-id="12"><i class="fas fa-eye"></i></button>
-                            <button class="add-to-cart" data-product-id="12"><i class="fas fa-cart-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Notebook Bundle</h3>
-                        <p>₦4,000</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="product-card" data-product-id="13">
-                <a href="products.html?id=13" class="product-link">
-                    <div class="product-image">
-                        <img src="../images/fitness tracker.jpg" alt="Fitness Tracker">
-                        <div class="product-actions">
-                            <button class="quick-view" data-product-id="13"><i class="fas fa-eye"></i></button>
-                            <button class="add-to-cart" data-product-id="13"><i class="fas fa-cart-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Fitness Tracker</h3>
-                        <p>₦15,000</p>
-                    </div>
-                </a>
-            </div>
-
-
-        </section>
-
-        <!-- Quick View Modal -->
-        <div class="modal" id="quickViewModal">
-            <div class="modal-content">
-                <span class="close-modal" id="closeModal">&times;</span>
-
-                <div class="modal-body">
-                    <div class="modal-image">
-                        <img id="modalProductImage" src="" alt="Product">
-                    </div>
-                    <div class="modal-details">
-                        <h2 id="modalProductName">Product Name</h2>
-                        <p class="modal-price" id="modalProductPrice">$0.00</p>
-                        <p class="modal-desc" id="modalProductDesc">Product description goes here...</p>
-
-                        <p><strong>Seller:</strong> <span id="modalSellerName">Seller Name</span></p>
-                        <p><strong>Store:</strong> <span id="modalStoreName">Store Name</span></p>
-                        <p><strong>Category:</strong> <span id="modalCategory">Category</span></p>
-
-                        <button class="message-btn">Message Seller</button>
-                    </div>
+                    <button class="message-btn">Message Seller</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Search Results Container -->
-    <div id="searchResults"></div>
+    </div>
 
     <footer id="pageFooter">
         <div class="footer-container">
@@ -474,8 +270,9 @@
             &copy; <span id="year"></span> UMP. All rights reserved.
         </div>
     </footer>
-
-
+    
+    <script type="module" src="../functions/cart.js"></script>
+    <script type="module" src="../functions/dashboard.js"></script>
     <script type="module" src="../functions/market.js"></script>
     <script type="module" src="../functions/index.js"></script>
 </body>

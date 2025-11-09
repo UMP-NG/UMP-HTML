@@ -305,28 +305,13 @@ body {
     cursor: pointer;
 }
 
-.star-rating {
-    direction: rtl;
-    display: inline-flex;
-    font-size: 2rem;
-    gap: .2rem;
+.review-form select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
-.star-rating input {
-    display: none;
-}
-
-.star-rating label {
-    cursor: pointer;
-    color: #ccc;
-    transition: color .2s;
-}
-
-.star-rating input:checked~label,
-.star-rating label:hover,
-.star-rating label:hover~label {
-    color: goldenrod;
-}
 
 /* Seller Story */
 .seller-story {
@@ -399,6 +384,11 @@ body {
 }
 
 /* Related Products */
+.seller-products {
+    margin-top: 5rem;
+    padding: 2rem 5%;
+}
+
 .rel-products {
     margin-top: 5rem;
     padding: 2rem 5%;

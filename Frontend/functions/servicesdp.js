@@ -1,6 +1,16 @@
-// Tabs
+const isLocal = window.location.hostname === "localhost";
+const API_BASE = isLocal
+  ? "http://localhost:5000/api"
+  : "https://ump-html-1.onrender.com/api";
+
 const tabBtns = document.querySelectorAll(".tab-btn");
 const tabPanes = document.querySelectorAll(".tab-pane");
+
+// Cookie helper
+function cookieGet(name) {
+  const m = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+  return m ? decodeURIComponent(m[1]) : null;
+}
 
 tabBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -12,7 +22,9 @@ tabBtns.forEach((btn) => {
   });
 });
 
-// Inject structure into HTML
+// === Service Details Page ===
+
+// Inject base layout into #app
 document.getElementById("app").innerHTML = `
   <section class="service-detail container">
     <div class="service-layout">
@@ -33,292 +45,267 @@ document.getElementById("app").innerHTML = `
   </section>
 `;
 
-// Mock service data (can later be fetched from backend)
-const services = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    title: "Calculus I Tutoring",
-    rate: "$35 / hour",
-    package: "5-Hour Package: $150",
-    rating: 4.8,
-    verified: true,
-    image: "https://randomuser.me/api/portraits/women/45.jpg",
-    major: "B.Sc. in Mathematics — University of Lagos",
-    desc: "Passionate about helping students master calculus and develop analytical skills. Over 3 years of tutoring experience with excellent student outcomes.",
-    about:
-      "This Calculus I tutoring session focuses on differentiation, integration, and problem-solving strategies. Each lesson is personalized to your learning pace and includes practical examples and review quizzes.",
-    certifications: ["Certified Math Tutor (ALX Academy)", "B.Sc. Mathematics"],
-    portfolio: [
-      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600",
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600",
-    ],
-    reviews: [
-      {
-        text: "Sarah is an excellent tutor! I finally understand limits.",
-        author: "Tunde, 2024",
-        stars: "★★★★★",
-      },
-      {
-        text: "Very patient and helpful sessions. Highly recommend!",
-        author: "Ada, 2023",
-        stars: "★★★★☆",
-      },
-    ],
-    policies: [
-      "📅 Cancellations must be made 24 hours in advance.",
-      "💰 Refunds available for unused prepaid hours only.",
-      "🕒 Sessions start promptly at the scheduled time.",
-    ],
-  },
-  {
-    id: 2,
-    name: "David Lee",
-    title: "Logo Design & Branding",
-    rate: "Flat Rate $150",
-    package: "Brand Kit + 3 Concepts: $250",
-    rating: 4.7,
-    verified: true,
-    image: "https://randomuser.me/api/portraits/men/55.jpg",
-    major: "B.A. in Graphic Design — University of Toronto",
-    desc: "Creative designer specializing in logos, branding, and visual identity. 5+ years of experience helping startups stand out with professional designs.",
-    about:
-      "This service includes a full brand identity creation process — from concept sketches to a finalized logo and brand color palette. Each design is tailored to match your company’s values and audience.",
-    certifications: [
-      "Adobe Certified Professional",
-      "Brand Identity Design (Coursera)",
-    ],
-    portfolio: [
-      "https://images.unsplash.com/photo-1581090700227-1e37b190418e?w=600",
-      "https://images.unsplash.com/photo-1504805572947-34fad45aed93?w=600",
-    ],
-    reviews: [
-      {
-        text: "Loved the final logo! David really understood our brand.",
-        author: "Amaka, 2024",
-        stars: "★★★★★",
-      },
-      {
-        text: "Professional and creative. Delivery took 2 extra days.",
-        author: "Kelvin, 2023",
-        stars: "★★★★☆",
-      },
-    ],
-    policies: [
-      "🖌️ 2 free revisions included.",
-      "📅 Final files delivered within 7 business days.",
-      "💰 50% deposit required before project start.",
-    ],
-  },
-  {
-    id: 3,
-    name: "Jessica Osei",
-    title: "Personal Fitness Coaching",
-    rate: "$40 / hour",
-    package: "10-Session Package: $350",
-    rating: 4.9,
-    verified: true,
-    image: "https://randomuser.me/api/portraits/women/33.jpg",
-    major: "Certified Personal Trainer (NASM)",
-    desc: "Dedicated fitness coach helping clients build strength and confidence through personalized workout and nutrition plans.",
-    about:
-      "Each coaching session combines bodyweight training, resistance workouts, and nutrition guidance. Whether your goal is weight loss, muscle gain, or general fitness, every program is tailored to you.",
-    certifications: [
-      "NASM Certified Personal Trainer",
-      "Nutrition & Wellness Coach (ACE)",
-    ],
-    portfolio: [
-      "https://images.unsplash.com/photo-1598970434795-0c54fe7c0648?w=600",
-      "https://images.unsplash.com/photo-1554284126-aa88f22d8b74?w=600",
-    ],
-    reviews: [
-      {
-        text: "Jessica kept me accountable and motivated—amazing results!",
-        author: "Kunle, 2024",
-        stars: "★★★★★",
-      },
-      {
-        text: "Challenging but fun sessions! I feel stronger already.",
-        author: "Lydia, 2023",
-        stars: "★★★★★",
-      },
-    ],
-    policies: [
-      "🏋️‍♀️ Missed sessions can be rescheduled once per week.",
-      "💰 Refunds only for cancellations made 48 hours ahead.",
-      "⚡ Client progress photos kept private unless permitted.",
-    ],
-  },
-  {
-    id: 4,
-    name: "Mark Benson",
-    title: "Guitar Lessons for Beginners",
-    rate: "$25 / hour",
-    package: "6-Session Package: $120",
-    rating: 4.6,
-    verified: false,
-    image: "https://randomuser.me/api/portraits/men/41.jpg",
-    major: "Diploma in Music Performance — Berklee College of Music",
-    desc: "Passionate guitarist teaching beginners the art of rhythm, melody, and music theory in a fun and interactive way.",
-    about:
-      "Learn how to play chords, scales, and your favorite songs. Classes are structured to help you improve step-by-step with backing tracks and practice assignments.",
-    certifications: [
-      "Certified Music Instructor (Yamaha School)",
-      "Diploma in Guitar Performance",
-    ],
-    portfolio: [
-      "https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?w=600",
-      "https://images.unsplash.com/photo-1507878866276-a947ef722fee?w=600",
-    ],
-    reviews: [
-      {
-        text: "Mark made guitar learning super easy and enjoyable!",
-        author: "Bisi, 2024",
-        stars: "★★★★★",
-      },
-      {
-        text: "Good teacher, though lessons sometimes felt rushed.",
-        author: "Tom, 2023",
-        stars: "★★★★☆",
-      },
-    ],
-    policies: [
-      "🎸 Students must bring their own guitar.",
-      "📅 Cancellations accepted 12 hours before class.",
-      "💰 No refunds after the first session.",
-    ],
-  },
-];
-
-// Get elements
+// === DOM ELEMENTS ===
 const serviceInfo = document.getElementById("serviceInfo");
 const bookingPanel = document.getElementById("bookingPanel");
 const reviewsPane = document.getElementById("reviews");
 const policiesPane = document.getElementById("policies");
 
-// Get ID from URL (e.g., ?id=2)
+// === GET SERVICE ID FROM URL ===
 const urlParams = new URLSearchParams(window.location.search);
-const serviceId = parseInt(urlParams.get("id")) || 1; // default to 1 if none
+const serviceId = urlParams.get("id");
 
-// Find matching service
-const s = services.find((srv) => srv.id === serviceId);
-
-// If no service found, show error
-if (!s) {
+if (!serviceId) {
   document.getElementById("app").innerHTML = `
     <div class="not-found">
-      <h2>Service not found</h2>
-      <p>The service you are looking for does not exist.</p>
-    </div>
-  `;
-} else {
-  // Render normally
-  const serviceInfo = document.getElementById("serviceInfo");
-  const bookingPanel = document.getElementById("bookingPanel");
-  const reviewsPane = document.getElementById("reviews");
-  const policiesPane = document.getElementById("policies");
+      <h2>Invalid Request</h2>
+      <p>No service ID provided in the URL.</p>
+    </div>`;
+  throw new Error("No service ID in URL");
+}
 
-  // LEFT COLUMN — Main Info
+// === FETCH SERVICE DATA FROM BACKEND ===
+async function fetchService() {
+  try {
+    const res = await fetch(`${API_BASE}/api/services/${serviceId}`);
+    if (!res.ok) throw new Error(`Failed to load service (${res.status})`);
+
+    const { success, service } = await res.json();
+    if (!success || !service) throw new Error("Service not found");
+
+    renderService(service);
+  } catch (err) {
+    console.error("❌ Failed to load service:", err);
+    document.getElementById("app").innerHTML = `
+      <div class="not-found">
+        <h2>Service not found</h2>
+        <p>${err.message}</p>
+      </div>`;
+  }
+}
+
+// === RENDER SERVICE DETAILS ===
+function renderService(s) {
+  const provider = s.serviceProvider || s.provider || {}; // fallback safety
+
+  // LEFT COLUMN — MAIN INFO
   serviceInfo.innerHTML = `
     <div class="service-header">
-      <h1>${s.title}</h1>
+      <h1>${s.title || s.name}</h1>
       ${s.verified ? `<span class="verified-badge">Verified Expert</span>` : ""}
     </div>
 
     <div class="provider-bio">
-      <img src="${s.image}" alt="${s.name}" class="provider-photo" />
+      <img src="${provider.avatar || s.image || "../images/default-user.png"}" 
+           alt="${provider.name || "Service Provider"}" 
+           class="provider-photo" />
       <div>
-        <h3>${s.name}</h3>
-        <p class="provider-major">${s.major}</p>
-        <p class="provider-desc">${s.desc}</p>
+        <h3>${s.name || s.provider?.name || "Unknown"}</h3>
+        <p class="provider-role">Role: ${
+          provider.role || "Service Provider"
+        }</p>
+        <p class="provider-major">${s.major || ""}</p>
+        <p class="provider-desc">${s.desc || s.about || ""}</p>
+        ${
+          provider.email
+            ? `<p class="provider-email"><i class="fa-solid fa-envelope"></i> ${provider.email}</p>`
+            : ""
+        }
       </div>
     </div>
 
     <div class="service-description">
       <h2>About the Service</h2>
-      <p>${s.about}</p>
+      <p>${s.about || "No description available."}</p>
     </div>
 
-    <div class="certifications">
-      <h2>Certifications</h2>
-      <ul>
-        ${s.certifications
-          .map((c) => `<li><i class="fa-solid fa-certificate"></i> ${c}</li>`)
-          .join("")}
-      </ul>
-    </div>
+    ${
+      s.certifications?.length
+        ? `<div class="certifications">
+            <h2>Certifications</h2>
+            <ul>${s.certifications.map((c) => `<li>${c}</li>`).join("")}</ul>
+          </div>`
+        : ""
+    }
 
-    <div class="portfolio">
-      <h2>Past Work / Examples</h2>
-      <div class="portfolio-gallery">
-        ${s.portfolio
-          .map((img) => `<img src="${img}" alt="Portfolio Example">`)
-          .join("")}
-      </div>
-    </div>
+    ${
+      s.portfolio?.length
+        ? `<div class="portfolio">
+            <h2>Portfolio</h2>
+            <div class="portfolio-gallery">
+              ${s.portfolio
+                .map((img) => `<img src="${img}" alt="Portfolio Example">`)
+                .join("")}
+            </div>
+          </div>`
+        : ""
+    }
 
     <div class="reviews-summary">
       <h2>Reviews Summary</h2>
       <div class="rating-overview">
-        <h3>⭐ ${s.rating} <span>/ 5.0</span></h3>
-        <p>Based on ${s.reviews.length} student reviews</p>
+        <h3>⭐ ${s.rating || "N/A"} <span>/ 5.0</span></h3>
+        <p>Based on ${s.reviewsCount || 0} reviews</p>
       </div>
     </div>
   `;
 
-  // RIGHT COLUMN — Booking Panel
+  // RIGHT COLUMN — BOOKING PANEL
   bookingPanel.innerHTML = `
-    <div class="price-box">
-      <h3 class="main-rate">${s.rate}</h3>
-      <p>${s.package}</p>
+  <div class="price-box">
+    <h3 class="main-rate">${s.rate || "Price not set"}</h3>
+    <p>${s.package || ""}</p>
+  </div>
+
+  <div class="schedule">
+    <label for="bookingDate">Choose a Date</label>
+    <input type="date" id="bookingDate" />
+    <div class="time-slots" id="timeSlots">
+      ${
+        s.availableTimes && s.availableTimes.length
+          ? s.availableTimes
+              .map((t) => `<button class="time-btn">${t}</button>`)
+              .join("")
+          : `
+            <button class="time-btn">9:00 AM</button>
+            <button class="time-btn">11:00 AM</button>
+            <button class="time-btn">2:00 PM</button>
+            <button class="time-btn">4:00 PM</button>
+          `
+      }
     </div>
+  </div>
 
-    <div class="schedule">
-      <label for="bookingDate">Choose a Date</label>
-      <input type="date" id="bookingDate" />
-      <div class="time-slots">
-        <button class="time-btn">9:00 AM</button>
-        <button class="time-btn">11:00 AM</button>
-        <button class="time-btn">2:00 PM</button>
-        <button class="time-btn">4:00 PM</button>
-      </div>
-    </div>
+  <div class="action-buttons">
+    <button class="cta-btn" id="bookBtn">Book Session</button>
+    <button class="cta-btn" id="downloadPortfolioBtn">Download Portfolio</button>
+    <button class="cta-btn secondary" id="messageProviderBtn">Message Provider</button>
+  </div>
+`;
 
-    <button class="cta-btn">Book Session</button>
-    <button class="secondary-btn">Message Provider</button>
-  `;
+  // === REVIEWS TAB ===
+  if (s.reviews && s.reviews.length > 0) {
+    reviewsPane.innerHTML = `
+    <h3>Reviews (${s.reviews.length})</h3>
+    <div class="reviews-list">
+      ${s.reviews
+        .map(
+          (r) => `
+          <div class="review-item">
+            <p class="review-text">“${r.text}”</p>
+            <div class="review-meta">
+              <span class="review-author">— ${
+                r.user?.name || "Anonymous"
+              }</span>
+              <span class="review-stars">⭐ ${r.stars}/5</span>
+              <span class="review-date">${new Date(
+                r.createdAt
+              ).toLocaleDateString()}</span>
+            </div>
+          </div>`
+        )
+        .join("")}
+    </div>`;
+  } else {
+    reviewsPane.innerHTML = `
+    <div class="no-reviews">
+      <img src="../images/empty-box.png" alt="No Reviews" />
+      <h4>No reviews yet</h4>
+      <p>Be the first to leave a review!</p>
+    </div>`;
+  }
 
-  // REVIEWS TAB
-  reviewsPane.innerHTML = s.reviews
-    .map(
-      (r) => `
-      <div class="review">
-        <p>“${r.text}”</p>
-        <span>— ${r.author} ${r.stars}</span>
-      </div>
-    `
-    )
-    .join("");
-
-  // POLICIES TAB
-  policiesPane.innerHTML = `
+  // === POLICIES TAB ===
+  if (s.policies && s.policies.length > 0) {
+    policiesPane.innerHTML = `
     <h3>Policies</h3>
-    <ul>
+    <ul class="policies-list">
       ${s.policies.map((p) => `<li>${p}</li>`).join("")}
-    </ul>
-  `;
+    </ul>`;
+  } else {
+    policiesPane.innerHTML = `
+    <div class="no-policies">
+      <p>No policies listed for this service.</p>
+    </div>`;
+  }
+
+  // Store provider ID globally for chat
+  window.currentService = { providerId: provider._id };
 }
 
-// TAB SWITCH
-document.querySelectorAll(".tab-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
+// === Initialize ===
+fetchService();
+
+// TAB SWITCH FUNCTIONALITY
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("tab-btn")) {
     document
       .querySelectorAll(".tab-btn")
-      .forEach((b) => b.classList.remove("active"));
+      .forEach((btn) => btn.classList.remove("active"));
     document
       .querySelectorAll(".tab-pane")
       .forEach((p) => p.classList.remove("active"));
-    btn.classList.add("active");
-    document.getElementById(btn.dataset.tab).classList.add("active");
-  });
+    e.target.classList.add("active");
+    document.getElementById(e.target.dataset.tab).classList.add("active");
+  }
+});
+
+// === BUTTON FUNCTIONALITY ===
+document.addEventListener("click", async (e) => {
+  // Select time slot
+  if (e.target.classList.contains("time-btn")) {
+    document
+      .querySelectorAll(".time-btn")
+      .forEach((btn) => btn.classList.remove("selected"));
+    e.target.classList.add("selected");
+  }
+
+  // Book session
+  if (e.target.id === "bookBtn") {
+    const date = document.getElementById("bookingDate").value;
+    const timeSlot = document.querySelector(".time-btn.selected")?.textContent;
+
+    if (!date || !timeSlot) {
+      alert("Please select a date and time before booking.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/api/bookings`, {
+        method: "POST",
+        credentials: "include", // ensure httpOnly cookie is sent
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          serviceId: window.currentService?._id || serviceId, // the current service ID
+          date,
+          timeSlot,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Booking failed");
+
+      alert(`✅ Booking confirmed for ${date} at ${timeSlot}`);
+    } catch (err) {
+      console.error("Booking error:", err);
+      alert(`❌ ${err.message}`);
+    }
+  }
+
+  // Download portfolio
+  if (e.target.id === "downloadPortfolioBtn") {
+    window.location.href = `/api/services/${serviceId}/portfolio/download`;
+  }
+
+  // Message provider
+  if (e.target.id === "messageProviderBtn") {
+    const providerId = window.currentService?.providerId;
+    if (!providerId) {
+      alert("No provider found for this service.");
+      return;
+    }
+    window.location.href = `/chat?receiver=${providerId}`;
+  }
 });

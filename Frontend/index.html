@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UMP - Homepage</title>
+
+  <meta name="description"
+    content="UMP is the University Marketplace that connects students to buy, sell, and discover products and services easily across campuses." />
+  <meta name="keywords"
+    content="University Marketplace, student sellers, campus trading, UMP, buy and sell, student business, online campus store" />
+  <meta name="author" content="UMP Team" />
+
+  <link rel="icon" type="image/x-icon" href="./images/ump-logo.jpeg" />
+
+  <!-- styles -->
+  <link rel="stylesheet" href="./styles/index.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" />
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="main-header">
+    <a class="logo" href="/">
+      <img src="/images/ump-logo.jpeg" alt="UMP Logo">
+    </a>
+    <nav class="nav_links">
+      <a href="/index.html" class="nav-link">Home</a>
+      <a href="./pages/market.html" class="nav-link">Marketplace</a>
+      <a href="./pages/services.html" class="nav-link">Services</a>
+      <a href="./pages/store.html" class="nav-link">Store</a>
+      <a href="./pages/provider.html" class="nav-link" id="out">Become a Partner</a>
+      <a href="./pages/hostel.html" class="nav-link">Hostel Hub</a>
+    </nav>
+
+    <div class="navbar_icons">
+      <div class="fas fa-bars" id="mobile_menu"></div>
+      <div class="fas fa-search" id="search-btn"></div>
+      <div class="fas fa-shopping-cart" id="cart-btn"></div>
+      <div class="fas fa-user" id="login-btn"></div>
+    </div>
+
+    <form onsubmit="return false" class="search-form">
+      <input type="search" id="search-box" placeholder="Search here..." />
+      <label for="search-box" class="fas fa-search"></label>
+    </form>
+
+    <!-- Profile Popup -->
+    <div class="profile-popup">
+      <div class="profile-settings">
+        <a href="#" id="openSettings"><i class="fas fa-cog"></i></a>
+      </div>
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <img id="profileAvatar" src="./images/guy.png" alt="Avatar" class="profile-avatar" />
+        </div>
+        <div class="profile-info">
+          <h3 id="profileName">Guest</h3>
+          <span id="profileEmail" class="profile-email">-</span>
+          <span id="profileStatus" class="profile-status">❌ Logged out</span>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button class="profile-btn" id="signInBtn">Sign In</button>
+        <button class="profile-btn logout" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 🧩 Settings Modal -->
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <span class="close-butn" id="closeSettings">&times;</span>
+      <h2>User Settings</h2>
+
+      <!-- 👤 Basic Profile Info -->
+      <div class="settings-section">
+        <h3>Basic Information</h3>
+
+        <label for="displayName">Display Name:</label>
+        <input type="text" id="displayName" placeholder="Enter full name" />
+
+        <label for="profileImage">Profile Image:</label>
+        <input type="file" id="profileImage" accept="image/*" />
+
+        <div id="imagePreviewContainer" style="margin-top:10px; text-align:center;">
+          <img id="imagePreview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Preview"
+            style="width:80px; height:80px; border-radius:50%; object-fit:cover;" />
+        </div>
+
+        <label for="bio">Bio:</label>
+        <textarea id="bio" placeholder="Write something about yourself..."></textarea>
+
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" placeholder="Enter phone number" />
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" placeholder="Enter your address" />
+
+        <label for="dateOfBirth">Date of Birth:</label>
+        <input type="date" id="dateOfBirth" />
+
+        <label for="gender">Gender:</label>
+        <select id="gender">
+          <option value="">Select</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="website">Website:</label>
+        <input type="url" id="website" placeholder="https://yourwebsite.com" />
+      </div>
+
+      <!-- 💳 Preferences / Security -->
+      <div class="settings-section">
+        <h3>Preferences & Security</h3>
+
+        <label for="twoFactor">Two-Factor Authentication:</label>
+        <select id="twoFactor">
+          <option value="false">Disabled</option>
+          <option value="true">Enabled</option>
+        </select>
+
+        <label for="notifications">Notifications:</label>
+        <select id="notifications">
+          <option value="all">All Notifications</option>
+          <option value="important">Important Only</option>
+          <option value="none">None</option>
+        </select>
+      </div>
+
+      <!-- 🧾 Account Info -->
+      <div class="settings-section">
+        <h3>Account Information</h3>
+        <p id="accountStatus">Status: <strong>Active</strong></p>
+        <p id="loyaltyPoints">Loyalty Points: <strong>0</strong></p>
+        <p id="lastLogin">Last Login: <strong>--</strong></p>
+      </div>
+
+      <!-- 💾 Save -->
+      <div class="settings-section">
+        <button id="saveSettings" class="save-btn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="advert-slider">
+    <div class="slider-wrapper">
+      <div class="slider-track">
+
+        <div class="slide box">
+          <h3>Have You Heard Of UMP</h3>
+          <img src="/images/ump.jpg" alt="UMP Advert" />
+        </div>
+
+        <div class="slide box">
+          <h3>Our Delivery System</h3>
+          <img src="/images/walker.jpg" alt="Delivery System" />
+        </div>
+
+        <div class="slide box">
+          <h3>Download Online Receipt</h3>
+          <img src="/images/receipt.jpg" alt="Online Receipt" />
+        </div>
+
+        <div class="slide box">
+          <h3>How We Keep Your Money Safe</h3>
+          <img src="/images/escrow.jpg" alt="Escrow System" />
+        </div>
+
+        <div class="slide box">
+          <h3>How To Become UMP No. 1 Seller</h3>
+          <img src="/images/no1-seller.jpeg" alt="Top Seller" />
+        </div>
+
+      </div>
+
+      <!-- ✅ Pagination dots -->
+      <div class="slider-dots"></div>
+    </div>
+  </section>
+
+
+  <!-- END ADVERT SLIDER -->
+
+  <section class="featured-categories">
+    <h2>Featured Product Categories</h2>
+    <p>Explore our marketplace by category. Find what you love, quickly and easily.</p>
+
+    <div class="categories-grid" id="categoryContainer"></div>
+  </section>
+
+  <section class="vibe">
+    <h2>🎨 Shop by Vibe</h2>
+    <p>Discover themed collections curated for your lifestyle and mood.</p>
+
+    <div class="vibe-grid">
+      <!-- Vibe 1 -->
+      <a href="./pages/category.html?slug=fashion" class="vibe-card">
+        <img src="/images/fash-trend.jpg" alt="Fashion Trends">
+        <div class="vibe-overlay">
+          <h3>Fashion Trends</h3>
+        </div>
+      </a>
+
+      <!-- Vibe 2 -->
+      <a href="./pages/category.html?slug=books" class="vibe-card">
+        <img src="/images/study-essen.jpg" alt="Study Essentials">
+        <div class="vibe-overlay">
+          <h3>Study Essentials</h3>
+        </div>
+      </a>
+
+      <!-- Vibe 3 -->
+      <a href="./pages/category.html?slug=art-decor" class="vibe-card">
+        <img src="/images/cozy-hostel.jpg" alt="Cozy Home">
+        <div class="vibe-overlay">
+          <h3>Cozy Home</h3>
+        </div>
+      </a>
+
+      <!-- Vibe 4 -->
+      <a href="./pages/category.html?slug=electronics" class="vibe-card">
+        <img src="/images/tech-life.jpg" alt="Tech Life">
+        <div class="vibe-overlay">
+          <h3>Tech Life</h3>
+        </div>
+      </a>
+    </div>
+
+    <!-- View All Button -->
+    <a href="./pages/collections.html" class="view-all-btn">View All Vibes →</a>
+  </section>
+
+  <section class="creators-section">
+    <h2>🌟 Featured Student Creators</h2>
+    <div class="creators-container">
+
+      <!-- Card 1 -->
+      <div class="creator-card">
+        <div class="card-inner">
+          <div class="card-front">
+            <img src="/images/guy.png" alt="Creator 1">
+            <h3>Ikechukwu</h3>
+            <p>Chief Executive Officer</p>
+          </div>
+          <div class="card-back">
+            <h4>About Ikechukwu</h4>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate inventore laborum ratione, deserunt
+              debitis a?.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="creator-card">
+        <div class="card-inner">
+          <div class="card-front">
+            <img src="/images/guy.png" alt="Creator 2">
+            <h3>Joba</h3>
+            <p>Frontend Engineer</p>
+          </div>
+          <div class="card-back">
+            <h4>About Joba</h4>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus a perspiciatis error id..</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="creator-card">
+        <div class="card-inner">
+          <div class="card-front">
+            <img src="/images/techtide icon.png" alt="Creator 3">
+            <h3>Oseni Matthew</h3>
+            <p>Fullstack Developer</p>
+          </div>
+          <div class="card-back">
+            <h4>About Oseni</h4>
+            <p>Focused on Building Web And Mobile Aplications that Actually works and Meets Customers Satisfaction.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>💡 What We Do</h2>
+    <p class="section-desc">We connect students across campuses, making buying and selling easier, safer, and more fun.
+    </p>
+
+    <div class="features">
+      <div class="feature"><i class="fas fa-store"></i>
+        <h3>Campus Marketplace</h3>
+        <p>A one-stop platform for students to sell, buy, and discover products and services.</p>
+      </div>
+      <div class="feature"><i class="fas fa-users"></i>
+        <h3>Community First</h3>
+        <p>We focus on student creators, ensuring a safe, student-driven environment.</p>
+      </div>
+      <div class="feature"><i class="fas fa-bolt"></i>
+        <h3>Fast & Reliable</h3>
+        <p>Quick connections with fellow students using smart search and instant messaging.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section>
+    <h2>⚙️ How It Works</h2>
+    <p class="section-desc">Getting started on UMP is simple and seamless. Here’s how:</p>
+
+    <div class="features">
+      <div class="feature"><i class="fas fa-user-plus"></i>
+        <h3>1. Sign Up</h3>
+        <p>Create your free student account in seconds.</p>
+      </div>
+      <div class="feature"><i class="fas fa-upload"></i>
+        <h3>2. Post or Browse</h3>
+        <p>List your products/services or browse what’s available.</p>
+      </div>
+      <div class="feature"><i class="fas fa-comments"></i>
+        <h3>3. Connect</h3>
+        <p>Chat directly with students and negotiate deals.</p>
+      </div>
+      <div class="feature"><i class="fas fa-handshake"></i>
+        <h3>4. Meet & Trade</h3>
+        <p>Close the deal in a safe, campus-friendly way.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer id="pageFooter">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <h2>UMP</h2>
+        <p>University Marketplace — connecting students, products, and creativity.</p>
+      </div>
+
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Marketplace</a></li>
+          <li><a href="#">Creators</a></li>
+          <li><a href="#">About Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Report Issue</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <h3>Connect</h3>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      &copy; <span id="year"></span> UMP. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script type="module" src="./functions/dashboard.js"></script>
+  <script type="module" src="./functions/index.js"></script>
+</body>
+
+</html>

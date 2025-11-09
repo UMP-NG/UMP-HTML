@@ -7,6 +7,7 @@
     <title>UMP - Marketplace</title>
 
     <!-- Styles -->
+    <link rel="stylesheet" href="../Styles/index.css" />
     <link rel="stylesheet" href="../Styles/products.css" />
     <link rel="stylesheet" href="../Styles/market.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
@@ -21,11 +22,11 @@
             <img src="../images/ump-logo.jpeg" alt="UMP Logo">
         </a>
         <nav class="nav_links">
-            <a href="./index.html" class="nav-link">Home</a>
+            <a href="../index.html" class="nav-link">Home</a>
             <a href="./market.html" class="nav-link">Marketplace</a>
             <a href="./services.html" class="nav-link">Services</a>
             <a href="./store.html" class="nav-link">Store</a>
-            <a href="./provider.html" class="nav-link">Become a Provider</a>
+            <a href="./provider.html" class="nav-link" id="out">Become a Partner</a>
             <a href="./hostel.html" class="nav-link">Hostel Hub</a>
         </nav>
 
@@ -44,16 +45,16 @@
         <!-- Profile Popup -->
         <div class="profile-popup">
             <div class="profile-settings">
-                <a href=""><i class="fas fa-cog"></i></a>
+                <a href="#" id="openSettings"><i class="fas fa-cog"></i></a>
             </div>
             <div class="profile-header">
                 <div class="profile-avatar">
-                    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Avatar" />
+                    <img id="profileAvatar" src="../images/guy.png" alt="Avatar" class="profile-avatar" />
                 </div>
                 <div class="profile-info">
                     <h3 id="profileName">Matthew Oseni</h3>
-                    <span class="profile-email">230401234@live.unilag.edu.ng</span>
-                    <span class="profile-status">✔ Logged in</span>
+                    <span id="profileEmail" class="profile-email">230401234@live.unilag.edu.ng</span>
+                    <span id="profileStatus" class="profile-status">✔ Logged in</span>
                 </div>
             </div>
 
@@ -63,6 +64,84 @@
             </div>
         </div>
     </header>
+
+    <!-- 🧩 Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-butn" id="closeSettings">&times;</span>
+            <h2>User Settings</h2>
+
+            <!-- 👤 Basic Profile Info -->
+            <div class="settings-section">
+                <h3>Basic Information</h3>
+
+                <label for="displayName">Display Name:</label>
+                <input type="text" id="displayName" placeholder="Enter full name" />
+
+                <label for="profileImage">Profile Image:</label>
+                <input type="file" id="profileImage" accept="image/*" />
+
+                <div id="imagePreviewContainer" style="margin-top:10px; text-align:center;">
+                    <img id="imagePreview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Preview"
+                        style="width:80px; height:80px; border-radius:50%; object-fit:cover;" />
+                </div>
+
+                <label for="bio">Bio:</label>
+                <textarea id="bio" placeholder="Write something about yourself..."></textarea>
+
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" placeholder="Enter phone number" />
+
+                <label for="address">Address:</label>
+                <input type="text" id="address" placeholder="Enter your address" />
+
+                <label for="dateOfBirth">Date of Birth:</label>
+                <input type="date" id="dateOfBirth" />
+
+                <label for="gender">Gender:</label>
+                <select id="gender">
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <label for="website">Website:</label>
+                <input type="url" id="website" placeholder="https://yourwebsite.com" />
+            </div>
+
+            <!-- 💳 Preferences / Security -->
+            <div class="settings-section">
+                <h3>Preferences & Security</h3>
+
+                <label for="twoFactor">Two-Factor Authentication:</label>
+                <select id="twoFactor">
+                    <option value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>
+
+                <label for="notifications">Notifications:</label>
+                <select id="notifications">
+                    <option value="all">All Notifications</option>
+                    <option value="important">Important Only</option>
+                    <option value="none">None</option>
+                </select>
+            </div>
+
+            <!-- 🧾 Account Info -->
+            <div class="settings-section">
+                <h3>Account Information</h3>
+                <p id="accountStatus">Status: <strong>Active</strong></p>
+                <p id="loyaltyPoints">Loyalty Points: <strong>0</strong></p>
+                <p id="lastLogin">Last Login: <strong>--</strong></p>
+            </div>
+
+            <!-- 💾 Save -->
+            <div class="settings-section">
+                <button id="saveSettings" class="save-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Breadcrumbs -->
     <div class="breadcrumbs">
@@ -96,8 +175,10 @@
             </div>
 
             <div class="cta-buttons">
-                <button class="btn-primary" onclick="addToCart(this)">Add to Cart</button>
-                <button class="btn-secondary">Add To Wishlist</button>
+                <button class="btn-primary add-to-cart-btn" data-product-id="">
+                    <i class="fas fa-cart-plus"></i>
+                </button>
+                <button id="wishlist-btn" class="btn-secondary">Add To Wishlist</button>
             </div>
         </div>
     </section>
@@ -129,221 +210,69 @@
             <div class="tab-content" id="reviews">
                 <h2>Customer Reviews</h2>
                 <div id="reviews-list"></div>
-                <!-- Review form stays static -->
+
+                <!-- Review form -->
+                <div class="review-form">
+                    <h4>Write a Review</h4>
+                    <textarea id="reviewComment" rows="3" placeholder="Share your experience..."></textarea>
+                    <br />
+                    <select id="reviewRating">
+                        <option value="">Select rating</option>
+                        <option value="5">5 - Excellent</option>
+                        <option value="4">4 - Good</option>
+                        <option value="3">3 - Average</option>
+                        <option value="2">2 - Poor</option>
+                        <option value="1">1 - Terrible</option>
+                    </select>
+                    <br />
+                    <button id="submitReviewBtn">Submit Review</button>
+                </div>
             </div>
 
             <!-- Seller Story Tab -->
             <div class="tab-content" id="seller">
                 <h2>Meet the Seller</h2>
                 <div class="seller-story">
-                    <img id="seller-photo" src="../images/guy.png" alt="Seller Photo" />
+                    <img id="seller-logo" src="../images/guy.png" alt="Store Logo" />
                     <div class="seller-info">
                         <div class="seller-header">
                             <h3 id="seller-name"></h3>
-                            <button class="follow-btn">+ Follow</button>
+                            <button id="follow-btn" class="follow-btn" data-seller-id="SELLER_ID">+ Follow</button>
                         </div>
                         <p class="followers" id="seller-followers"></p>
+                        <p id="seller-bio"></p>
                         <p id="seller-story"></p>
                         <button class="message-btn">Message Seller</button>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 
 
     <!-- More Products from the Seller -->
-    <section class="rel-products">
+    <section class="seller-products">
         <h2 class="rel-title">More Products from the Seller</h2>
+
         <div class="rel-carousel-container">
-            <div class="rel-carousel-track auto-scroll">
-                <div class="rel-product-card">
-                    <img src="../images/fashion.jpg" alt="Product 1">
-                    <h3 class="rel-card-title">Stylish Backpack</h3>
-                    <p class="rel-card-price">₦15,000</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/fash-trend.jpg" alt="Product 2">
-                    <h3 class="rel-card-title">Leather Shoes</h3>
-                    <p class="rel-card-price">₦85,000</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/lapbag.jpeg" alt="Product 3">
-                    <h3 class="rel-card-title">Designer Laptop Bag</h3>
-                    <p class="rel-card-price">₦150,000</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/cozy-hostel.jpg" alt="Product 4">
-                    <h3 class="rel-card-title">Comfy Hostel Blanket</h3>
-                    <p class="rel-card-price">₦25,000</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/fashion.jpg" alt="Product 1">
-                    <h3 class="rel-card-title">Stylish Backpack</h3>
-                    <p class="rel-card-price">₦25,500</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/fash-trend.jpg" alt="Product 2">
-                    <h3 class="rel-card-title">Leather Shoes</h3>
-                    <p class="rel-card-price">₦15,000</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/lapbag.jpeg" alt="Product 3">
-                    <h3 class="rel-card-title">Designer Laptop Bag</h3>
-                    <p class="rel-card-price">₦6,500</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/cozy-hostel.jpg" alt="Product 4">
-                    <h3 class="rel-card-title">Comfy Hostel Blanket</h3>
-                    <p class="rel-card-price">₦4,500</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/fashion.jpg" alt="Product 5">
-                    <h3 class="rel-card-title">Classic Wristwatch</h3>
-                    <p class="rel-card-price">₦23,500</p>
-                </div>
+            <div class="rel-carousel-track">
+                <!-- Seller’s other products will be injected here by JS -->
             </div>
         </div>
     </section>
+
 
     <!-- Similar Products -->
     <section class="rel-products">
         <h2 class="rel-title">Similar Products</h2>
+
         <div class="rel-carousel-container">
-            <div class="rel-carousel-track auto-scroll">
-                <div class="rel-product-card">
-                    <img src="../images/fashion.jpg" alt="Similar 1">
-                    <h3 class="rel-card-title">Classic Wristwatch</h3>
-                    <p class="rel-card-price">₦4,500,000</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/fash-trend.jpg" alt="Similar 2">
-                    <h3 class="rel-card-title">Trendy Handbag</h3>
-                    <p class="rel-card-price">₦45,000</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/lapbag.jpeg" alt="Similar 3">
-                    <h3 class="rel-card-title">School Backpack</h3>
-                    <p class="rel-card-price">₦35,000</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/cozy-hostel.jpg" alt="Similar 4">
-                    <h3 class="rel-card-title">Warm Bed Sheets</h3>
-                    <p class="rel-card-price">₦18,000</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/fashion.jpg" alt="Product 1">
-                    <h3 class="rel-card-title">Stylish Backpack</h3>
-                    <p class="rel-card-price">₦25,500</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/fash-trend.jpg" alt="Product 2">
-                    <h3 class="rel-card-title">Leather Shoes</h3>
-                    <p class="rel-card-price">₦15,000</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/lapbag.jpeg" alt="Product 3">
-                    <h3 class="rel-card-title">Designer Laptop Bag</h3>
-                    <p class="rel-card-price">₦6,500</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/cozy-hostel.jpg" alt="Product 4">
-                    <h3 class="rel-card-title">Comfy Hostel Blanket</h3>
-                    <p class="rel-card-price">₦4,500</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/fashion.jpg" alt="Product 5">
-                    <h3 class="rel-card-title">Classic Wristwatch</h3>
-                    <p class="rel-card-price">₦23,500</p>
-                </div>
+            <div class="rel-carousel-track">
+                <!-- Related products will be dynamically injected here by JS -->
             </div>
         </div>
     </section>
-
-    <!-- Related Products -->
-    <section class="rel-products">
-        <h2 class="rel-title">You Might Also Like</h2>
-        <div class="rel-carousel-container">
-            <div class="rel-carousel-track auto-scroll">
-                <!-- Product Card -->
-                <div class="rel-product-card">
-                    <img src="../images/fashion.jpg" alt="Product 1">
-                    <h3 class="rel-card-title">Stylish Backpack</h3>
-                    <p class="rel-card-price">₦25,000</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/fash-trend.jpg" alt="Product 2">
-                    <h3 class="rel-card-title">Leather Shoes</h3>
-                    <p class="rel-card-price">₦9,800</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/lapbag.jpeg" alt="Product 3">
-                    <h3 class="rel-card-title">Designer Laptop Bag</h3>
-                    <p class="rel-card-price">₦4,000</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/cozy-hostel.jpg" alt="Product 4">
-                    <h3 class="rel-card-title">Comfy Hostel Blanket</h3>
-                    <p class="rel-card-price">₦3,500</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/fashion.jpg" alt="Product 5">
-                    <h3 class="rel-card-title">Classic Wristwatch</h3>
-                    <p class="rel-card-price">₦13,500</p>
-                </div>
-                <div class="rel-product-card">
-                    <img src="../images/fashion.jpg" alt="Product 1">
-                    <h3 class="rel-card-title">Stylish Backpack</h3>
-                    <p class="rel-card-price">₦15,000</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/fash-trend.jpg" alt="Product 2">
-                    <h3 class="rel-card-title">Leather Shoes</h3>
-                    <p class="rel-card-price">₦12,000</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/lapbag.jpeg" alt="Product 3">
-                    <h3 class="rel-card-title">Designer Laptop Bag</h3>
-                    <p class="rel-card-price">₦4,500</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/cozy-hostel.jpg" alt="Product 4">
-                    <h3 class="rel-card-title">Comfy Hostel Blanket</h3>
-                    <p class="rel-card-price">₦6,500</p>
-                </div>
-
-                <div class="rel-product-card">
-                    <img src="../images/fashion.jpg" alt="Product 5">
-                    <h3 class="rel-card-title">Classic Wristwatch</h3>
-                    <p class="rel-card-price">₦35,000</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
 
     <footer id="pageFooter">
         <div class="footer-container">
@@ -388,7 +317,9 @@
     </footer>
 
     <script type="module" src="../functions/product.js"></script>
+        <script type="module" src="../functions/cart.js"></script>
     <script type="module" src="../functions/index.js"></script>
+    <script type="module" src="../functions/dashboard.js"></script>
 </body>
 
 </html>

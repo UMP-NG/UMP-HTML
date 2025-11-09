@@ -1,6 +1,7 @@
 import express from "express";
 import {
   signup,
+  signupProvider,
   login,
   getMe,
   forgotPassword,
@@ -9,7 +10,7 @@ import {
   logout,
   resendOtp,
 } from "../controllers/authController.js";
-import { protect, authorize } from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -17,14 +18,12 @@ const router = express.Router();
 // AUTH ROUTES
 // ==========================
 router.post("/signup", signup);
+router.post("/signup-provider", signupProvider);
 router.post("/login", login);
 router.post("/logout", protect, logout);
 
 // Protected routes
 router.get("/me", protect, getMe);
-router.get("/admin", protect, authorize("admin"), (req, res) => {
-  res.json({ message: "Welcome Admin!" });
-});
 
 router.put("/me", protect, async (req, res) => {
   try {

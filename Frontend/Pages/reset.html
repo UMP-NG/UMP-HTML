@@ -1,158 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reset Password</title>
-    <style>
-      :root {
-        --primary-color: #d97b3d;
-        --primary-hover: #c26c35;
-        --text-color: #2c2c2c;
-        --bg-color: #fffaf5;
-        --card-bg: #fff6eb;
-        --shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-        --radius: 16px;
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reset Password</title>
+  <style>
+    :root {
+      --primary-color: #d97b3d;
+      --primary-hover: #c26c35;
+      --text-color: #2c2c2c;
+      --bg-color: #fffaf5;
+      --card-bg: #fff6eb;
+      --shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      --radius: 16px;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 32px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      animation: fadeIn 0.4s ease;
+    }
+
+    h1 {
+      margin-bottom: 16px;
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+
+    p.description {
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    input {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      background-color: #fff;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(217, 123, 61, 0.2);
+    }
+
+    button {
+      background: var(--primary-color);
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background: var(--primary-hover);
+      transform: scale(1.02);
+    }
+
+    #msg {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: var(--primary-color);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
       }
 
-      body {
-        font-family: "Poppins", sans-serif;
-        background: var(--bg-color);
-        color: var(--text-color);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
+    }
+  </style>
+</head>
 
-      .container {
-        background: var(--card-bg);
-        box-shadow: var(--shadow);
-        border-radius: var(--radius);
-        padding: 32px;
-        width: 100%;
-        max-width: 400px;
-        text-align: center;
-        animation: fadeIn 0.4s ease;
-      }
+<body>
+  <div class="container">
+    <h1>Reset Password</h1>
+    <p class="description">
+      Enter your new password to regain access to your account.
+    </p>
 
-      h1 {
-        margin-bottom: 16px;
-        font-size: 1.8rem;
-        font-weight: 600;
-      }
+    <form id="reset">
+      <input id="pass" name="password" type="password" placeholder="New password" required />
+      <button type="submit">Reset Password</button>
+    </form>
 
-      p.description {
-        margin-bottom: 24px;
-        font-size: 0.95rem;
-        color: #666;
-      }
+    <p id="msg"></p>
+  </div>
 
-      form {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
+  <script type="module" src="../functions/reset.js"></script>
+</body>
 
-      input {
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        font-size: 1rem;
-        background-color: #fff;
-        transition: 0.3s;
-      }
-
-      input:focus {
-        outline: none;
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(217, 123, 61, 0.2);
-      }
-
-      button {
-        background: var(--primary-color);
-        color: white;
-        font-size: 1rem;
-        font-weight: 600;
-        padding: 12px;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        transition: background 0.3s ease, transform 0.2s ease;
-      }
-
-      button:hover {
-        background: var(--primary-hover);
-        transform: scale(1.02);
-      }
-
-      #msg {
-        margin-top: 12px;
-        font-size: 0.9rem;
-        color: var(--primary-color);
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Reset Password</h1>
-      <p class="description">
-        Enter your new password to regain access to your account.
-      </p>
-
-      <form id="reset">
-        <input
-          id="pass"
-          name="password"
-          type="password"
-          placeholder="New password"
-          required
-        />
-        <button type="submit">Reset Password</button>
-      </form>
-
-      <p id="msg"></p>
-    </div>
-
-    <script type="module">
-      import API from "../functions/api.js";
-      const form = document.getElementById("reset");
-      const msg = document.getElementById("msg");
-
-      // Get token from query string: ?token=abc
-      const params = new URLSearchParams(window.location.search);
-      const token = params.get("token");
-
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        if (!token) {
-          msg.textContent = "❌ No reset token found in URL.";
-          return;
-        }
-
-        msg.textContent = "🔄 Resetting...";
-        try {
-          await API.resetPassword(token, {
-            password: document.getElementById("pass").value,
-          });
-          msg.textContent = "✅ Password reset successful. Redirecting...";
-          setTimeout(() => (window.location.href = "./Pages/login.html"), 1200);
-        } catch (err) {
-          msg.textContent = "❌ " + (err.body?.message || err.message);
-        }
-      });
-    </script>
-  </body>
 </html>

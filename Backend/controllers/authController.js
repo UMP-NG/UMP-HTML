@@ -1,16 +1,17 @@
-// controllers/authController.js
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import sendMail from "../utils/sendMail.js";
+import generateToken from "../utils/generateToken.js";
+import Service from "../models/Service.js";
 
 // ===============================
 // SIGNUP WITH OTP
 // ===============================
 export const signup = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
     const existingUser = await User.findOne({ email });
 
@@ -21,6 +22,8 @@ export const signup = async (req, res) => {
     let user;
     if (existingUser && !existingUser.isVerified) {
       // Resend OTP for unverified user
+      // update name if provided (allow user to set display name before verification)
+      if (name) existingUser.name = name;
       const otp = existingUser.createOTP();
       await existingUser.save({ validateBeforeSave: false });
 
@@ -44,8 +47,9 @@ export const signup = async (req, res) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new unverified user
+    // Create new unverified user (store provided name)
     user = new User({
+      name: name || undefined,
       email,
       password,
       isVerified: false,
@@ -72,6 +76,86 @@ export const signup = async (req, res) => {
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+// ===============================
+// SIGNUP + CREATE SERVICE (instant provider signup)
+// Accepts multipart/form-data (image) or JSON body.
+export const signupProvider = async (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      password,
+      businessName,
+      title,
+      major,
+      desc,
+      about,
+      rate,
+      tags,
+    } = req.body;
+
+    // Basic validation
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    const existing = await User.findOne({ email });
+    if (existing) return res.status(400).json({ message: "User already exists" });
+
+    const hashed = await bcrypt.hash(password, 10);
+
+    // Create user and mark verified
+    const user = await User.create({
+      name: name || businessName || email.split("@")[0],
+      email,
+      password: hashed,
+      isVerified: true,
+      roles: ["service_provider"],
+    });
+
+    // Create service
+    const serviceData = {
+      provider: user._id,
+      name: businessName || name || user.name,
+      title: title || "",
+      major: major || "",
+      desc: desc || "",
+      about: about || "",
+      rate: Number(rate) || 0,
+      tags: tags ? tags.split(",").map((t) => t.trim()) : [],
+      image: req.file ? `/uploads/${req.file.filename}` : null,
+      available: true,
+    };
+
+    const service = await Service.create(serviceData);
+
+    // Link service to user
+    user.services = user.services || [];
+    user.services.push(service._id);
+    user.serviceProviderInfo = user.serviceProviderInfo || {};
+    user.serviceProviderInfo.businessName = businessName || user.name;
+    user.serviceProviderInfo.skills = service.tags || [];
+    user.serviceProviderInfo.rate = service.rate || 0;
+    user.serviceProviderInfo.bio = service.about || "";
+
+    await user.save();
+
+    // generate token and set cookie
+    const token = generateToken(user._id);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.status(201).json({ message: "Provider account created", user, service });
+  } catch (error) {
+    console.error("Signup Provider error:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
@@ -115,7 +199,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // ✅ Place your verification check here
+    // ✅ Check email verification
     if (!existingUser.isVerified) {
       return res
         .status(403)
@@ -130,13 +214,20 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES_IN || "1d",
+    // ✅ Generate JWT token
+    const token = generateToken(existingUser._id);
+
+    // ✅ Set token in cookie
+    res.cookie("token", token, {
+      httpOnly: true, // can't be accessed by JS
+      secure: process.env.NODE_ENV === "production", // only over HTTPS in production
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
+    // ✅ Send response (you don’t need to send the token anymore)
     res.status(200).json({
       message: "Login successful",
-      token,
       user: {
         id: existingUser._id,
         email: existingUser.email,
@@ -268,7 +359,6 @@ export const resetPassword = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  // If using cookies to store JWT:
   res.cookie("token", "", {
     httpOnly: true,
     expires: new Date(0),

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UMP - Checkout Success</title>
+    <style>
+        /* Minimal inline styles for demo */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .success-container {
+            max-width: 700px;
+            margin: 5rem auto;
+            background: #fff;
+            padding: 2rem 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .success-container h1 {
+            color: #28a745;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-container p {
+            font-size: 1.4rem;
+            margin: 0.5rem 0;
+        }
+
+        .order-details {
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .order-details h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .order-details ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .order-details li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .btn-container {
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            font-size: 1.2rem;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 0.6rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="success-container">
+        <h1>✅ Order Successful!</h1>
+        <p>Thank you for shopping with <span class="highlight">UMP Marketplace</span>.</p>
+        <p>Your order has been placed successfully.</p>
+
+        <div class="order-details">
+            <h2>Order Summary</h2>
+            <ul id="orderItems">
+                <!-- Items will be dynamically inserted here -->
+            </ul>
+            <p>Subtotal: ₦<span id="subtotal">0</span></p>
+            <p>Delivery Fee: ₦<span id="deliveryFee">0</span></p>
+            <p>Total: ₦<span id="total">0</span></p>
+            <p>Payment Method: <span id="paymentMethod"></span></p>
+            <p>Payment Status: <span id="paymentStatus"></span></p>
+            <p>Order ID: <span id="orderId"></span></p>
+        </div>
+
+        <div class="btn-container">
+            <a href="/Pages/market.html" class="btn">Continue Shopping</a>
+            <a href="/Pages/orders.html" class="btn">View My Orders</a>
+        </div>
+    </div>
+
+    <script>
+        // Example: populate order dynamically (replace with real API call)
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                // Fetch the latest order from backend
+                const res = await fetch('/api/orders/current', { credentials: 'include' });
+                if (!res.ok) throw new Error("Failed to fetch order");
+                const order = await res.json();
+
+                // Populate items
+                const itemsList = document.getElementById("orderItems");
+                order.items.forEach(item => {
+                    const li = document.createElement("li");
+                    li.textContent = `${item.product.name || 'Unnamed Product'} - Qty: ${item.quantity} - ₦${(item.price * item.quantity).toLocaleString()}`;
+                    itemsList.appendChild(li);
+                });
+
+                // Populate summary
+                document.getElementById("subtotal").textContent = (order.subtotal || 0).toLocaleString();
+                document.getElementById("deliveryFee").textContent = (order.deliveryFee || 0).toLocaleString();
+                document.getElementById("total").textContent = (order.totalAmount || 0).toLocaleString();
+                document.getElementById("paymentMethod").textContent = order.paymentMethod || 'N/A';
+                document.getElementById("paymentStatus").textContent = order.paymentStatus || 'N/A';
+                document.getElementById("orderId").textContent = order._id || 'N/A';
+
+            } catch (err) {
+                console.error("Failed to load order info:", err);
+                document.querySelector(".success-container").innerHTML = "<h1>⚠️ Unable to load order details.</h1>";
+            }
+        });
+    </script>
+</body>
+
+</html>

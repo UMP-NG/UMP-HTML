@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Commerce Chat</title>
+    <link rel="stylesheet" href="../Styles/messages.css" />
+</head>
+
+<body>
+    <div class="chat-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>Messages</h2>
+            <ul id="conversations-list"></ul>
+        </aside>
+
+        <!-- Chat Area -->
+        <main class="chat-area">
+            <div class="chat-header">
+                <img id="chat-avatar" src="../images/ump-logo.jpeg" alt="User avatar" />
+                <div class="chat-user-info">
+                    <h3 id="chat-username">No chat selected</h3>
+                    <span id="chat-status">Select a conversation to start chatting</span>
+                </div>
+            </div>
+
+            <div id="chat-messages" class="chat-messages chat-fallback">
+                <div class="fallback-message">
+                    <img src="../images/no-message.png" alt="Chat placeholder" />
+                    <p>Select a contact to start chatting</p>
+                </div>
+            </div>
+
+            <form id="message-form" class="message-form hidden">
+                <label for="file-upload" class="upload-btn">📎</label>
+                <input id="file-upload" type="file" hidden multiple accept="image/*,.pdf,.doc,.docx" />
+                <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off" />
+                <button type="submit">Send</button>
+            </form>
+        </main>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="../functions/messages.js"></script>
+</body>
+
+</html>
