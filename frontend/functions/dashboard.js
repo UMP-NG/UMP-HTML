@@ -3,8 +3,8 @@
 // ===============================
 const API_BASE =
   window.location.hostname === "localhost"
-    ? "http://localhost:5000"
-    : "https://ump-html-1.onrender.com";
+    ? "http://localhost:5000/api"
+    : "https://ump-html-1.onrender.com/api";
 
 let redirectingToLogin = false;
 
