@@ -239,7 +239,7 @@ async function apiFetch(endpoint, options = {}) {
     const baseURL =
       window.location.hostname === "localhost"
         ? "http://localhost:5000/api"
-        : "https://ump-backend.onrender.com/api";
+        : "https://ump-html-1.onrender.com";
 
     const res = await fetch(`${baseURL}${endpoint}`, {
       method: options.method || "GET",
