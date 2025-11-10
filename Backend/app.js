@@ -46,6 +46,7 @@ const allowedOrigins = [
   "http://localhost:5500",
   "http://localhost:3000",
   "https://ump-ng.github.io",
+  "https://ump-html-1.onrender.com",
   "file://",
 ];
 
