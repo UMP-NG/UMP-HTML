@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const statusEl = document.getElementById("profileStatus");
   const avatarEl = document.getElementById("profileAvatar");
   const logoutBtn = document.getElementById("logoutBtn");
+  const hide = document.getElementById("out");
   const signInBtn = document.getElementById("signInBtn");
   const settingsBtn = document.getElementById("openSettings");
   const modal = document.getElementById("settingsModal");
@@ -81,6 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
       if (signInBtn) signInBtn.textContent = "Sign In";
       if (logoutBtn) logoutBtn.style.display = "none";
+      hide.style.display = "none";
     }
   }
 
